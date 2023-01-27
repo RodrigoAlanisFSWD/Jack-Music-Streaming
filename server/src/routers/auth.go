@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func AuthRouter(api echo.Group) {
+func AuthRouter(api *echo.Group) {
 	authController := controllers.NewAuthController(userService)
 
 	auth := api.Group("/auth")

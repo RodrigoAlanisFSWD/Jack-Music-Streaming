@@ -4,12 +4,15 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Jack-Music-Streaming/server/src/config"
 	"github.com/Jack-Music-Streaming/server/src/database"
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
 	e := echo.New()
+
+	config.GetConfig()
 
 	if err := database.InitDB(); err != nil {
 		log.Panic(err)
