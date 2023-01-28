@@ -1,6 +1,9 @@
 package models
 
-import "github.com/golang-jwt/jwt/v4"
+import (
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/labstack/echo/v4"
+)
 
 type Tokens struct {
 	AccessToken  string `json:"access_token"`
@@ -20,7 +23,9 @@ type JWTRepository interface {
 }
 
 type AuthService interface {
+	SetTokens(c echo.Context, tokens *Tokens)
 	GetTokens(user *User) (*Tokens, error)
 	RefreshTokens(user *User) (*Tokens, error)
 	LogoutUser(user *User) error
+	EncryptPassword(user *User) error
 }

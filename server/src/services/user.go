@@ -25,8 +25,8 @@ func NewUserService(r models.UserRepository) models.UserService {
 	return instance
 }
 
-func (u *userService) Create(user *models.User) (*models.User, error) {
-	return user, nil
+func (u *userService) Create(user models.User) (*models.User, error) {
+	return u.userRepository.Save(&user)
 }
 
 func (u *userService) GetAll() ([]models.User, error) {

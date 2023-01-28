@@ -8,7 +8,7 @@ type User struct {
 }
 
 type UserService interface {
-	Create(user *User) (*User, error)
+	Create(user User) (*User, error)
 	GetAll() ([]User, error)
 	GetOne(id int) (User, error)
 	Delete(user *User) error

@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 
+	"github.com/Jack-Music-Streaming/server/src/models"
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
@@ -28,6 +29,8 @@ func InitDB() error {
 		DSN:                  fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name),
 		PreferSimpleProtocol: true,
 	}))
+
+	db.AutoMigrate(&models.User{})
 
 	if err != nil {
 		return err
