@@ -29,6 +29,9 @@ func main() {
 
 	api := e.Group("/api")
 
+	// Initialize Router Dependencies
+	routers.InitializeRotuers()
+
 	routers.AuthRouter(api)
 
 	e.Logger.Fatal(e.Start(":8080"))
