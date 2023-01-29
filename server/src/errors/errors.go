@@ -6,10 +6,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func BadRequest(c echo.Context) error {
+func BadRequest() error {
 	return echo.NewHTTPError(http.StatusBadRequest, "bad request")
 }
 
-func ServerError(c echo.Context) error {
+func ServerError() error {
 	return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
+}
+
+func UnauthorizedError() error {
+	return echo.NewHTTPError(http.StatusUnauthorized, "user unauthorized")
 }

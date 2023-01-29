@@ -33,8 +33,24 @@ func (u *userService) GetAll() ([]models.User, error) {
 	return nil, nil
 }
 
-func (u *userService) GetOne(id int) (models.User, error) {
-	return models.User{}, nil
+func (u *userService) GetUserByID(id interface{}) (*models.User, error) {
+	user, err := u.userRepository.FindOne("id = ?", id)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (u *userService) GetUserByEmail(email string) (*models.User, error) {
+	user, err := u.userRepository.FindOne("email = ?", email)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
 
 func (u *userService) Delete(user *models.User) error {

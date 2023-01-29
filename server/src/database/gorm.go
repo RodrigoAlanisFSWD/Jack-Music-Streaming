@@ -28,7 +28,7 @@ func InitDB() error {
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name),
 		PreferSimpleProtocol: true,
-	}))
+	}), &gorm.Config{})
 
 	db.AutoMigrate(&models.User{})
 

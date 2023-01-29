@@ -28,4 +28,7 @@ type AuthService interface {
 	RefreshTokens(user *User) (*Tokens, error)
 	LogoutUser(user *User) error
 	EncryptPassword(user *User) error
+	ComparePasswords(user *User, validUser *User) error
+	ValidateUser(user *User) (*User, error)
+	GetUserFromToken(c echo.Context) (*User, error)
 }

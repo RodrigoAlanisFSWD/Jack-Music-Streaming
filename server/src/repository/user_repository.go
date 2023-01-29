@@ -28,12 +28,28 @@ func (u *userRepository) Save(user *models.User) (*models.User, error) {
 	return user, nil
 }
 
-func (u *userRepository) FindAll() ([]models.User, error) {
-	return nil, nil
+func (u *userRepository) FindAll(query string, args ...interface{}) ([]models.User, error) {
+	var users []models.User
+
+	err := u.DB.Model(&users).Where(query, args).Find(&users).Error
+
+	if err != nil {
+		return users, err
+	}
+
+	return users, nil
 }
 
-func (u *userRepository) FindOne(id int) (models.User, error) {
-	return models.User{}, nil
+func (u *userRepository) FindOne(query string, args ...interface{}) (*models.User, error) {
+	var user models.User
+
+	err := u.DB.Model(&user).Where(query, args).First(&user).Error
+
+	if err != nil {
+		return &user, err
+	}
+
+	return &user, nil
 }
 
 func (u *userRepository) Delete(user *models.User) error {

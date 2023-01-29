@@ -10,13 +10,14 @@ type User struct {
 type UserService interface {
 	Create(user *User) (*User, error)
 	GetAll() ([]User, error)
-	GetOne(id int) (User, error)
+	GetUserByID(id interface{}) (*User, error)
+	GetUserByEmail(email string) (*User, error)
 	Delete(user *User) error
 }
 
 type UserRepository interface {
 	Save(user *User) (*User, error)
-	FindAll() ([]User, error)
-	FindOne(id int) (User, error)
+	FindAll(query string, args ...interface{}) ([]User, error)
+	FindOne(query string, args ...interface{}) (*User, error)
 	Delete(user *User) error
 }

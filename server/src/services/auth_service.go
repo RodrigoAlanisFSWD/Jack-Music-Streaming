@@ -6,23 +6,26 @@ import (
 	"time"
 
 	"github.com/Jack-Music-Streaming/server/src/models"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type authService struct {
 	jwtRepository models.JWTRepository
+	userService   models.UserService
 }
 
 var authInstance *authService
 
 var authOnce sync.Once
 
-func NewAuthService(r models.JWTRepository) models.AuthService {
+func NewAuthService(r models.JWTRepository, u models.UserService) models.AuthService {
 
 	authOnce.Do(func() {
 		authInstance = &authService{
 			jwtRepository: r,
+			userService:   u,
 		}
 	})
 
@@ -30,17 +33,21 @@ func NewAuthService(r models.JWTRepository) models.AuthService {
 }
 
 func (a *authService) SetTokens(c echo.Context, tokens *models.Tokens) {
-	c.SetCookie(&http.Cookie{
-		Name:    "@jack/access_token",
-		Value:   tokens.AccessToken,
-		Expires: time.Now().Add(30 * time.Minute),
-	})
+	cookie := new(http.Cookie)
 
-	c.SetCookie(&http.Cookie{
-		Name:    "@jack/refresh_token",
-		Value:   tokens.RefreshToken,
-		Expires: time.Now().Add(48 * time.Hour),
-	})
+	cookie.Name = "jack_access_token"
+	cookie.Value = tokens.AccessToken
+	cookie.Expires = time.Now().Add(30 * time.Minute)
+	cookie.Path = "/"
+	cookie.Domain = "localhost"
+	c.SetCookie(cookie)
+
+	cookie.Name = "jack_refresh_token"
+	cookie.Value = tokens.RefreshToken
+	cookie.Expires = time.Now().Add(48 * time.Hour)
+	cookie.Path = "/"
+	cookie.Domain = "localhost"
+	c.SetCookie(cookie)
 }
 
 func (a *authService) GetTokens(user *models.User) (*models.Tokens, error) {
@@ -80,4 +87,32 @@ func (a *authService) EncryptPassword(user *models.User) error {
 	user.Password = string(passwordBytes)
 
 	return nil
+}
+
+func (a *authService) ComparePasswords(user *models.User, validUser *models.User) error {
+	return bcrypt.CompareHashAndPassword([]byte(validUser.Password), []byte(user.Password))
+}
+
+func (a *authService) ValidateUser(user *models.User) (*models.User, error) {
+	validUser, err := a.userService.GetUserByEmail(user.Email)
+
+	if err != nil {
+		return validUser, err
+	}
+
+	err = a.ComparePasswords(user, validUser)
+
+	if err != nil {
+		return validUser, err
+	}
+
+	return validUser, err
+}
+
+func (a *authService) GetUserFromToken(c echo.Context) (*models.User, error) {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*models.JWTClaims)
+	userID := claims.User
+
+	return a.userService.GetUserByID(userID)
 }
