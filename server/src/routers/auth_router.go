@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/Jack-Music-Streaming/server/src/controllers"
+	"github.com/Jack-Music-Streaming/server/src/database"
 	"github.com/Jack-Music-Streaming/server/src/middlewares"
 	"github.com/Jack-Music-Streaming/server/src/repository"
 	"github.com/Jack-Music-Streaming/server/src/services"
@@ -10,7 +11,8 @@ import (
 
 func AuthRouter(api *echo.Group) {
 	jwtRepository := repository.NewJWTRepository()
-	authService := services.NewAuthService(jwtRepository, userService)
+	scopeRepository := repository.NewScopeRepository(database.DB)
+	authService := services.NewAuthService(jwtRepository, userService, scopeRepository)
 
 	authController := controllers.NewAuthController(userService, authService)
 
@@ -22,4 +24,6 @@ func AuthRouter(api *echo.Group) {
 	auth.Use(middlewares.JWTMiddleware())
 
 	auth.GET("/profile", authController.GetProfile)
+	auth.PUT("/updateScope", authController.UpdateUser)
+	auth.GET("/scope", authController.GetScope)
 }

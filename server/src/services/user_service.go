@@ -56,3 +56,7 @@ func (u *userService) GetUserByEmail(email string) (*models.User, error) {
 func (u *userService) Delete(user *models.User) error {
 	return nil
 }
+
+func (u *userService) Update(user *models.User) (*models.User, error) {
+	return u.userRepository.Save(user)
+}

@@ -5,6 +5,10 @@ type User struct {
 	Name     string `json:"name" gorm:"unique"`
 	Password string `json:"password"`
 	Email    string `json:"email" gorm:"unique"`
+	RoleID   int    `json:"role_id"`
+	Role     Role
+	PlanID   int `json:"plan_id"`
+	Plan     Plan
 }
 
 type UserService interface {
@@ -13,6 +17,7 @@ type UserService interface {
 	GetUserByID(id interface{}) (*User, error)
 	GetUserByEmail(email string) (*User, error)
 	Delete(user *User) error
+	Update(user *User) (*User, error)
 }
 
 type UserRepository interface {

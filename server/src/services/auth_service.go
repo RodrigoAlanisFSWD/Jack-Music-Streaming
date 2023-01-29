@@ -12,20 +12,22 @@ import (
 )
 
 type authService struct {
-	jwtRepository models.JWTRepository
-	userService   models.UserService
+	jwtRepository   models.JWTRepository
+	scopeRepository models.ScopeRepository
+	userService     models.UserService
 }
 
 var authInstance *authService
 
 var authOnce sync.Once
 
-func NewAuthService(r models.JWTRepository, u models.UserService) models.AuthService {
+func NewAuthService(r models.JWTRepository, u models.UserService, s models.ScopeRepository) models.AuthService {
 
 	authOnce.Do(func() {
 		authInstance = &authService{
-			jwtRepository: r,
-			userService:   u,
+			jwtRepository:   r,
+			userService:     u,
+			scopeRepository: s,
 		}
 	})
 
@@ -115,4 +117,27 @@ func (a *authService) GetUserFromToken(c echo.Context) (*models.User, error) {
 	userID := claims.User
 
 	return a.userService.GetUserByID(userID)
+}
+
+func (a *authService) UpdateUserScope(c echo.Context, u *models.User) (*models.User, error) {
+	user, err := a.GetUserFromToken(c)
+
+	if err != nil {
+		return &models.User{}, err
+	}
+
+	user.RoleID = u.RoleID
+	user.PlanID = u.PlanID
+
+	return a.userService.Update(user)
+}
+
+func (a *authService) GetUserScope(c echo.Context) (*models.Scope, error) {
+	user, err := a.GetUserFromToken(c)
+
+	if err != nil {
+		return &models.Scope{}, err
+	}
+
+	return a.scopeRepository.FindScope(user.RoleID, user.PlanID)
 }

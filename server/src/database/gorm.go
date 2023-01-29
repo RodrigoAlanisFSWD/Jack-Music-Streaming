@@ -30,7 +30,7 @@ func InitDB() error {
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{})
 
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Role{}, &models.Plan{}, &models.Scope{}, &models.User{})
 
 	if err != nil {
 		return err
