@@ -29,7 +29,10 @@ func NewAuthController(s models.UserService, auth models.AuthService) AuthContro
 }
 
 func (a *authController) SignIn(c echo.Context) error {
-	u := &models.User{}
+	u := &models.User{
+		RoleID: 1,
+		PlanID: 1,
+	}
 
 	if err := c.Bind(&u); err != nil {
 		return errors.BadRequest()
@@ -56,7 +59,10 @@ func (a *authController) SignIn(c echo.Context) error {
 }
 
 func (a *authController) SignUp(c echo.Context) error {
-	u := &models.User{}
+	u := &models.User{
+		RoleID: 1,
+		PlanID: 1,
+	}
 
 	if err := c.Bind(&u); err != nil {
 		return errors.BadRequest()

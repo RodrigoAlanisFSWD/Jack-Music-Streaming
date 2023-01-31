@@ -15,9 +15,9 @@ func SeedDatabase(db *gorm.DB) error {
 	c.Println("Seed Database:")
 
 	for _, seeder := range seeders {
-		c.Println(c.Sprintf("- Running %s Seeder...", seeder.Name))
+		c.Println(c.Sprintf("- Running %s Seeder", seeder.Name))
 		for _, seed := range seeder.Seeds {
-			c.Println(c.Sprintf("-- Running %s Seed...", seed.Name))
+			c.Println(c.Sprintf("-- Running %s Seed", seed.Name))
 			err := seed.Function(db)
 
 			if err != nil {

@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 
-	"github.com/Jack-Music-Streaming/server/src/database/seeders"
 	"github.com/Jack-Music-Streaming/server/src/models"
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
@@ -46,11 +45,11 @@ func InitDB() error {
 
 	c.Println("Database Connected!")
 
-	err = Rollback(db)
+	// err = Rollback(db)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
 	err = Migrate(db)
 
@@ -58,11 +57,11 @@ func InitDB() error {
 		return err
 	}
 
-	err = seeders.SeedDatabase(db)
+	// err = seeders.SeedDatabase(db)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
 	DB = db
 

@@ -12,9 +12,9 @@ type Plan struct {
 
 type Scope struct {
 	Model
-	RoleID      int `json:"role_id"`
+	RoleID      uint `json:"role_id"`
 	Role        Role
-	PlanID      int `json:"plan_id"`
+	PlanID      uint `json:"plan_id"`
 	Plan        Plan
 	Permissions string `json:"permissions"`
 }

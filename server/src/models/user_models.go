@@ -5,9 +5,9 @@ type User struct {
 	Name     string `json:"name" gorm:"unique"`
 	Password string `json:"password"`
 	Email    string `json:"email" gorm:"unique"`
-	RoleID   int    `json:"role_id"`
+	RoleID   uint   `json:"role_id"`
 	Role     Role
-	PlanID   int `json:"plan_id"`
+	PlanID   uint `json:"plan_id"`
 	Plan     Plan
 }
 
@@ -25,4 +25,5 @@ type UserRepository interface {
 	FindAll(query string, args ...interface{}) ([]User, error)
 	FindOne(query string, args ...interface{}) (*User, error)
 	Delete(user *User) error
+	Update(user *User) (*User, error)
 }

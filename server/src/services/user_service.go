@@ -58,5 +58,5 @@ func (u *userService) Delete(user *models.User) error {
 }
 
 func (u *userService) Update(user *models.User) (*models.User, error) {
-	return u.userRepository.Save(user)
+	return u.userRepository.Update(user)
 }

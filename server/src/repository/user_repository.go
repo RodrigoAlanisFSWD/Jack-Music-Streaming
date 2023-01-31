@@ -55,3 +55,14 @@ func (u *userRepository) FindOne(query string, args ...interface{}) (*models.Use
 func (u *userRepository) Delete(user *models.User) error {
 	return nil
 }
+
+func (u *userRepository) Update(user *models.User) (*models.User, error) {
+	err := u.DB.Save(user).Error
+
+	if err != nil {
+		fmt.Println(err)
+		return &models.User{}, err
+	}
+
+	return user, nil
+}

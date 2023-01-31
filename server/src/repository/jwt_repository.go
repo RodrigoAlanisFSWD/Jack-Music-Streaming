@@ -18,8 +18,8 @@ func NewJWTRepository() models.JWTRepository {
 func (s *jwtRepository) CreateAccessToken(user *models.User) (string, error) {
 	claims := &models.JWTClaims{
 		User: user.ID,
-		Role: 1,
-		Plan: 1,
+		Role: user.RoleID,
+		Plan: user.PlanID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 30)),
 		},
@@ -39,8 +39,8 @@ func (s *jwtRepository) CreateAccessToken(user *models.User) (string, error) {
 func (s *jwtRepository) CreateRefreshToken(user *models.User) (string, error) {
 	claims := &models.JWTClaims{
 		User: user.ID,
-		Role: 1,
-		Plan: 1,
+		Role: user.RoleID,
+		Plan: user.PlanID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 48)),
 		},
