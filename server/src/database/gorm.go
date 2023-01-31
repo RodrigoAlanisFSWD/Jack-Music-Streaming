@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 
+	"github.com/Jack-Music-Streaming/server/src/database/seeders"
 	"github.com/Jack-Music-Streaming/server/src/models"
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
@@ -12,10 +13,19 @@ import (
 
 var DB *gorm.DB
 
+var entities []interface{}
+
 func InitDB() error {
 	c := color.New(color.FgBlue)
 
 	c.Println("Connecting To Database...")
+
+	entities = []interface{}{
+		&models.Role{},
+		&models.Plan{},
+		&models.Scope{},
+		&models.User{},
+	}
 
 	var (
 		host     = viper.Get("DATABASE_HOST")
@@ -30,15 +40,31 @@ func InitDB() error {
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{})
 
-	db.AutoMigrate(&models.Role{}, &models.Plan{}, &models.Scope{}, &models.User{})
+	if err != nil {
+		return err
+	}
+
+	c.Println("Database Connected!")
+
+	err = Rollback(db)
+
+	if err != nil {
+		return err
+	}
+
+	err = Migrate(db)
+
+	if err != nil {
+		return err
+	}
+
+	err = seeders.SeedDatabase(db)
 
 	if err != nil {
 		return err
 	}
 
 	DB = db
-
-	c.Println("Database Connected!")
 
 	return nil
 }
