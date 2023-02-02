@@ -24,6 +24,7 @@ func InitDB() error {
 		&models.Plan{},
 		&models.Scope{},
 		&models.User{},
+		&models.RefreshToken{},
 	}
 
 	var (

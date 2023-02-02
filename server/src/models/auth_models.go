@@ -10,6 +10,11 @@ type Tokens struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+type RefreshToken struct {
+	Model
+	Token string `json:"token" gorm:"unique"`
+}
+
 type JWTClaims struct {
 	User uint
 	Role uint
@@ -20,12 +25,15 @@ type JWTClaims struct {
 type JWTRepository interface {
 	CreateAccessToken(user *User) (string, error)
 	CreateRefreshToken(user *User) (string, error)
+	RegisterRefreshToken(token *RefreshToken) (*RefreshToken, error)
+	UpdateRefreshToken(new *RefreshToken, old string) (*RefreshToken, error)
+	VerifyRefreshToken(token string) (*RefreshToken, error)
 }
 
 type AuthService interface {
 	SetTokens(c echo.Context, tokens *Tokens)
 	GetTokens(user *User) (*Tokens, error)
-	RefreshTokens(user *User) (*Tokens, error)
+	RefreshTokens(c echo.Context) (*Tokens, error)
 	LogoutUser(user *User) error
 	EncryptPassword(user *User) error
 	ComparePasswords(user *User, validUser *User) error
@@ -33,4 +41,6 @@ type AuthService interface {
 	GetUserFromToken(c echo.Context) (*User, error)
 	UpdateUserScope(c echo.Context, u *User) (*User, error)
 	GetUserScope(c echo.Context) (*Scope, error)
+	RegisterRefreshToken(token string) (*RefreshToken, error)
+	UpdateRefreshToken(new string, old string) (*RefreshToken, error)
 }

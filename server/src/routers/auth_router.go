@@ -10,7 +10,7 @@ import (
 )
 
 func AuthRouter(api *echo.Group) {
-	jwtRepository := repository.NewJWTRepository()
+	jwtRepository := repository.NewJWTRepository(database.DB)
 	scopeRepository := repository.NewScopeRepository(database.DB)
 	authService := services.NewAuthService(jwtRepository, userService, scopeRepository)
 
@@ -20,6 +20,10 @@ func AuthRouter(api *echo.Group) {
 
 	auth.POST("/signUp", authController.SignUp)
 	auth.POST("/signIn", authController.SignIn)
+
+	auth.Use(middlewares.RefreshMiddleware())
+
+	auth.POST("/refresh", authController.RefreshTokens)
 
 	auth.Use(middlewares.JWTMiddleware())
 

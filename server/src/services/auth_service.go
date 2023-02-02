@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"net/http"
 	"sync"
 	"time"
@@ -65,14 +66,46 @@ func (a *authService) GetTokens(user *models.User) (*models.Tokens, error) {
 		return &models.Tokens{}, err
 	}
 
+	if err != nil {
+		fmt.Println(err)
+		return &models.Tokens{}, err
+	}
+
 	return &models.Tokens{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
 }
 
-func (a *authService) RefreshTokens(user *models.User) (*models.Tokens, error) {
-	return &models.Tokens{}, nil
+func (a *authService) RefreshTokens(c echo.Context) (*models.Tokens, error) {
+	refresh := c.Get("user").(*jwt.Token)
+	token := refresh.Raw
+
+	user, err := a.GetUserFromToken(c)
+
+	if err != nil {
+		return &models.Tokens{}, err
+	}
+
+	old, err := a.jwtRepository.VerifyRefreshToken(token)
+
+	if err != nil {
+		return &models.Tokens{}, err
+	}
+
+	newTokens, err := a.GetTokens(user)
+
+	if err != nil {
+		return &models.Tokens{}, err
+	}
+
+	_, err = a.UpdateRefreshToken(newTokens.RefreshToken, old.Token)
+
+	if err != nil {
+		return &models.Tokens{}, err
+	}
+
+	return newTokens, nil
 }
 
 func (a *authService) LogoutUser(user *models.User) error {
@@ -140,4 +173,18 @@ func (a *authService) GetUserScope(c echo.Context) (*models.Scope, error) {
 	}
 
 	return a.scopeRepository.FindScope(user.RoleID, user.PlanID)
+}
+
+func (a *authService) RegisterRefreshToken(token string) (*models.RefreshToken, error) {
+	return a.jwtRepository.RegisterRefreshToken(&models.RefreshToken{
+		Token: token,
+	})
+}
+
+func (a *authService) UpdateRefreshToken(new string, old string) (*models.RefreshToken, error) {
+	newToken := models.RefreshToken{
+		Token: new,
+	}
+
+	return a.jwtRepository.UpdateRefreshToken(&newToken, old)
 }

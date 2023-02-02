@@ -18,3 +18,14 @@ func JWTMiddleware() echo.MiddlewareFunc {
 
 	return echojwt.WithConfig(config)
 }
+
+func RefreshMiddleware() echo.MiddlewareFunc {
+	config := echojwt.Config{
+		SigningKey: []byte(viper.Get("REFRESH_KEY").(string)),
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(models.JWTClaims)
+		},
+	}
+
+	return echojwt.WithConfig(config)
+}

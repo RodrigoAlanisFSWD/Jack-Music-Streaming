@@ -6,9 +6,7 @@ type User struct {
 	Password string `json:"password"`
 	Email    string `json:"email" gorm:"unique"`
 	RoleID   uint   `json:"role_id"`
-	Role     Role
-	PlanID   uint `json:"plan_id"`
-	Plan     Plan
+	PlanID   uint   `json:"plan_id"`
 }
 
 type UserService interface {

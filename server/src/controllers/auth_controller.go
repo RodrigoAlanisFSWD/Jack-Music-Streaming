@@ -19,6 +19,7 @@ type AuthController interface {
 	GetProfile(c echo.Context) error
 	UpdateUser(c echo.Context) error
 	GetScope(c echo.Context) error
+	RefreshTokens(c echo.Context) error
 }
 
 func NewAuthController(s models.UserService, auth models.AuthService) AuthController {
@@ -29,10 +30,7 @@ func NewAuthController(s models.UserService, auth models.AuthService) AuthContro
 }
 
 func (a *authController) SignIn(c echo.Context) error {
-	u := &models.User{
-		RoleID: 1,
-		PlanID: 1,
-	}
+	u := &models.User{}
 
 	if err := c.Bind(&u); err != nil {
 		return errors.BadRequest()
@@ -45,6 +43,12 @@ func (a *authController) SignIn(c echo.Context) error {
 	}
 
 	tokens, err := a.authService.GetTokens(validUser)
+
+	if err != nil {
+		return errors.ServerError()
+	}
+
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
 
 	if err != nil {
 		return errors.ServerError()
@@ -77,6 +81,12 @@ func (a *authController) SignUp(c echo.Context) error {
 	}
 
 	tokens, err := a.authService.GetTokens(user)
+
+	if err != nil {
+		return errors.ServerError()
+	}
+
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
 
 	if err != nil {
 		return errors.ServerError()
@@ -137,4 +147,14 @@ func (a *authController) GetScope(c echo.Context) error {
 		"id":          scope.ID,
 		"permissions": scope.Permissions,
 	})
+}
+
+func (a *authController) RefreshTokens(c echo.Context) error {
+	tokens, err := a.authService.RefreshTokens(c)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusAccepted, tokens)
 }
