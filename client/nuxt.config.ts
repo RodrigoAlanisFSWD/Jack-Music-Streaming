@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: "Jack Music Streaming",
       link: [

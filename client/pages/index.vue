@@ -1,6 +1,5 @@
 <template>
-    <div class="w-screen h-screen bg-secondary">
-        <navbar></navbar>
+    <div>
         <hero></hero>
     </div>
 </template>
