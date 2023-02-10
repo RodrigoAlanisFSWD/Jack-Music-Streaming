@@ -1,5 +1,5 @@
 <template>
-    <div class="p-5 grid grid-cols-[1fr_400px_1fr] items-center w-screen">
+    <div class="h-[70px] grid grid-cols-[1fr_400px_1fr] items-center w-screen">
         <header class="flex">
             <div>
                 <div class="text-white flex items-end px-5">
@@ -21,7 +21,7 @@
 
         <search class="w-[400px]"></search>
 
-        <navigation></navigation>
+        <navigation class="h-full"></navigation>
     </div>
 </template>
 
