@@ -24,7 +24,6 @@ func (j *jwtRepository) CreateAccessToken(user *models.User) (string, error) {
 	claims := &models.JWTClaims{
 		User: user.ID,
 		Role: user.RoleID,
-		Plan: user.PlanID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 30)),
 		},
@@ -45,7 +44,6 @@ func (j *jwtRepository) CreateRefreshToken(user *models.User) (string, error) {
 	claims := &models.JWTClaims{
 		User: user.ID,
 		Role: user.RoleID,
-		Plan: user.PlanID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 48)),
 		},

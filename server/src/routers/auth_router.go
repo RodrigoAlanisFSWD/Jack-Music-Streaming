@@ -11,8 +11,7 @@ import (
 
 func AuthRouter(api *echo.Group) {
 	jwtRepository := repository.NewJWTRepository(database.DB)
-	scopeRepository := repository.NewScopeRepository(database.DB)
-	authService := services.NewAuthService(jwtRepository, userService, scopeRepository)
+	authService := services.NewAuthService(jwtRepository, userService)
 
 	authController := controllers.NewAuthController(userService, authService)
 
@@ -28,6 +27,5 @@ func AuthRouter(api *echo.Group) {
 	auth.Use(middlewares.JWTMiddleware())
 
 	auth.GET("/profile", authController.GetProfile)
-	auth.PUT("/updateScope", authController.UpdateUser)
-	auth.GET("/scope", authController.GetScope)
+	auth.PUT("/update", authController.UpdateUser)
 }

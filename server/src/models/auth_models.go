@@ -39,8 +39,7 @@ type AuthService interface {
 	ComparePasswords(user *User, validUser *User) error
 	ValidateUser(user *User) (*User, error)
 	GetUserFromToken(c echo.Context) (*User, error)
-	UpdateUserScope(c echo.Context, u *User) (*User, error)
-	GetUserScope(c echo.Context) (*Scope, error)
+	UpdateUserRole(c echo.Context, u *User) (*User, error)
 	RegisterRefreshToken(token string) (*RefreshToken, error)
 	UpdateRefreshToken(new string, old string) (*RefreshToken, error)
 }
