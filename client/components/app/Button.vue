@@ -1,14 +1,13 @@
 <template>
     <div :class="getStyles">
         <i v-if="leftIcon" :class="leftIcon + ' ' + 'text-xl'"></i>
-        {{ text }}
+        <slot></slot>
         <i v-if="rightIcon" :class="rightIcon + ' ' + 'text-xl'"></i>
     </div>
 </template>
 
 <script lang="ts" setup>
 const { type, rightIcon, leftIcon } = defineProps({
-    text: String,
     type: String,
     rightIcon: String,
     leftIcon: String,

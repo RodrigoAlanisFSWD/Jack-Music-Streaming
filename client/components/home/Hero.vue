@@ -13,8 +13,8 @@
                 consequuntur magnam obcaecati nesciunt?
             </p>
             <div class="flex mt-8">
-                <Button text="Enter Now" type="primary" class="w-[200px]"></Button>
-                <Button text="More Information" type="secondary" class="w-[200px] ml-5" right-icon="uil uil-arrow-right"></Button>
+                <app-button type="primary" class="w-[200px]">Enter Now</app-button>
+                <app-button type="secondary" class="w-[200px] ml-5" right-icon="uil uil-arrow-right">More Information</app-button>
             </div>
 
         </div>

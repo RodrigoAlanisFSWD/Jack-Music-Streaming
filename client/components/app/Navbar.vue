@@ -2,14 +2,16 @@
     <div class="h-[70px] grid grid-cols-[1fr_400px_1fr] items-center w-screen">
         <header class="flex">
             <div>
-                <div class="text-white flex items-end px-5">
-                    <h1 class="text-2xl">
-                        Jack
-                    </h1>
-                    <h4 class="text-primary text-sm ml-1">
-                        ms
-                    </h4>
-                </div>
+                <NuxtLink to="/">
+                    <div class="text-white flex items-end px-5">
+                        <h1 class="text-2xl">
+                            Jack
+                        </h1>
+                        <h4 class="text-primary text-sm ml-1">
+                            ms
+                        </h4>
+                    </div>
+                </NuxtLink>
             </div>
 
             <div class="text-xl text-white flex w-[150px] justify-around items-center ml-2">
@@ -21,11 +23,14 @@
             </div>
         </header>
 
-        <search class="w-[400px]"></search>
+        <app-search class="w-[400px]"></app-search>
 
-        <navigation class="h-full"></navigation>
+        <app-navigation class="h-full"></app-navigation>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { useUser } from '~~/hooks/user';
+
+const user = useUser()
 </script>
