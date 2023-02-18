@@ -20,12 +20,12 @@ func AuthRouter(api *echo.Group) {
 	auth.POST("/signUp", authController.SignUp)
 	auth.POST("/signIn", authController.SignIn)
 
-	auth.Use(middlewares.RefreshMiddleware())
-
-	auth.POST("/refresh", authController.RefreshTokens)
-
 	auth.Use(middlewares.JWTMiddleware())
 
 	auth.GET("/profile", authController.GetProfile)
 	auth.PUT("/update", authController.UpdateUser)
+
+	auth.Use(middlewares.RefreshMiddleware())
+
+	auth.POST("/refresh", authController.RefreshTokens)
 }

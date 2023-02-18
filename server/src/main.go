@@ -18,7 +18,9 @@ func main() {
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
+		AllowOrigins:     []string{"*"},
+		AllowCredentials: true,
+		ExposeHeaders:    []string{"set-cookie"},
 	}))
 	e.Use(middleware.Recover())
 

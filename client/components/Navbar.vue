@@ -13,7 +13,9 @@
             </div>
 
             <div class="text-xl text-white flex w-[150px] justify-around items-center ml-2">
-                <i class="uil uil-user"></i>
+                <NuxtLink to="/profile">
+                    <i class="uil uil-user"></i>
+                </NuxtLink>
                 <i class="uil uil-envelope"></i>
                 <i class="uil uil-setting"></i>
             </div>

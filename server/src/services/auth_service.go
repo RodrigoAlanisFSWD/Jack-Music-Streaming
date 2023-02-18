@@ -147,6 +147,8 @@ func (a *authService) GetUserFromToken(c echo.Context) (*models.User, error) {
 	claims := user.Claims.(*models.JWTClaims)
 	userID := claims.User
 
+	fmt.Println(userID)
+
 	return a.userService.GetUserByID(userID)
 }
 
