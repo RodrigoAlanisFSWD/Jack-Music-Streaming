@@ -1,11 +1,10 @@
-import { defineStore } from 'pinia'
 import { Role, User } from '~~/models/auth';
 
 export enum AuthStatus {
-    UNAUTHENTICATED,
-    AUTHENTICATED,
-    AUTH_ERROR,
-    AUTH_INITIAL,
+    UNAUTHENTICATED = 'UNAUTHENTICATED ',
+    AUTHENTICATED = 'AUTHENTICATED',
+    AUTH_ERROR = 'AUTH_ERROR',
+    AUTH_INITIAL = 'AUTH_INITIAL',
 }
 
 export interface AuthState {
@@ -15,10 +14,9 @@ export interface AuthState {
     status: AuthStatus;
 }
 
-const initialState: AuthState = { isAuth: false, role: null, user: null, status: AuthStatus.AUTH_INITIAL}
 
-export const useAuthStore = defineStore('auth', {
-    state: () => initialState,
+export const useAuthStore = defineStore('AuthStore', {
+    state: (): AuthState => ({ isAuth: false, role: null, user: null, status: AuthStatus.AUTH_INITIAL}),
     actions: {
         authenticateUser(user: User) {
             this.isAuth = true;
@@ -27,7 +25,10 @@ export const useAuthStore = defineStore('auth', {
             this.status = AuthStatus.AUTHENTICATED
         },
         authInitial() {
-            return initialState
+            this.isAuth = false;
+            this.role = null;
+            this.user = null;
+            this.status = AuthStatus.AUTH_INITIAL
         },
         authError() {
             this.status = AuthStatus.AUTH_ERROR
@@ -38,3 +39,7 @@ export const useAuthStore = defineStore('auth', {
         }
     }
 })
+
+if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
+}

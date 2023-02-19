@@ -1,19 +1,21 @@
 <template>
     <ul class="text-white flex items-center justify-end h-full">
-        <template v-if="user">
+        <template v-if="status === AuthStatus.AUTHENTICATED">
             <app-nav-link>Home</app-nav-link>
             <app-nav-link>Playlists</app-nav-link>
             <app-nav-link>Artists</app-nav-link>
         </template>
 
-        <template v-else>
-            <app-nav-link to="/signIn">Sign In</app-nav-link>
+        <template v-else-if="status !== AuthStatus.AUTH_INITIAL">
+            <app-nav-link to="/auth/signIn">Sign In</app-nav-link>
         </template>
     </ul>
 </template>
 
 <script lang="ts" setup>
-import { useUser } from '~~/hooks/user';
+import { AuthStatus } from '~~/store/authStore';
 
-const user = useUser()
+const authStore = useAuthStore()
+
+const { status } = storeToRefs(authStore)
 </script>

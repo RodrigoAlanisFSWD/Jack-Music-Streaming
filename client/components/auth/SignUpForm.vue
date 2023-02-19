@@ -45,12 +45,12 @@ const handleSubmit = async () => {
             <form-input :error="v$.password.$errors[0]" @change="v$.password.$touch" @blur="v$.password.$touch"
                 v-model="userData.password" label="Password" placeholder="super_secure_password"
                 type="password"></form-input>
-            <Button @click="handleSubmit" text="Submit" class="mt-12" />
+            <app-button @click="handleSubmit" class="mt-12">Submit</app-button>
             <p class="text-sm mt-3">
                 By registering you agree with our <span class="text-primary cursor-pointer">Privacy Policy</span>
             </p>
         </div>
-        <NuxtLink to="/signIn" class="absolute text-primary bottom-0 right-0 m-5 flex items-center">
+        <NuxtLink to="/auth/signIn" class="absolute text-primary bottom-0 right-0 m-5 flex items-center">
             <h3>
                 Sign In <i class="uil uil-arrow-right text-xl mt-1 ml-2"></i>
             </h3>

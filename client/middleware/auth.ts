@@ -1,5 +1,4 @@
-import { useAuthService } from "~~/hooks/authService"
-import { AuthStatus, useAuthStore } from "~~/store/authStore"
+import { AuthStatus } from "~~/store/authStore"
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const access_token = useCookie('jack_access_token')
@@ -17,5 +16,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return
     }
 
-    return navigateTo("/signIn")
+    authStore.unaunthenticated
+
+    return navigateTo("/auth/signIn")
 })

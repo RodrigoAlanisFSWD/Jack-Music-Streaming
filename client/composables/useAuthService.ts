@@ -40,9 +40,10 @@ export const useAuthService = () => {
                 }
             })
 
+            console.log(data)
+
             authStore.authenticateUser(data)
         } catch (error) {
-            console.log(error)
             authStore.authError()
         }
     }

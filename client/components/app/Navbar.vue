@@ -28,9 +28,3 @@
         <app-navigation class="h-full"></app-navigation>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { useUser } from '~~/hooks/user';
-
-const user = useUser()
-</script>
