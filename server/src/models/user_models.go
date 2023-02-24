@@ -2,7 +2,7 @@ package models
 
 type Role struct {
 	Model
-	Name string
+	Name string `json:"name"`
 }
 
 type User struct {
@@ -11,7 +11,7 @@ type User struct {
 	Password string `json:"password"`
 	Email    string `json:"email" gorm:"unique"`
 	RoleID   uint   `json:"role_id"`
-	Role     Role
+	Role     Role   `json:"role"`
 }
 
 type UserService interface {

@@ -43,7 +43,7 @@ func (u *userRepository) FindAll(query string, args ...interface{}) ([]models.Us
 func (u *userRepository) FindOne(query string, args ...interface{}) (*models.User, error) {
 	var user models.User
 
-	err := u.DB.Model(&user).Where(query, args).First(&user).Error
+	err := u.DB.Model(&user).Where(query, args).Preload("Role").First(&user).Error
 
 	if err != nil {
 		return &user, err

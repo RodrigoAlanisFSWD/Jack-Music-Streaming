@@ -160,6 +160,7 @@ func (a *authService) UpdateUserRole(c echo.Context, u *models.User) (*models.Us
 	}
 
 	user.RoleID = u.RoleID
+	user.Role = u.Role
 
 	return a.userService.Update(user)
 }

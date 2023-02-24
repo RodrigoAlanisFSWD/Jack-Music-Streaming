@@ -21,6 +21,8 @@ const getStyles = computed(() => {
             return `${baseStyles} bg-primary border-primary hover:bg-transparent hover:text-primary text-secondary`
         case 'secondary':
             return `${baseStyles} bg-secondary border-white text-white hover:bg-primary hover:border-primary hover:text-secondary`
+        case 'primary-outlined':
+            return `${baseStyles} bg-transparent border-primary hover:bg-primary hover:text-secondary text-primary`
         default: 
             return `${baseStyles} bg-primary border-primary hover:bg-transparent hover:text-primary text-secondary`
     }

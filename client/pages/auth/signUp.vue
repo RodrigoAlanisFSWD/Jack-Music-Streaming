@@ -7,7 +7,7 @@ const handleSubmit = async (userData: Object) => {
     try {
         await signUp(userData)
 
-        router.push("/profile")
+        router.push("/auth/selectRole")
     } catch (error) {
         return
     }

@@ -5,6 +5,7 @@ export interface User extends Model {
     password: string;
     email: string;
     role: Role
+    role_id: number;
 }
 
 export interface Role extends Model {

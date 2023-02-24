@@ -7,6 +7,9 @@
             <h3 class="mt-5">
                 {{ user?.email }}
             </h3>
+            <h3 class="mt-5">
+                Rol: {{ user?.role?.name }}
+            </h3>
         </div>
     </div>
 </template>

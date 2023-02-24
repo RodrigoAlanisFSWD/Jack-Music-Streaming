@@ -48,10 +48,34 @@ export const useAuthService = () => {
         }
     }
 
+    const updateRole = async (roleId: number) => {
+        try {
+            console.log(roleId)
+            await api.put("/auth/update", {
+                ...authStore.user,
+                role_id: roleId,
+                role: {
+                    id: roleId
+                }
+            }, {
+                headers: {
+                    "Authorization": `Bearer ${access_token.value}`
+                }
+            })
+
+            await getProfile()
+
+            console.log("update")
+        } catch (error) {
+            authStore.authError()
+        }
+    }
+
     return {
         signUp,
         signIn,
         getProfile,
+        updateRole,
         authStore
     }
 }

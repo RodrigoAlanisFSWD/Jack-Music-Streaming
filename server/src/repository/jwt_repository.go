@@ -25,7 +25,7 @@ func (j *jwtRepository) CreateAccessToken(user *models.User) (string, error) {
 		User: user.ID,
 		Role: user.RoleID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 30)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 48)),
 		},
 	}
 
