@@ -13,20 +13,22 @@ import (
 )
 
 type authService struct {
-	jwtRepository models.JWTRepository
-	userService   models.UserService
+	jwtRepository  models.JWTRepository
+	userService    models.UserService
+	profileService models.ProfileService
 }
 
 var authInstance *authService
 
 var authOnce sync.Once
 
-func NewAuthService(r models.JWTRepository, u models.UserService) models.AuthService {
+func NewAuthService(r models.JWTRepository, u models.UserService, p models.ProfileService) models.AuthService {
 
 	authOnce.Do(func() {
 		authInstance = &authService{
-			jwtRepository: r,
-			userService:   u,
+			jwtRepository:  r,
+			userService:    u,
+			profileService: p,
 		}
 	})
 
@@ -177,4 +179,16 @@ func (a *authService) UpdateRefreshToken(new string, old string) (*models.Refres
 	}
 
 	return a.jwtRepository.UpdateRefreshToken(&newToken, old)
+}
+
+func (a *authService) CreateProfile(user *models.User) error {
+	_, err := a.profileService.Create(&models.Profile{
+		UserID: user.ID,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

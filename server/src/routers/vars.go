@@ -9,8 +9,12 @@ import (
 
 var userRepository models.UserRepository
 var userService models.UserService
+var profileRepository models.ProfileRepository
+var profileService models.ProfileService
 
 func InitializeRotuers() {
 	userRepository = repository.NewUserRepository(database.DB)
 	userService = services.NewUserService(userRepository)
+	profileRepository = repository.NewProfileRepository(database.DB)
+	profileService = services.NewProfileService(profileRepository)
 }

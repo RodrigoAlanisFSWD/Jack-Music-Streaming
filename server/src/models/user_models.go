@@ -7,11 +7,13 @@ type Role struct {
 
 type User struct {
 	Model
-	Name     string `json:"name" gorm:"unique"`
-	Password string `json:"password"`
-	Email    string `json:"email" gorm:"unique"`
-	RoleID   uint   `json:"role_id"`
-	Role     Role   `json:"role"`
+	Name      string  `json:"name" gorm:"unique"`
+	Password  string  `json:"password"`
+	Email     string  `json:"email" gorm:"unique"`
+	RoleID    uint    `json:"role_id"`
+	Role      Role    `json:"role"`
+	ProfileID uint    `json:"profile_id"`
+	Profile   Profile `json:"profile"`
 }
 
 type UserService interface {

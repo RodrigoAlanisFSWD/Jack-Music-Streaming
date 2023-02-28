@@ -93,6 +93,12 @@ func (a *authController) SignUp(c echo.Context) error {
 
 	a.authService.SetTokens(c, tokens)
 
+	err = a.authService.CreateProfile(user)
+
+	if err != nil {
+		return errors.ServerError()
+	}
+
 	return c.JSON(http.StatusOK, map[string]string{
 		"name":  user.Name,
 		"email": user.Email,

@@ -11,7 +11,7 @@ import (
 
 func AuthRouter(api *echo.Group) {
 	jwtRepository := repository.NewJWTRepository(database.DB)
-	authService := services.NewAuthService(jwtRepository, userService)
+	authService := services.NewAuthService(jwtRepository, userService, profileService)
 
 	authController := controllers.NewAuthController(userService, authService)
 
