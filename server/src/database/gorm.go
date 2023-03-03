@@ -22,6 +22,8 @@ func InitDB() error {
 	entities = []interface{}{
 		&models.Role{},
 		&models.User{},
+		&models.Song{},
+		&models.Profile{},
 		&models.RefreshToken{},
 	}
 

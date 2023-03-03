@@ -2,7 +2,7 @@ package models
 
 type Profile struct {
 	Model
-	Songs  []Song `gorm:"foreignKey:AuthorID"`
+	Songs  []Song `gorm:"foreignKey:AuthorID;references:UserID"`
 	UserID uint   `json:"user_id"`
 }
 

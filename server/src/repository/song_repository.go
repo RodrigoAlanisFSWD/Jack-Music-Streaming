@@ -1,0 +1,68 @@
+package repository
+
+import (
+	"fmt"
+
+	"github.com/Jack-Music-Streaming/server/src/models"
+	"gorm.io/gorm"
+)
+
+type songRepository struct {
+	DB *gorm.DB
+}
+
+func NewSongRepository(db *gorm.DB) models.SongRepository {
+	return &songRepository{
+		DB: db,
+	}
+}
+
+func (u *songRepository) Save(song *models.Song) (*models.Song, error) {
+	err := u.DB.Create(song).Error
+
+	if err != nil {
+		fmt.Println(err)
+		return &models.Song{}, err
+	}
+
+	return song, nil
+}
+
+func (u *songRepository) FindAll(query string, args ...interface{}) ([]models.Song, error) {
+	var songs []models.Song
+
+	err := u.DB.Model(&songs).Where(query, args).Find(&songs).Error
+
+	if err != nil {
+		return songs, err
+	}
+
+	return songs, nil
+}
+
+func (u *songRepository) FindOne(query string, args ...interface{}) (*models.Song, error) {
+	var song models.Song
+
+	err := u.DB.Model(&song).Where(query, args).Preload("Role").First(&song).Error
+
+	if err != nil {
+		return &song, err
+	}
+
+	return &song, nil
+}
+
+func (u *songRepository) Delete(song *models.Song) error {
+	return nil
+}
+
+func (u *songRepository) Update(song *models.Song) (*models.Song, error) {
+	err := u.DB.Save(song).Error
+
+	if err != nil {
+		fmt.Println(err)
+		return &models.Song{}, err
+	}
+
+	return song, nil
+}

@@ -14,18 +14,25 @@ import (
 func main() {
 	e := echo.New()
 
+	// HTTP Request Logger
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
+
+	// CORS
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
 		AllowCredentials: true,
 		ExposeHeaders:    []string{"set-cookie"},
 	}))
+
+	// Error Handler
 	e.Use(middleware.Recover())
 
+	// Get Env Vars
 	config.GetConfig()
 
+	// Initializing Database Connection And Migrations / Sedders / Rollback
 	if err := database.InitDB(); err != nil {
 		log.Panic(err)
 		return
@@ -35,12 +42,16 @@ func main() {
 		return c.String(http.StatusOK, "Hello World")
 	})
 
+	// Main Api Router
 	api := e.Group("/api")
 
 	// Initialize Router Dependencies
 	routers.InitializeRotuers()
 
+	// Applying Routers
 	routers.AuthRouter(api)
+	routers.SongsRouter(api)
 
+	// Initializing The Server
 	e.Logger.Fatal(e.Start(":8080"))
 }
