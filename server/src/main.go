@@ -32,7 +32,7 @@ func main() {
 	// Get Env Vars
 	config.GetConfig()
 
-	// Initializing Database Connection And Migrations / Sedders / Rollback
+	// Initializing Database Connection And Migrations / Seeders / Rollback
 	if err := database.InitDB(); err != nil {
 		log.Panic(err)
 		return

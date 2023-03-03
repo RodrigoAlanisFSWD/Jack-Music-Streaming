@@ -13,6 +13,8 @@ var profileRepository models.ProfileRepository
 var profileService models.ProfileService
 var filesRepository models.FilesRepository
 var songRepository models.SongRepository
+var jwtRepository models.JWTRepository
+var authService models.AuthService
 
 func InitializeRotuers() {
 	userRepository = repository.NewUserRepository(database.DB)
@@ -21,4 +23,6 @@ func InitializeRotuers() {
 	profileService = services.NewProfileService(profileRepository)
 	filesRepository = repository.NewFilesRepository()
 	songRepository = repository.NewSongRepository(database.DB)
+	jwtRepository = repository.NewJWTRepository(database.DB)
+	authService = services.NewAuthService(jwtRepository, userService, profileService)
 }

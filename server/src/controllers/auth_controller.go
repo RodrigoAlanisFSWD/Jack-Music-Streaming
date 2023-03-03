@@ -112,14 +112,7 @@ func (a *authController) GetProfile(c echo.Context) error {
 		return errors.UnauthorizedError()
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"id":         user.ID,
-		"name":       user.Name,
-		"email":      user.Email,
-		"role":       user.Role,
-		"role_id":    user.RoleID,
-		"created_at": user.CreatedAt,
-	})
+	return c.JSON(http.StatusOK, user)
 }
 
 func (a *authController) UpdateUser(c echo.Context) error {

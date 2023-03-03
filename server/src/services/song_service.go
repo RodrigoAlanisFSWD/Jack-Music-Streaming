@@ -29,7 +29,7 @@ func NewSongService(r models.SongRepository, f models.FilesRepository) models.So
 	return songInstance
 }
 
-func (u *songService) Create(song *models.Song, formFile *multipart.FileHeader) (*models.Song, error) {
+func (u *songService) UploadSongMedia(song *models.Song, formFile *multipart.FileHeader) (*models.Song, error) {
 	file := models.File{
 		Name: song.Name,
 		Dst:  fmt.Sprintf("/uploads/songs/%d/", song.AuthorID),
@@ -38,13 +38,17 @@ func (u *songService) Create(song *models.Song, formFile *multipart.FileHeader) 
 
 	u.filesRepository.CreateFileName(&file)
 
-	u.filesRepository.Upload(&file)
+	err := u.filesRepository.Upload(&file)
 
+	return song, err
+}
+
+func (u *songService) Create(song *models.Song) (*models.Song, error) {
 	return u.songRepository.Save(song)
 }
 
-func (u *songService) GetAll() ([]models.Song, error) {
-	return nil, nil
+func (u *songService) GetAll(page int) ([]models.Song, error) {
+	return u.songRepository.GetPage(page)
 }
 
 func (u *songService) GetSongByID(id interface{}) (*models.Song, error) {

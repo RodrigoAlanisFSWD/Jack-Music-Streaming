@@ -182,9 +182,17 @@ func (a *authService) UpdateRefreshToken(new string, old string) (*models.Refres
 }
 
 func (a *authService) CreateProfile(user *models.User) error {
-	_, err := a.profileService.Create(&models.Profile{
+	profile, err := a.profileService.Create(&models.Profile{
 		UserID: user.ID,
 	})
+
+	if err != nil {
+		return err
+	}
+
+	user.ProfileID = profile.ID
+
+	_, err = a.userService.Update(user)
 
 	if err != nil {
 		return err

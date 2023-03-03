@@ -17,3 +17,7 @@ func ServerError() error {
 func UnauthorizedError() error {
 	return echo.NewHTTPError(http.StatusUnauthorized, "user unauthorized")
 }
+
+func NotFoundError() error {
+	return echo.NewHTTPError(http.StatusNotFound, "not found")
+}

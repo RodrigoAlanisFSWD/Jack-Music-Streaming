@@ -19,11 +19,12 @@ func InitDB() error {
 
 	c.Println("Connecting To Database...")
 
+	// Creating Entities Collection
 	entities = []interface{}{
 		&models.Role{},
 		&models.User{},
-		&models.Song{},
 		&models.Profile{},
+		&models.Song{},
 		&models.RefreshToken{},
 	}
 
@@ -35,6 +36,7 @@ func InitDB() error {
 		name     = viper.Get("DATABASE_DB")
 	)
 
+	// Connecting To Database
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name),
 		PreferSimpleProtocol: true,
@@ -46,18 +48,21 @@ func InitDB() error {
 
 	c.Println("Database Connected!")
 
+	// Running Rollback
 	// err = Rollback(db)
 
 	// if err != nil {
 	// 	return err
 	// }
 
+	// Running Migrations
 	err = Migrate(db)
 
 	if err != nil {
 		return err
 	}
 
+	// Running Seeders
 	// err = seeders.SeedDatabase(db)
 
 	// if err != nil {

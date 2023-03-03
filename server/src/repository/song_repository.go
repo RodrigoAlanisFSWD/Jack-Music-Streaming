@@ -17,6 +17,19 @@ func NewSongRepository(db *gorm.DB) models.SongRepository {
 	}
 }
 
+func (u *songRepository) GetPage(page int) ([]models.Song, error) {
+	var songs []models.Song
+
+	err := u.DB.Model(&songs).Limit(15).Offset((page - 1) * 10).Preload("Author").Find(&songs).Error
+
+	if err != nil {
+		fmt.Println(err)
+		return songs, err
+	}
+
+	return songs, nil
+}
+
 func (u *songRepository) Save(song *models.Song) (*models.Song, error) {
 	err := u.DB.Create(song).Error
 

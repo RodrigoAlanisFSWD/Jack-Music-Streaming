@@ -10,11 +10,14 @@ import (
 func SongsRouter(api *echo.Group) {
 	songService := services.NewSongService(songRepository, filesRepository)
 
-	songsController := controllers.NewSongsController(songService)
+	songsController := controllers.NewSongsController(songService, authService)
 
 	songs := api.Group("/songs")
+
+	songs.GET("/:page", songsController.GetAll)
 
 	songs.Use(middlewares.JWTMiddleware())
 
 	songs.POST("/", songsController.Create)
+	songs.POST("/uploadMedia", songsController.UploadSongMedia)
 }
