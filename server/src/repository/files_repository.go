@@ -24,8 +24,14 @@ func (filesRepository) Upload(file *models.File) error {
 
 	defer src.Close()
 
+	if _, err := os.Stat(file.Dst); err != nil {
+		if err := os.Mkdir(file.Dst, 0700); err != nil {
+			return err
+		}
+	}
+
 	// Destination
-	dst, err := os.Create(file.Name)
+	dst, err := os.Create(file.Dst + file.Name)
 
 	if err != nil {
 		return err

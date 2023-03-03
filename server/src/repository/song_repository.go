@@ -56,7 +56,7 @@ func (u *songRepository) FindAll(query string, args ...interface{}) ([]models.So
 func (u *songRepository) FindOne(query string, args ...interface{}) (*models.Song, error) {
 	var song models.Song
 
-	err := u.DB.Model(&song).Where(query, args).Preload("Role").First(&song).Error
+	err := u.DB.Model(&song).Where(query, args).First(&song).Error
 
 	if err != nil {
 		return &song, err

@@ -19,5 +19,5 @@ func SongsRouter(api *echo.Group) {
 	songs.Use(middlewares.JWTMiddleware())
 
 	songs.POST("/", songsController.Create)
-	songs.POST("/uploadMedia", songsController.UploadSongMedia)
+	songs.POST("/uploadMedia/:songID", songsController.UploadSongMedia)
 }
