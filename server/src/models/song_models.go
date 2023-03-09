@@ -7,6 +7,8 @@ type Song struct {
 	Name     string `json:"name" gorm:"unique"`
 	AuthorID uint   `json:"author_id"`
 	Author   User   `json:"author"`
+	MediaID  uint   `json:"media_id"`
+	Media    File   `json:"media"`
 }
 
 type SongRepository interface {

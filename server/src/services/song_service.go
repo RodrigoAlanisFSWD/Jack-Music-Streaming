@@ -30,7 +30,7 @@ func NewSongService(r models.SongRepository, f models.FilesRepository) models.So
 }
 
 func (u *songService) UploadSongMedia(song *models.Song, formFile *multipart.FileHeader) (*models.Song, error) {
-	file := models.File{
+	file := models.FileDTO{
 		Name: song.Name,
 		Dst:  fmt.Sprintf("uploads/songs/%d/", song.AuthorID),
 		Src:  formFile,
@@ -38,14 +38,17 @@ func (u *songService) UploadSongMedia(song *models.Song, formFile *multipart.Fil
 
 	u.filesRepository.CreateFileName(&file)
 
-	err := u.filesRepository.Upload(&file)
+	newFile, err := u.filesRepository.Upload(&file)
 
 	if err != nil {
-		fmt.Println(err)
 		return song, err
 	}
 
-	return song, err
+	song.MediaID = newFile.ID
+
+	updatedSong, err := u.songRepository.Update(song)
+
+	return updatedSong, err
 }
 
 func (u *songService) Create(song *models.Song) (*models.Song, error) {
