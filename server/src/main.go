@@ -29,9 +29,6 @@ func main() {
 	// Error Handler
 	e.Use(middleware.Recover())
 
-	e.Static("/songs", "uploads/songs/1/")
-	e.File("/song", "uploads/songs/1/Song#1.mp3")
-
 	// Get Env Vars
 	config.GetConfig()
 

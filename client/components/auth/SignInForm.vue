@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { required, email, minLength, helpers } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
+import { AuthStatus } from '~~/store/authStore';
 
 const emit = defineEmits(['submit'])
 
@@ -27,6 +28,10 @@ const handleSubmit = async () => {
 
     emit('submit', userData)
 }
+
+const authStore = useAuthStore()
+
+const { status } = storeToRefs(authStore)
 </script>
 
 <template>
@@ -43,6 +48,7 @@ const handleSubmit = async () => {
                     v-model="userData.password" label="Password" placeholder="super_secure_password"
                     type="password"></form-input>
                 <app-button @click="handleSubmit" class="mt-12">Submit</app-button>
+                <app-alert v-if="status === AuthStatus.AUTH_ERROR" class="mt-5">Las credenciales no son validas</app-alert>
                 <p class="text-sm mt-3">
                     By registering you agree with our <span class="text-primary cursor-pointer">Privacy Policy</span>
                 </p>

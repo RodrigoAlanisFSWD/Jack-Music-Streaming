@@ -1,111 +1,84 @@
 <script lang="ts" setup>
+import { Howl } from 'howler'
 import { Ref } from 'vue';
 
-const playing = ref(false)
-const duration = ref(0)
-const playbackTime = ref(0)
+let player = new Howl({
+    src: ["http://localhost:8080/api/songs/media/4"],
+    format: "mp4",
+    preload: true,
+    onplay: function () {
+        requestAnimationFrame(step.bind(this))
+    },
+    onseek: function () {
+        // Start updating the progress of the track.
+        requestAnimationFrame(step.bind(self));
+    }
+})
 
-const player: Ref<HTMLAudioElement | null> = ref(null)
-const progress: Ref<HTMLProgressElement | null> = ref(null)
+const duration = ref("0:00")
+const currentTime = ref("0:00")
 
-const togglePlaying = () => {
-    playing.value = !playing.value
-    console.log(player)
+const bar: Ref<HTMLDivElement | null> = ref(null)
+const mainBar: Ref<HTMLDivElement | null> = ref(null) 
 
-    if (player && player.value) {
-        if (playing.value) {
-            player.value.play()
-        } else {
-            player.value.pause()
+player.once("rate", () => {
+})
+
+player.once("load", () => {
+    console.log("load")
+
+    duration.value = formatTime(player.duration())
+})
+
+const formatTime = (secs: number) => {
+    var minutes = Math.floor(secs / 60) || 0;
+    var seconds = (secs - minutes * 60) || 0;
+
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+
+function step() {
+    const seek = player.seek()
+    currentTime.value = formatTime(Math.round(seek))
+
+    if (bar.value) {
+        bar.value.style.width = (((seek / player.duration()) * 100) || 0) + '%'
+    }
+
+    if (player.playing()) {
+        requestAnimationFrame(step);
+    }
+}
+
+const seek = (e: any) => {
+    if (mainBar.value) {
+        console.log(mainBar.value.scrollWidth)
+        console.log(e.clientX)
+        var per = e.offsetX / mainBar.value.scrollWidth
+
+        if (player.playing()) {
+            player.seek(player.duration() * per)
         }
     }
 }
-
-const songEnded = () => {
-    console.log("ended")
-}
-
-const setDuration = (e: any) => {
-    duration.value = e.target.duration
-
-    if (progress.value) {
-        progress.value.max = duration.value
-    }
-}
-
-const updateProgress = (e: any) => {
-    if (player.value && progress.value) {
-        playbackTime.value = player.value?.currentTime;
-    }
-}
-
-const fortmatTime = (seconds: number) => {
-    const format = (val: number) => `0${Math.floor(val)}`.slice(-2);
-    var hours = seconds / 3600;
-    var minutes = (seconds % 3600) / 60;
-
-    console.log(seconds % 60)
-    return [minutes, seconds % 60].map(format).join(":");
-}
-
-const totalTime = computed(() => {
-    let audio = player.value;
-
-    if (audio) {
-        return fortmatTime(duration.value)
-    } else {
-        return '00:00'
-    }
-})
-
-const elapsedTime = computed(() => {
-    let audio = player.value;
-
-    if (audio) {
-        return fortmatTime(playbackTime.value)
-    } else {
-        return '00:00'
-    }
-})
 </script> 
 
 <template>
-    <div class="w-[75%] h-[50px] bg-secondary text-white flex justify-between items-center px-5">
-        <audio ref="player" src="http://localhost:8080/song" @ended="songEnded" @canplay="setDuration"
-            @timeupdate="updateProgress">
-        </audio>
-        <div @click="togglePlaying">
-            <i v-if="playing === false" class="uil uil-play hover:text-primary cursor-pointer text-xl"></i>
-            <i v-if="playing === true" class="uil uil-pause hover:text-primary cursor-pointer text-xl"></i>
+    <div class="w-full h-[50px] bg-secondary text-white flex justify-between items-center px-5">
+        <div>
+            <i v-if="!player.playing()" class="uil uil-play text-2xl" @click="player.play()"></i>
+            <i v-else class="uil uil-pause text-2xl" @click="player.pause()"></i>
         </div>
-        <progress :value="playbackTime" class="progress" ref="progress"></progress>
-        <div class="text-white">
-            <span class="text-white">
-                {{ elapsedTime }}
-            </span>
+        {{ currentTime }}
+        <div ref="mainBar" class="w-[1200px] h-[15px] rounded-lg bg-[#666]" @click="seek">
+            <div  ref="bar" class="max-w-[100%] w-0 bg-primary rounded-lg h-full">
 
-            /
-
-            <span class="text-white">
-                {{ totalTime }}
-            </span>
+            </div>
         </div>
+        {{ duration }}
     </div>
 </template>
 
-<style>
-.progress {
-    border-radius: 10px;
-    width: 85%;
-}
+<!-- <style>
 
-.progress::-webkit-progress-bar {
-    background-color: #666;
-    border-radius: 8px;
-}
-
-.progress::-webkit-progress-value {
-    background-color: #B18CFF;
-    border-radius: 10px;
-}
-</style>
+</style> -->
