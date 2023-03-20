@@ -1,23 +1,46 @@
-import { Song } from "~~/models/song"
+import { Howl } from "howler";
 
 export interface PlayerState {
-    song: Song | null;
-    mediaUrl: string;
+    song: Howl;
+    duration: string;
+    currentTime: string;
+    barWidth: string;
+    playing: boolean;
+    loading: boolean;
 }
 
 export const usePlayerStore = defineStore("PlayerStore", {
     state: (): PlayerState => ({
-        song: null,
-        mediaUrl: ""
+        song: new Howl({
+            src: [],
+        }),
+        duration: "0:00",
+        currentTime: "0:00",
+        barWidth: "0%",
+        playing: false,
+        loading: true,
     }),
     actions: {
-        setSong(song: Song, mediaUrl: string) {
+        setSong(song: Howl) {
             this.song = song;
-            this.mediaUrl = mediaUrl;
         },
         resetPlayer() {
-            this.song = null;
-            this.mediaUrl = "";
+            this.song = new Howl({
+                src: [],
+            });
+        },
+        setDuration(duration: string) {
+            this.duration = duration
+        },
+        setTime(currentTime: string) {
+            this.currentTime = currentTime
+        },
+        setBarWidth(barWidth: string) {
+            this.barWidth = barWidth
+        },
+        setStatus(playing: boolean, loading: boolean = false) {
+            this.playing = playing;
+            this.loading = loading;
         }
     }
 })
