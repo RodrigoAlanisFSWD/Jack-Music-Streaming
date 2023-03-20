@@ -8,18 +8,18 @@ export const usePlayer = () => {
 
     const state = storeToRefs(playerStore)
 
-    const { song } = state
+    const { songMedia } = state
 
     // HTML Refs
     const mainBar: Ref<HTMLDivElement | null> = ref(null)
 
     // Set Song Store Method
     const setSong = (song: Song) => {
-        const src = "http://localhost:8080/api/songs/media/" + song.id;
+        const src = "http://localhost:8080/api/file/" + song.media_id;
 
-        const songMedia = new Howl({
+        const newSongMedia = new Howl({
             src: [src],
-            format: "mp4",
+            format: ["mp3", "mp3", "m4a"],
             preload: true,
             onplay: function () {
                 requestAnimationFrame(step.bind(this))
@@ -29,14 +29,15 @@ export const usePlayer = () => {
                 requestAnimationFrame(step.bind(self));
             },
             onload: function () {
-                playerStore.setDuration(formatTime(songMedia.duration()))
+                playerStore.setDuration(formatTime(newSongMedia.duration()))
             },
             onend: function () {
                 playerStore.setStatus(false)
             }
         })
 
-        playerStore.setSong(songMedia)
+        playerStore.setSongMedia(newSongMedia)
+        playerStore.setSong(song)
     }
 
     const formatTime = (secs: number) => {
@@ -47,12 +48,12 @@ export const usePlayer = () => {
     }
 
     function step() {
-        const seek = song.value.seek()
+        const seek = songMedia.value.seek()
         playerStore.setTime(formatTime(Math.round(seek)))
 
-        playerStore.setBarWidth((((seek / song.value.duration()) * 100) || 0) + '%')
+        playerStore.setBarWidth((((seek / songMedia.value.duration()) * 100) || 0) + '%')
 
-        if (song.value.playing()) {
+        if (songMedia.value.playing()) {
             requestAnimationFrame(step);
         }
     }
@@ -61,27 +62,27 @@ export const usePlayer = () => {
         if (mainBar.value) {
             var per = e.offsetX / mainBar.value.scrollWidth
 
-            song.value.seek(song.value.duration() * per)
+            songMedia.value.seek(songMedia.value.duration() * per)
         }
     }
 
     const play = () => {
         playerStore.setStatus(true)
-        song.value.play()
+        songMedia.value.play()
     }
 
     const pause = () => {
         playerStore.setStatus(false)
-        song.value.pause()
+        songMedia.value.pause()
     }
 
     return {
         state,
         playerStore,
-        setSong,
         play,
         pause,
         seek,
-        mainBar
+        mainBar,
+        setSong
     }
 }

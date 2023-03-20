@@ -7,6 +7,8 @@ export interface Song extends Model {
     author_id: number;
     media: Media;
     media_id: number;
+    logo: Media;
+    logo_id: number;
 }
 
 export interface Media extends Model {

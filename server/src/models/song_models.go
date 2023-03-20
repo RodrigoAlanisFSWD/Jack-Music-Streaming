@@ -9,6 +9,8 @@ type Song struct {
 	Author   User   `json:"author"`
 	MediaID  uint   `json:"media_id"`
 	Media    File   `json:"media"`
+	LogoID   uint   `json:"logo_id"`
+	Logo     File   `json:"file"`
 }
 
 type SongRepository interface {
@@ -21,7 +23,7 @@ type SongRepository interface {
 }
 
 type SongService interface {
-	UploadSongMedia(song *Song, formFile *multipart.FileHeader) (*Song, error)
+	UploadSongMedia(song *Song, songFormFile *multipart.FileHeader, logoFormFile *multipart.FileHeader) (*Song, error)
 	Create(song *Song) (*Song, error)
 	GetAll(page int) ([]Song, error)
 	GetSongByID(id interface{}) (*Song, error)

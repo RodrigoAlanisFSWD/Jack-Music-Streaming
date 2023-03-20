@@ -29,22 +29,36 @@ func NewSongService(r models.SongRepository, f models.FilesRepository) models.So
 	return songInstance
 }
 
-func (u *songService) UploadSongMedia(song *models.Song, formFile *multipart.FileHeader) (*models.Song, error) {
-	file := models.FileDTO{
+func (u *songService) UploadSongMedia(song *models.Song, songFormFile *multipart.FileHeader, logoFormFile *multipart.FileHeader) (*models.Song, error) {
+	songFile := models.FileDTO{
 		Name: song.Name,
 		Dst:  fmt.Sprintf("uploads/songs/%d/", song.AuthorID),
-		Src:  formFile,
+		Src:  songFormFile,
 	}
 
-	u.filesRepository.CreateFileName(&file)
+	logoFile := models.FileDTO{
+		Name: song.Name,
+		Dst:  fmt.Sprintf("uploads/songs/%d/", song.AuthorID),
+		Src:  logoFormFile,
+	}
 
-	newFile, err := u.filesRepository.Upload(&file)
+	u.filesRepository.CreateFileName(&songFile)
+	u.filesRepository.CreateFileName(&logoFile)
+
+	songMedia, err := u.filesRepository.Upload(&songFile)
 
 	if err != nil {
 		return song, err
 	}
 
-	song.MediaID = newFile.ID
+	logoMedia, err := u.filesRepository.Upload(&logoFile)
+
+	if err != nil {
+		return song, err
+	}
+
+	song.MediaID = songMedia.ID
+	song.LogoID = logoMedia.ID
 
 	updatedSong, err := u.songRepository.Update(song)
 

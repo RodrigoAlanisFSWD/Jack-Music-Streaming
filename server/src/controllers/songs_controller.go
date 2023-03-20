@@ -62,13 +62,14 @@ func (s songsController) UploadSongMedia(c echo.Context) error {
 		return errors.UnauthorizedError()
 	}
 
-	formFile, err := c.FormFile("songMedia")
+	songFormFile, err := c.FormFile("songMedia")
+	logoFormFile, err := c.FormFile("songLogo")
 
 	if err != nil {
 		return err
 	}
 
-	_, err = s.songService.UploadSongMedia(song, formFile)
+	_, err = s.songService.UploadSongMedia(song, songFormFile, logoFormFile)
 
 	if err != nil {
 		return err

@@ -6,6 +6,7 @@ import (
 
 	"github.com/Jack-Music-Streaming/server/src/config"
 	"github.com/Jack-Music-Streaming/server/src/database"
+	"github.com/Jack-Music-Streaming/server/src/models"
 	"github.com/Jack-Music-Streaming/server/src/routers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -44,6 +45,18 @@ func main() {
 
 	// Main Api Router
 	api := e.Group("/api")
+
+	api.GET("/file/:id", func(c echo.Context) error {
+		var file models.File
+
+		err := database.DB.Model(&file).Where("id = ?", c.Param("id")).First(&file).Error
+
+		if err != nil {
+			return err
+		}
+
+		return c.File(file.Src)
+	})
 
 	// Initialize Router Dependencies
 	routers.InitializeRotuers()
