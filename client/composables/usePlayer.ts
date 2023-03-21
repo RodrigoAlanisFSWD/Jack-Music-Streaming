@@ -41,10 +41,10 @@ export const usePlayer = () => {
     }
 
     const formatTime = (secs: number) => {
-        var minutes = Math.floor(secs / 60) || 0;
-        var seconds = (secs - minutes * 60) || 0;
-
-        return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        const m = Math.floor(secs % 3600 / 60).toString().padStart(2),
+              s = Math.floor(secs % 60).toString().padStart(2,'0');
+    
+        return m + ':' + s;
     }
 
     function step() {

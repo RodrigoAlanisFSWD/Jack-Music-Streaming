@@ -25,7 +25,7 @@ const captureVolume = (e: any) => {
 }
 
 onMounted(() => {
-    volume(0.5)
+    volume(Howler.volume())
 })
 </script> 
 
