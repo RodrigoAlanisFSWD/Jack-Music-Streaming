@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -32,12 +33,25 @@ func (s songsController) Create(c echo.Context) error {
 	song := &models.Song{}
 
 	if err := c.Bind(song); err != nil {
+		fmt.Println(err)
 		return err
 	}
+
+	user, err := s.authService.GetUserFromToken(c)
+
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	song.AuthorID = user.ID
+	song.MediaID = 1
+	song.LogoID = 2
 
 	createdSong, err := s.songService.Create(song)
 
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
@@ -63,6 +77,11 @@ func (s songsController) UploadSongMedia(c echo.Context) error {
 	}
 
 	songFormFile, err := c.FormFile("songMedia")
+
+	if err != nil {
+		return err
+	}
+
 	logoFormFile, err := c.FormFile("songLogo")
 
 	if err != nil {

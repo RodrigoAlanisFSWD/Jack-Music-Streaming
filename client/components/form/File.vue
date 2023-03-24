@@ -15,7 +15,7 @@
             }">
             {{ placeholder }}
         </div>
-        <span v-if="error" class=" text-red-500 p-1">
+        <span v-if="error != ''" class=" text-red-500 p-1">
             <i class="uil uil-times-circle"></i>
             {{ error }}
         </span>

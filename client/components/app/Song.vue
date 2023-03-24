@@ -29,7 +29,7 @@ const { setSong } = usePlayer()
             October 5, 2022
         </span>
         <span class="justify-self-end">
-            00:00
+            {{ song?.duration }}
         </span>
     </div>
 </template>

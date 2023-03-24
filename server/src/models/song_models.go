@@ -5,6 +5,7 @@ import "mime/multipart"
 type Song struct {
 	Model
 	Name     string `json:"name" gorm:"unique"`
+	Duration string `json:"duration"`
 	AuthorID uint   `json:"author_id"`
 	Author   User   `json:"author"`
 	MediaID  uint   `json:"media_id"`

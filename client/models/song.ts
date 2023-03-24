@@ -3,6 +3,7 @@ import { User } from "./auth";
 
 export interface Song extends Model {
     name: string;
+    duration: string;
     author: User;
     author_id: number;
     media: Media;

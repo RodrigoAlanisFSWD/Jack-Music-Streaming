@@ -57,8 +57,12 @@ func (u *songService) UploadSongMedia(song *models.Song, songFormFile *multipart
 		return song, err
 	}
 
+	song.Media = *songMedia
 	song.MediaID = songMedia.ID
+	song.Logo = *logoMedia
 	song.LogoID = logoMedia.ID
+
+	fmt.Println(song.MediaID)
 
 	updatedSong, err := u.songRepository.Update(song)
 
