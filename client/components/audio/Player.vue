@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { Howl } from 'howler';
 import { Ref } from 'vue';
+import { Song } from '~~/models/song';
 
-const { state: { song, duration, currentTime, barWidth, playing }, play, pause, seek, mainBar } = usePlayer()
+const { state: { song, duration, currentTime, barWidth, playing }, play, pause, seek, mainBar, setSong } = usePlayer()
+const { state: { songs } } = useSongsService()
 
 const bar: Ref<HTMLDivElement | null> = ref(null)
 const barEmpty: Ref<HTMLDivElement | null> = ref(null)
@@ -27,6 +29,30 @@ const captureVolume = (e: any) => {
 onMounted(() => {
     volume(Howler.volume())
 })
+
+const handleNextSong = () => {
+    const index = songs.value.findIndex((s: Song) => s.id === song.value?.id)
+
+    if (index < 0) {
+        setSong(songs.value[0])
+    } else if (songs.value.length - 1 === index) {
+        return
+    } else {
+        setSong(songs.value[index + 1])
+    }
+}
+
+const handlePrevSong = () => {
+    const index = songs.value.findIndex((s: Song) => s.id === song.value?.id)
+
+    if (index < 0) {
+        return
+    } else if (index === 0) {
+        return
+    } else {
+        setSong(songs.value[index - 1])
+    }
+}
 </script> 
 
 <template>
@@ -45,12 +71,12 @@ onMounted(() => {
         </div>
         <div class="flex flex-col items-center">
             <div class="mb-3 flex items-center mt-5">
-                <i class="uil uil-step-backward text-[#dcdc] cursor-pointer"></i>
+                <i class="uil uil-step-backward text-[#dcdc] cursor-pointer" @click="handlePrevSong"></i>
                 <div class="mx-5 cursor-pointer">
                     <i v-if="!playing" class="uil uil-play text-2xl" @click="play()"></i>
                     <i v-else class="uil uil-pause text-2xl" @click="pause()"></i>
                 </div>
-                <i class="uil uil-skip-forward text-[#dcdc] cursor-pointer"></i>
+                <i class="uil uil-skip-forward text-[#dcdc] cursor-pointer" @click="handleNextSong"></i>
             </div>
 
             <div class="flex items-center">

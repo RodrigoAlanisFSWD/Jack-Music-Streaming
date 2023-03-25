@@ -31,6 +31,11 @@ export const usePlayerStore = defineStore("PlayerStore", {
             this.songMedia = new Howl({
                 src: [],
             });
+            this.duration = "0:00"
+            this.currentTime = "0:00"
+            this.barWidth = "0%"
+            this.loading = true
+            this.song = null
         },
         setDuration(duration: string) {
             this.duration = duration
