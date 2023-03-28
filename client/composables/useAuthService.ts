@@ -71,11 +71,22 @@ export const useAuthService = () => {
         }
     }
 
+    const refresh = async () => {
+        try {
+            await api.post("/auth/refresh", {}, {
+                withCredentials: true
+            })
+        } catch (error) {
+            authStore.authError()
+        }
+    }
+
     return {
         signUp,
         signIn,
         getProfile,
         updateRole,
-        authStore
+        authStore,
+        refresh
     }
 }

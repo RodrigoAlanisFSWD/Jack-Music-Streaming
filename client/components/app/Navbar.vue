@@ -15,7 +15,7 @@
             </div>
 
             <div class="text-xl text-white flex w-[150px] justify-around items-center ml-2">
-                <NuxtLink to="/profile">
+                <NuxtLink :to="role?.name !== 'ARTIST' ? '/profile' : '/dashboard'">
                     <i class="uil uil-user"></i>
                 </NuxtLink>
                 <i class="uil uil-envelope"></i>
@@ -28,3 +28,9 @@
         <app-navigation class="h-full"></app-navigation>
     </div>
 </template>
+
+<script lang="ts" setup>
+const authStore = useAuthStore()
+
+const { user, role } = storeToRefs(authStore)
+</script>

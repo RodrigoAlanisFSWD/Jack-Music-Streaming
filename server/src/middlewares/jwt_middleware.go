@@ -17,6 +17,10 @@ func JWTMiddleware() echo.MiddlewareFunc {
 			fmt.Println(c.Get("user"))
 			return new(models.JWTClaims)
 		},
+		ErrorHandler: func(c echo.Context, err error) error {
+			fmt.Println(err)
+			return c.String(403, "TOKEN_ERROR")
+		},
 	}
 
 	return echojwt.WithConfig(config)
