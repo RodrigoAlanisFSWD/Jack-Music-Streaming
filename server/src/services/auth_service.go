@@ -87,7 +87,7 @@ func (a *authService) RefreshTokens(c echo.Context) (*models.Tokens, error) {
 		return &models.Tokens{}, err
 	}
 
-	old, err := a.jwtRepository.VerifyRefreshToken(token)
+	old, err := a.jwtRepository.VerifyRefreshToken(token, user)
 
 	if err != nil {
 		return &models.Tokens{}, err
@@ -99,7 +99,7 @@ func (a *authService) RefreshTokens(c echo.Context) (*models.Tokens, error) {
 		return &models.Tokens{}, err
 	}
 
-	_, err = a.UpdateRefreshToken(newTokens.RefreshToken, old.Token)
+	_, err = a.UpdateRefreshToken(newTokens.RefreshToken, old.Token, user)
 
 	if err != nil {
 		return &models.Tokens{}, err
@@ -167,15 +167,17 @@ func (a *authService) UpdateUserRole(c echo.Context, u *models.User) (*models.Us
 	return a.userService.Update(user)
 }
 
-func (a *authService) RegisterRefreshToken(token string) (*models.RefreshToken, error) {
+func (a *authService) RegisterRefreshToken(token string, user *models.User) (*models.RefreshToken, error) {
 	return a.jwtRepository.RegisterRefreshToken(&models.RefreshToken{
-		Token: token,
+		Token:  token,
+		UserID: user.ID,
 	})
 }
 
-func (a *authService) UpdateRefreshToken(new string, old string) (*models.RefreshToken, error) {
+func (a *authService) UpdateRefreshToken(new string, old string, user *models.User) (*models.RefreshToken, error) {
 	newToken := models.RefreshToken{
-		Token: new,
+		Token:  new,
+		UserID: user.ID,
 	}
 
 	return a.jwtRepository.UpdateRefreshToken(&newToken, old)

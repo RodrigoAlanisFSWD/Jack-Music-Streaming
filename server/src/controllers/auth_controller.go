@@ -47,7 +47,7 @@ func (a *authController) SignIn(c echo.Context) error {
 		return errors.ServerError()
 	}
 
-	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken, validUser)
 
 	if err != nil {
 		return errors.ServerError()
@@ -85,7 +85,7 @@ func (a *authController) SignUp(c echo.Context) error {
 		return errors.ServerError()
 	}
 
-	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken, user)
 
 	if err != nil {
 		return errors.ServerError()
@@ -134,7 +134,7 @@ func (a *authController) UpdateUser(c echo.Context) error {
 		return errors.ServerError()
 	}
 
-	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken, user)
 
 	if err != nil {
 		return errors.ServerError()
