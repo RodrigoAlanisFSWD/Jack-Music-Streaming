@@ -20,6 +20,7 @@ type SongsController interface {
 	UploadSongMedia(c echo.Context) error
 	GetAll(c echo.Context) error
 	GetSongMedia(c echo.Context) error
+	GetUserSongs(c echo.Context) error
 }
 
 func NewSongsController(s models.SongService, a models.AuthService) SongsController {
@@ -123,4 +124,14 @@ func (s songsController) GetSongMedia(c echo.Context) error {
 	}
 
 	return c.File(song.Media.Src)
+}
+
+func (s songsController) GetUserSongs(c echo.Context) error {
+	songs, err := s.songService.GetSongsByAuthor(c.Param("user"))
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, songs)
 }

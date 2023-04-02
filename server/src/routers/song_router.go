@@ -16,6 +16,7 @@ func SongsRouter(api *echo.Group) {
 
 	songs.GET("/:page", songsController.GetAll)
 	songs.GET("/media/:id", songsController.GetSongMedia)
+	songs.GET("/user/:user", songsController.GetUserSongs)
 
 	songs.Use(middlewares.JWTMiddleware())
 

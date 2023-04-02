@@ -9,7 +9,7 @@ const { setSong, state } = usePlayer()
 </script>
 
 <template>
-    <div class="w-full p-3 text-white grid grid-cols-4 justify-items-center items-center px-5">
+    <div class="w-full p-3 text-white grid grid-cols-5 justify-items-center items-center px-5">
         <div class="flex justify-self-start">
             <img :src="song ? 'http://localhost:8080/api/file/' + song?.logo_id : ''"
                 class="w-[50px] h-[50px] bg-white mr-5 cursor-pointer" @click="setSong(song)" />
@@ -28,8 +28,12 @@ const { setSong, state } = usePlayer()
         <span>
             October 5, 2022
         </span>
-        <span class="justify-self-end">
+        <span>
             {{ song?.duration }}
         </span>
+        <div class="flex">
+            <app-button class="mr-5">Edit</app-button>
+            <app-button type="primary-outlined">Delete</app-button>
+        </div>
     </div>
 </template>

@@ -4,14 +4,22 @@ export const useSongsService = () => {
 
     const access_token = useCookie('jack_access_token')
 
-    const songStore = useSongsStore()
+    const songsStore = useSongsStore()
 
-    const state = storeToRefs(songStore)
+    const state = storeToRefs(songsStore)
 
     const getSongs = async (page: number) => {
         const { data } = await api.get("/songs/" + page)
 
-        songStore.setSongs(data)
+        songsStore.setSongs(data)
+
+        return data
+    }
+
+    const getSongsByAuthor = async (authorID: number) => {
+        const { data } = await api.get("/songs/user/" + authorID)
+        
+        songsStore.setSongs(data)
 
         return data
     }
@@ -27,7 +35,7 @@ export const useSongsService = () => {
 
             return data
         } catch (error) {
-            songStore.setError("Error At Creating. The Name Already Exists")
+            songsStore.setError("Error At Creating. The Name Already Exists")
         }
 
     }
@@ -42,7 +50,7 @@ export const useSongsService = () => {
 
             return data
         } catch (error) {
-            songStore.setError("Error At Uploading. Try Again Later By Editing Your New Song")
+            songsStore.setError("Error At Uploading. Try Again Later By Editing Your New Song")
         }
     }
 
@@ -50,7 +58,8 @@ export const useSongsService = () => {
         getSongs,
         createSong,
         uploadSongMedia,
-        songStore,
-        state
+        songsStore,
+        state,
+        getSongsByAuthor
     }
 }
