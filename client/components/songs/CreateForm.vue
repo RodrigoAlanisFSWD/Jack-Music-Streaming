@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { required, email, minLength, helpers } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
-import { AuthStatus } from '~~/store/authStore';
 import { Ref } from 'vue';
 import { Howl } from 'howler';
+import { Song } from '~~/models/song';
 
-const emit = defineEmits(['submit'])
+const props = defineProps<{
+    edit: boolean,
+    songData?: Song
+}>()
+
+const emit = defineEmits(['submitEdit', 'submit'])
 
 const song = reactive<{
     name: string,
@@ -35,25 +40,42 @@ const handleSubmit = async () => {
         return
     }
 
-    if (!songMedia.value) {
-        songMediaError.value = "Your song need... music!"
-    } 
+    if (props.edit) {
+        songMediaError.value = ""
+        songLogoError.value = ""
 
-    if (!songLogo.value) {
-        songLogoError.value = "Your song need a logo"
+        emit('submitEdit', {
+            song: {
+                ...props.songData,
+                name: song.name,
+                duration: songMediaDuration.value,
+            }, media: songMedia.value,
+            logo: songLogo.value
+        })
+
+    } else {
+        if (!songMedia.value) {
+            songMediaError.value = "Your song need... music!"
+        }
+
+        if (!songLogo.value) {
+            songLogoError.value = "Your song need a logo"
+        }
+
+        if (!songLogo.value || !songMedia.value) return
+
+        songMediaError.value = ""
+        songLogoError.value = ""
+
+        emit('submit', {
+            name: song.name,
+            duration: songMediaDuration.value,
+            media: songMedia.value,
+            logo: songLogo.value
+        })
     }
 
-    if (!songLogo.value || !songMedia.value) return
 
-    songMediaError.value = ""
-    songLogoError.value = ""
-
-    emit('submit', {
-        name: song.name,
-        duration: songMediaDuration.value,
-        media: songMedia.value,
-        logo: songLogo.value
-    })
 }
 
 const authStore = useAuthStore()
@@ -98,6 +120,23 @@ const handleLogoChange = (file: File) => {
     fr.readAsDataURL(file)
 }
 
+onMounted(async () => {
+    if (props.edit && props.songData) {
+        let res = await fetch("http://localhost:8080/api/file/" + props.songData.media_id)
+        let data = await res.blob()
+        let file = new File([data], props.songData.media.name)
+        handleMediaChange(file)
+
+        res = await fetch("http://localhost:8080/api/file/" + props.songData.logo_id)
+        data = await res.blob()
+        console.log(props.songData)
+        file = new File([data], props.songData.logo.name)
+        handleLogoChange(file)
+
+        song.name = props.songData.name
+    }
+})
+
 const { state: { error } } = useSongsService()
 </script>
 
@@ -131,10 +170,11 @@ const { state: { error } } = useSongsService()
                 </div>
                 <form-input :error="v$.name.$errors[0]" @change="v$.name.$touch" @blur="v$.name.$touch" v-model="song.name"
                     label="Name" placeholder="November Rain" type="text" class="mb-3"></form-input>
-                <form-file :file="song.media" :placeholder="songMedia ? songMedia.name : 'mp3 | mp4 | m3a | m4a'"
+                <form-file :value="songMedia" :placeholder="songMedia ? songMedia.name : 'mp3 | mp4 | m3a | m4a'"
                     label="Song Media" :error="songMediaError" @file="handleMediaChange" class="mb-3"></form-file>
-                <form-file :file="song.logo" :placeholder="songLogo ? songLogo.name : 'png | jpeg | jpg'" label="Song Logo"
+                <form-file :value="songLogo" :placeholder="songLogo ? songLogo.name : 'png | jpeg | jpg'" label="Song Logo"
                     :error="songLogoError" @file="handleLogoChange"></form-file>
+
                 <app-button @click="handleSubmit" class="mt-12">Create</app-button>
                 <app-alert v-if="error" class="mt-5">{{ error }}</app-alert>
             </div>

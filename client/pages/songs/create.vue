@@ -27,7 +27,7 @@ const submit = async ({ name, duration, media, logo }: any) => {
 </script>
 
 <template>
-    <songs-create-form @submit="submit"></songs-create-form>
+    <songs-create-form :edit="false" @submit="submit"></songs-create-form>
 </template>
 
 <style></style>

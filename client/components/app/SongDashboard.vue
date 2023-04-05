@@ -6,6 +6,8 @@ defineProps<{
 }>()
 
 const { setSong, state } = usePlayer()
+
+const router = useRouter()
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const { setSong, state } = usePlayer()
             {{ song?.duration }}
         </span>
         <div class="flex">
-            <app-button class="mr-5">Edit</app-button>
+            <app-button class="mr-5" @click="router.push('/songs/edit/' + song.id)">Edit</app-button>
             <app-button type="primary-outlined">Delete</app-button>
         </div>
     </div>

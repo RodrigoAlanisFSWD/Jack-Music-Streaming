@@ -11,7 +11,7 @@ type Song struct {
 	MediaID  uint   `json:"media_id"`
 	Media    File   `json:"media"`
 	LogoID   uint   `json:"logo_id"`
-	Logo     File   `json:"file"`
+	Logo     File   `json:"logo"`
 }
 
 type SongRepository interface {

@@ -40,7 +40,7 @@ func (a *authService) SetTokens(c echo.Context, tokens *models.Tokens) {
 
 	cookie.Name = "jack_access_token"
 	cookie.Value = tokens.AccessToken
-	cookie.Expires = time.Now().Add(30 * time.Minute)
+	cookie.Expires = time.Now().Add(48 * time.Hour)
 	cookie.Path = "/"
 	cookie.Domain = "localhost"
 	c.SetCookie(cookie)

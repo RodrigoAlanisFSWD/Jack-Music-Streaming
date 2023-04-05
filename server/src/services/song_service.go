@@ -5,6 +5,7 @@ import (
 	"mime/multipart"
 	"sync"
 
+	"github.com/Jack-Music-Streaming/server/src/database"
 	"github.com/Jack-Music-Streaming/server/src/models"
 )
 
@@ -30,6 +31,9 @@ func NewSongService(r models.SongRepository, f models.FilesRepository) models.So
 }
 
 func (u *songService) UploadSongMedia(song *models.Song, songFormFile *multipart.FileHeader, logoFormFile *multipart.FileHeader) (*models.Song, error) {
+	oldLogoID := song.LogoID
+	oldMediaID := song.MediaID
+
 	songFile := models.FileDTO{
 		Name: song.Name,
 		Dst:  fmt.Sprintf("uploads/songs/%d/", song.AuthorID),
@@ -62,9 +66,19 @@ func (u *songService) UploadSongMedia(song *models.Song, songFormFile *multipart
 	song.Logo = *logoMedia
 	song.LogoID = logoMedia.ID
 
-	fmt.Println(song.MediaID)
-
 	updatedSong, err := u.songRepository.Update(song)
+
+	if err != nil {
+		return song, err
+	}
+
+	err = database.DB.Where("id != 1 AND id != 2").Delete(oldLogoID).Error
+
+	if err != nil {
+		return song, err
+	}
+
+	err = database.DB.Where("id != 1 AND id != 2").Delete(oldMediaID).Error
 
 	return updatedSong, err
 }

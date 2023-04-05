@@ -24,10 +24,30 @@ export const useSongsService = () => {
         return data
     }
 
+    const getSong = async (id: any) => {
+        const { data } = await api.get("/songs/getOne/" + id)
+        
+        return data
+    }
+
     const createSong = async (song: any) => {
         try {
-            console.log(access_token)
             const { data } = await api.post<Song>("/songs/", song, {
+                headers: {
+                    "Authorization": "Bearer " + access_token.value
+                }
+            })
+
+            return data
+        } catch (error) {
+            songsStore.setError("Error At Creating. The Name Already Exists")
+        }
+
+    }
+
+    const updateSong = async (song: any) => {
+        try {
+            const { data } = await api.put<Song>("/songs/update", song, {
                 headers: {
                     "Authorization": "Bearer " + access_token.value
                 }
@@ -60,6 +80,8 @@ export const useSongsService = () => {
         uploadSongMedia,
         songsStore,
         state,
-        getSongsByAuthor
+        getSongsByAuthor,
+        getSong,
+        updateSong
     }
 }

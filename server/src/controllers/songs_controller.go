@@ -17,10 +17,12 @@ type songsController struct {
 
 type SongsController interface {
 	Create(c echo.Context) error
+	UpdateSong(c echo.Context) error
 	UploadSongMedia(c echo.Context) error
 	GetAll(c echo.Context) error
 	GetSongMedia(c echo.Context) error
 	GetUserSongs(c echo.Context) error
+	GetSongByID(c echo.Context) error
 }
 
 func NewSongsController(s models.SongService, a models.AuthService) SongsController {
@@ -134,4 +136,50 @@ func (s songsController) GetUserSongs(c echo.Context) error {
 	}
 
 	return c.JSON(200, songs)
+}
+
+func (s songsController) UpdateSong(c echo.Context) error {
+	data := &models.Song{}
+
+	if err := c.Bind(data); err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	user, err := s.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return err
+	}
+
+	song, err := s.songService.GetSongByID(data.ID)
+
+	if err != nil {
+		return err
+	}
+
+	if song.AuthorID != user.ID {
+		return errors.UnauthorizedError()
+	}
+
+	song.Name = data.Name
+	song.Duration = data.Duration
+
+	updated, err := s.songService.Update(song)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, updated)
+}
+
+func (s songsController) GetSongByID(c echo.Context) error {
+	song, err := s.songService.GetSongByID(c.Param("id"))
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, song)
 }

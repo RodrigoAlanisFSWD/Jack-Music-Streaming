@@ -15,11 +15,13 @@ func SongsRouter(api *echo.Group) {
 	songs := api.Group("/songs")
 
 	songs.GET("/:page", songsController.GetAll)
+	songs.GET("/getOne/:id", songsController.GetSongByID)
 	songs.GET("/media/:id", songsController.GetSongMedia)
 	songs.GET("/user/:user", songsController.GetUserSongs)
 
 	songs.Use(middlewares.JWTMiddleware())
 
+	songs.PUT("/update", songsController.UpdateSong)
 	songs.POST("/", songsController.Create)
 	songs.POST("/uploadMedia/:songID", songsController.UploadSongMedia)
 }

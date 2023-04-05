@@ -45,7 +45,7 @@ func (j *jwtRepository) CreateRefreshToken(user *models.User) (string, error) {
 		User: user.ID,
 		Role: user.RoleID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 48)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 30)),
 		},
 	}
 

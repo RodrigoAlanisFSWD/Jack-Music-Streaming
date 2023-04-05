@@ -6,7 +6,7 @@
         }">
             {{ label }}
         </label>
-        <input ref="fileInput" class="hidden" :value="file" @change="$emit('change')"
+        <input ref="fileInput" class="hidden" @change="$emit('change')"
             @input="handleChange" type="file" :placeholder="placeholder">
         <div @click="handleClick" @mouseover="hover = true" @mouseleave="hover = false" class="w-full border border-white bg-transparent rounded-[8px] p-3 outline-none transition-all duration-200 mb-1 text-gray-400 cursor-pointer"
             :class="{
@@ -29,7 +29,7 @@ defineProps<{
     placeholder: string,
     label: string,
     error: string,
-    file: File | null
+    value: File | null
 }>()
 
 const fileInput: Ref<HTMLInputElement | null> = ref(null)
@@ -43,7 +43,6 @@ const handleClick = () => {
 }
 
 const handleChange = (e: any) => {
-    console.log(e.target.files[0])
     emit('file', e.target.files[0])
 }
 </script>
