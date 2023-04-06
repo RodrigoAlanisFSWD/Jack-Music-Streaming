@@ -19,7 +19,7 @@
                 </span>
             </div>
         </div>
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-start">
             <div
                 class="grid grid-cols-5 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2 w-full">
                 <span class="justify-self-start">
@@ -39,6 +39,7 @@
                 </span>
             </div>
             <app-song-dashboard v-for="song in songs" :key="song.id" :song="song"></app-song-dashboard>
+            <app-button @click="router.push('/songs/create')" class="mt-8 w-[250px]">Upload Song</app-button>
         </div>
     </div>
 </template>
@@ -50,6 +51,8 @@ definePageMeta({
 })
 
 const user = useUser()
+
+const router = useRouter()
 
 const { getSongsByAuthor, state: { songs } } = useSongsService()
 
