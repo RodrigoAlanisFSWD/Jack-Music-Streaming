@@ -24,6 +24,7 @@ const songLogoError: Ref<string> = ref("")
 const songLogoURL: Ref<string | null> = ref(null)
 const songMediaDuration = ref('0:00')
 const songMediaError: Ref<string> = ref("")
+const filesTouched = ref(false)
 
 const rules = computed(() => {
     return {
@@ -40,21 +41,7 @@ const handleSubmit = async () => {
         return
     }
 
-    if (props.edit) {
-        songMediaError.value = ""
-        songLogoError.value = ""
-
-        emit('submitEdit', {
-            song: {
-                ...props.songData,
-                name: song.name,
-                duration: songMediaDuration.value,
-            }, media: songMedia.value,
-            logo: songLogo.value
-        })
-
-    } else {
-        if (!songMedia.value) {
+    if (!songMedia.value) {
             songMediaError.value = "Your song need... music!"
         }
 
@@ -67,6 +54,19 @@ const handleSubmit = async () => {
         songMediaError.value = ""
         songLogoError.value = ""
 
+    if (props.edit) {
+        emit('submitEdit', {
+            song: {
+                ...props.songData,
+                name: song.name,
+                duration: songMediaDuration.value,
+            }, 
+            media: songMedia.value,
+            logo: songLogo.value,
+            touched: filesTouched.value
+        })
+
+    } else {
         emit('submit', {
             name: song.name,
             duration: songMediaDuration.value,
@@ -74,8 +74,6 @@ const handleSubmit = async () => {
             logo: songLogo.value
         })
     }
-
-
 }
 
 const authStore = useAuthStore()
@@ -106,6 +104,8 @@ const handleMediaChange = (file: File) => {
     }
 
     fr.readAsDataURL(file)
+
+    filesTouched.value = true
 }
 
 const handleLogoChange = (file: File) => {
@@ -118,9 +118,13 @@ const handleLogoChange = (file: File) => {
     }
 
     fr.readAsDataURL(file)
+
+    filesTouched.value = true
 }
 
 onMounted(async () => {
+    songsStore.setError("")
+    
     if (props.edit && props.songData) {
         let res = await fetch("http://localhost:8080/api/file/" + props.songData.media_id)
         let data = await res.blob()
@@ -134,10 +138,11 @@ onMounted(async () => {
         handleLogoChange(file)
 
         song.name = props.songData.name
+        filesTouched.value = false
     }
 })
 
-const { state: { error } } = useSongsService()
+const { state: { error }, songsStore } = useSongsService()
 </script>
 
 <template>

@@ -31,8 +31,8 @@ func NewSongService(r models.SongRepository, f models.FilesRepository) models.So
 }
 
 func (u *songService) UploadSongMedia(song *models.Song, songFormFile *multipart.FileHeader, logoFormFile *multipart.FileHeader) (*models.Song, error) {
-	oldLogoID := song.LogoID
-	oldMediaID := song.MediaID
+	oldLogo := song.Logo
+	oldMedia := song.Media
 
 	songFile := models.FileDTO{
 		Name: song.Name,
@@ -72,13 +72,13 @@ func (u *songService) UploadSongMedia(song *models.Song, songFormFile *multipart
 		return song, err
 	}
 
-	err = database.DB.Where("id != 1 AND id != 2").Delete(oldLogoID).Error
+	err = database.DB.Where("id != 1 AND id != 2").Delete(oldLogo).Error
 
 	if err != nil {
 		return song, err
 	}
 
-	err = database.DB.Where("id != 1 AND id != 2").Delete(oldMediaID).Error
+	err = database.DB.Where("id != 1 AND id != 2").Delete(oldMedia).Error
 
 	return updatedSong, err
 }

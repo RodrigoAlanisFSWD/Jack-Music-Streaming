@@ -11,10 +11,10 @@ const route = useRoute()
 
 const songData = ref(null)
 
-const submitEdit = async ({ song, media, logo }: any) => {
+const submitEdit = async ({ song, media, logo, touched }: any) => {
     const updatedSong = await updateSong(song)
 
-    if (updatedSong && media && logo) {
+    if (updatedSong && touched) {
         const formData = new FormData()
 
         formData.append("songMedia", media)
