@@ -16,6 +16,9 @@ export const useSongsStore = defineStore("SongStore", {
         },
         setSongs(songs: Song[]) {
             this.songs = songs
+        },
+        deleteSong(song: Song) {
+            this.songs = this.songs.filter((s: Song) => s.id !== song.id)
         }
     }
 })

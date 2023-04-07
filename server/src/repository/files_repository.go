@@ -68,3 +68,9 @@ func (filesRepository) CreateFileName(file *models.FileDTO) {
 
 	file.Name = file.Name + ext
 }
+
+func (f filesRepository) Delete(file *models.File) error {
+	err := f.DB.Where("id = ?", file.ID).Delete(file).Error
+
+	return err
+}

@@ -23,6 +23,7 @@ type SongsController interface {
 	GetSongMedia(c echo.Context) error
 	GetUserSongs(c echo.Context) error
 	GetSongByID(c echo.Context) error
+	DeleteSong(c echo.Context) error
 }
 
 func NewSongsController(s models.SongService, a models.AuthService) SongsController {
@@ -176,6 +177,32 @@ func (s songsController) UpdateSong(c echo.Context) error {
 
 func (s songsController) GetSongByID(c echo.Context) error {
 	song, err := s.songService.GetSongByID(c.Param("id"))
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, song)
+}
+
+func (s songsController) DeleteSong(c echo.Context) error {
+	user, err := s.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return errors.UnauthorizedError()
+	}
+
+	song, err := s.songService.GetSongByID(c.Param("id"))
+
+	if err != nil {
+		return errors.NotFoundError()
+	}
+
+	if song.AuthorID != user.ID {
+		return errors.UnauthorizedError()
+	}
+
+	err = s.songService.Delete(song)
 
 	if err != nil {
 		return err

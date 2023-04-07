@@ -24,4 +24,5 @@ func SongsRouter(api *echo.Group) {
 	songs.PUT("/update", songsController.UpdateSong)
 	songs.POST("/", songsController.Create)
 	songs.POST("/uploadMedia/:songID", songsController.UploadSongMedia)
+	songs.DELETE("/:id", songsController.DeleteSong)
 }

@@ -18,4 +18,5 @@ type File struct {
 type FilesRepository interface {
 	Upload(file *FileDTO) (*File, error)
 	CreateFileName(file *FileDTO)
+	Delete(file *File) error
 }

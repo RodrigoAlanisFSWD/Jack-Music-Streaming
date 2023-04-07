@@ -8,6 +8,8 @@ export const useSongsService = () => {
 
     const state = storeToRefs(songsStore)
 
+    const player = usePlayer()
+
     const getSongs = async (page: number) => {
         const { data } = await api.get("/songs/" + page)
 
@@ -74,6 +76,27 @@ export const useSongsService = () => {
         }
     }
 
+    const deleteSong = async (songID: number) => {
+        try {
+            const { data } = await api.delete("/songs/" + songID, {
+                headers: {
+                    "Authorization": "Bearer " + access_token.value
+                }
+            })
+
+            songsStore.deleteSong(data)
+
+            if (player.state.song.value?.id === songID) {
+                player.pause()
+                player.playerStore.setStatus(false)
+                player.playerStore.resetPlayer()
+            }
+
+        } catch (error) {
+            songsStore.setError("Error At Deleting. Try Again Later")
+        }
+    }
+
     return {
         getSongs,
         createSong,
@@ -82,6 +105,7 @@ export const useSongsService = () => {
         state,
         getSongsByAuthor,
         getSong,
-        updateSong
+        updateSong,
+        deleteSong
     }
 }

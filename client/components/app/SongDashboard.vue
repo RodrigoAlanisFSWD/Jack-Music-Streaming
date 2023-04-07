@@ -8,6 +8,8 @@ defineProps<{
 const { setSong, state } = usePlayer()
 
 const router = useRouter()
+
+const { deleteSong } = useSongsService()
 </script>
 
 <template>
@@ -35,7 +37,7 @@ const router = useRouter()
         </span>
         <div class="flex">
             <app-button class="mr-5" @click="router.push('/songs/edit/' + song.id)">Edit</app-button>
-            <app-button type="primary-outlined">Delete</app-button>
+            <app-button type="primary-outlined" @click="async () => await deleteSong(song.id)">Delete</app-button>
         </div>
     </div>
 </template>

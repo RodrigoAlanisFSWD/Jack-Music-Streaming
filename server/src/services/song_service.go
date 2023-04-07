@@ -112,7 +112,9 @@ func (u *songService) GetSongsByAuthor(authorID interface{}) ([]models.Song, err
 }
 
 func (u *songService) Delete(song *models.Song) error {
-	return nil
+	err := u.songRepository.Delete(song)
+
+	return err
 }
 
 func (u *songService) Update(song *models.Song) (*models.Song, error) {
