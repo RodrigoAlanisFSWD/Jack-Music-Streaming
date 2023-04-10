@@ -18,7 +18,6 @@ type AuthController interface {
 	SignUp(c echo.Context) error
 	GetProfile(c echo.Context) error
 	UpdateUser(c echo.Context) error
-	GetScope(c echo.Context) error
 	RefreshTokens(c echo.Context) error
 }
 
@@ -48,7 +47,7 @@ func (a *authController) SignIn(c echo.Context) error {
 		return errors.ServerError()
 	}
 
-	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken, validUser)
 
 	if err != nil {
 		return errors.ServerError()
@@ -56,16 +55,16 @@ func (a *authController) SignIn(c echo.Context) error {
 
 	a.authService.SetTokens(c, tokens)
 
-	return c.JSON(http.StatusOK, map[string]string{
+	return c.JSON(http.StatusOK, map[string]interface{}{
 		"name":  validUser.Name,
 		"email": validUser.Email,
+		"role":  validUser.Role,
 	})
 }
 
 func (a *authController) SignUp(c echo.Context) error {
 	u := &models.User{
 		RoleID: 1,
-		PlanID: 1,
 	}
 
 	if err := c.Bind(&u); err != nil {
@@ -86,13 +85,19 @@ func (a *authController) SignUp(c echo.Context) error {
 		return errors.ServerError()
 	}
 
-	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken)
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken, user)
 
 	if err != nil {
 		return errors.ServerError()
 	}
 
 	a.authService.SetTokens(c, tokens)
+
+	err = a.authService.CreateProfile(user)
+
+	if err != nil {
+		return errors.ServerError()
+	}
 
 	return c.JSON(http.StatusOK, map[string]string{
 		"name":  user.Name,
@@ -107,12 +112,7 @@ func (a *authController) GetProfile(c echo.Context) error {
 		return errors.UnauthorizedError()
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"id":         user.ID,
-		"name":       user.Name,
-		"email":      user.Email,
-		"created_at": user.CreatedAt,
-	})
+	return c.JSON(http.StatusOK, user)
 }
 
 func (a *authController) UpdateUser(c echo.Context) error {
@@ -122,30 +122,31 @@ func (a *authController) UpdateUser(c echo.Context) error {
 		return errors.BadRequest()
 	}
 
-	user, err := a.authService.UpdateUserScope(c, u)
+	user, err := a.authService.UpdateUserRole(c, u)
 
 	if err != nil {
 		return errors.ServerError()
 	}
+
+	tokens, err := a.authService.GetTokens(user)
+
+	if err != nil {
+		return errors.ServerError()
+	}
+
+	_, err = a.authService.RegisterRefreshToken(tokens.RefreshToken, user)
+
+	if err != nil {
+		return errors.ServerError()
+	}
+
+	a.authService.SetTokens(c, tokens)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"id":         user.ID,
 		"name":       user.Name,
 		"email":      user.Email,
 		"created_at": user.CreatedAt,
-	})
-}
-
-func (a *authController) GetScope(c echo.Context) error {
-	scope, err := a.authService.GetUserScope(c)
-
-	if err != nil {
-		return errors.ServerError()
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"id":          scope.ID,
-		"permissions": scope.Permissions,
 	})
 }
 

@@ -1,12 +1,19 @@
 package models
 
+type Role struct {
+	Model
+	Name string `json:"name"`
+}
+
 type User struct {
 	Model
-	Name     string `json:"name" gorm:"unique"`
-	Password string `json:"password"`
-	Email    string `json:"email" gorm:"unique"`
-	RoleID   uint   `json:"role_id"`
-	PlanID   uint   `json:"plan_id"`
+	Name      string  `json:"name" gorm:"unique"`
+	Password  string  `json:"password"`
+	Email     string  `json:"email" gorm:"unique"`
+	RoleID    uint    `json:"role_id"`
+	Role      Role    `json:"role"`
+	ProfileID uint    `json:"profile_id"`
+	Profile   Profile `json:"profile"`
 }
 
 type UserService interface {

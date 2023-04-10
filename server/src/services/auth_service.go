@@ -13,22 +13,22 @@ import (
 )
 
 type authService struct {
-	jwtRepository   models.JWTRepository
-	scopeRepository models.ScopeRepository
-	userService     models.UserService
+	jwtRepository  models.JWTRepository
+	userService    models.UserService
+	profileService models.ProfileService
 }
 
 var authInstance *authService
 
 var authOnce sync.Once
 
-func NewAuthService(r models.JWTRepository, u models.UserService, s models.ScopeRepository) models.AuthService {
+func NewAuthService(r models.JWTRepository, u models.UserService, p models.ProfileService) models.AuthService {
 
 	authOnce.Do(func() {
 		authInstance = &authService{
-			jwtRepository:   r,
-			userService:     u,
-			scopeRepository: s,
+			jwtRepository:  r,
+			userService:    u,
+			profileService: p,
 		}
 	})
 
@@ -40,7 +40,7 @@ func (a *authService) SetTokens(c echo.Context, tokens *models.Tokens) {
 
 	cookie.Name = "jack_access_token"
 	cookie.Value = tokens.AccessToken
-	cookie.Expires = time.Now().Add(30 * time.Minute)
+	cookie.Expires = time.Now().Add(48 * time.Hour)
 	cookie.Path = "/"
 	cookie.Domain = "localhost"
 	c.SetCookie(cookie)
@@ -87,7 +87,7 @@ func (a *authService) RefreshTokens(c echo.Context) (*models.Tokens, error) {
 		return &models.Tokens{}, err
 	}
 
-	old, err := a.jwtRepository.VerifyRefreshToken(token)
+	old, err := a.jwtRepository.VerifyRefreshToken(token, user)
 
 	if err != nil {
 		return &models.Tokens{}, err
@@ -99,7 +99,7 @@ func (a *authService) RefreshTokens(c echo.Context) (*models.Tokens, error) {
 		return &models.Tokens{}, err
 	}
 
-	_, err = a.UpdateRefreshToken(newTokens.RefreshToken, old.Token)
+	_, err = a.UpdateRefreshToken(newTokens.RefreshToken, old.Token, user)
 
 	if err != nil {
 		return &models.Tokens{}, err
@@ -149,10 +149,12 @@ func (a *authService) GetUserFromToken(c echo.Context) (*models.User, error) {
 	claims := user.Claims.(*models.JWTClaims)
 	userID := claims.User
 
+	fmt.Println(userID)
+
 	return a.userService.GetUserByID(userID)
 }
 
-func (a *authService) UpdateUserScope(c echo.Context, u *models.User) (*models.User, error) {
+func (a *authService) UpdateUserRole(c echo.Context, u *models.User) (*models.User, error) {
 	user, err := a.GetUserFromToken(c)
 
 	if err != nil {
@@ -160,31 +162,43 @@ func (a *authService) UpdateUserScope(c echo.Context, u *models.User) (*models.U
 	}
 
 	user.RoleID = u.RoleID
-	user.PlanID = u.PlanID
+	user.Role = u.Role
 
 	return a.userService.Update(user)
 }
 
-func (a *authService) GetUserScope(c echo.Context) (*models.Scope, error) {
-	user, err := a.GetUserFromToken(c)
-
-	if err != nil {
-		return &models.Scope{}, err
-	}
-
-	return a.scopeRepository.FindScope(user.RoleID, user.PlanID)
-}
-
-func (a *authService) RegisterRefreshToken(token string) (*models.RefreshToken, error) {
+func (a *authService) RegisterRefreshToken(token string, user *models.User) (*models.RefreshToken, error) {
 	return a.jwtRepository.RegisterRefreshToken(&models.RefreshToken{
-		Token: token,
+		Token:  token,
+		UserID: user.ID,
 	})
 }
 
-func (a *authService) UpdateRefreshToken(new string, old string) (*models.RefreshToken, error) {
+func (a *authService) UpdateRefreshToken(new string, old string, user *models.User) (*models.RefreshToken, error) {
 	newToken := models.RefreshToken{
-		Token: new,
+		Token:  new,
+		UserID: user.ID,
 	}
 
 	return a.jwtRepository.UpdateRefreshToken(&newToken, old)
+}
+
+func (a *authService) CreateProfile(user *models.User) error {
+	profile, err := a.profileService.Create(&models.Profile{
+		UserID: user.ID,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	user.ProfileID = profile.ID
+
+	_, err = a.userService.Update(user)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
