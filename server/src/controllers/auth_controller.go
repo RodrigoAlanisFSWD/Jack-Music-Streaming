@@ -9,8 +9,9 @@ import (
 )
 
 type authController struct {
-	userService models.UserService
-	authService models.AuthService
+	userService    models.UserService
+	authService    models.AuthService
+	profileService models.ProfileService
 }
 
 type AuthController interface {
@@ -19,12 +20,14 @@ type AuthController interface {
 	GetProfile(c echo.Context) error
 	UpdateUser(c echo.Context) error
 	RefreshTokens(c echo.Context) error
+	UpdateUserLogo(c echo.Context) error
 }
 
-func NewAuthController(s models.UserService, auth models.AuthService) AuthController {
+func NewAuthController(s models.UserService, auth models.AuthService, p models.ProfileService) AuthController {
 	return &authController{
-		userService: s,
-		authService: auth,
+		userService:    s,
+		authService:    auth,
+		profileService: p,
 	}
 }
 
@@ -158,4 +161,26 @@ func (a *authController) RefreshTokens(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusAccepted, tokens)
+}
+
+func (a *authController) UpdateUserLogo(c echo.Context) error {
+	user, err := a.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return errors.UnauthorizedError()
+	}
+
+	logoFormFile, err := c.FormFile("logo")
+
+	if err != nil {
+		return err
+	}
+
+	_, err = a.profileService.UpdateUserLogo(user, logoFormFile)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, user)
 }

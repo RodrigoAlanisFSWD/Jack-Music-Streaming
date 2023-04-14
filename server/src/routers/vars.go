@@ -20,7 +20,7 @@ func InitializeRotuers() {
 	userRepository = repository.NewUserRepository(database.DB)
 	userService = services.NewUserService(userRepository)
 	profileRepository = repository.NewProfileRepository(database.DB)
-	profileService = services.NewProfileService(profileRepository)
+	profileService = services.NewProfileService(profileRepository, filesRepository)
 	filesRepository = repository.NewFilesRepository(database.DB)
 	songRepository = repository.NewSongRepository(database.DB)
 	jwtRepository = repository.NewJWTRepository(database.DB)

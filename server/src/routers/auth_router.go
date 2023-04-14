@@ -7,7 +7,7 @@ import (
 )
 
 func AuthRouter(api *echo.Group) {
-	authController := controllers.NewAuthController(userService, authService)
+	authController := controllers.NewAuthController(userService, authService, profileService)
 
 	auth := api.Group("/auth")
 
@@ -18,6 +18,7 @@ func AuthRouter(api *echo.Group) {
 
 	auth.GET("/profile", authController.GetProfile)
 	auth.PUT("/update", authController.UpdateUser)
+	auth.PUT("/logo", authController.UpdateUserLogo)
 
 	auth.Use(middlewares.RefreshMiddleware())
 
