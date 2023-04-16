@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"mime/multipart"
 	"sync"
 
@@ -30,6 +31,7 @@ func NewProfileService(r models.ProfileRepository, f models.FilesRepository) mod
 }
 
 func (u *profileService) Create(profile *models.Profile) (*models.Profile, error) {
+	profile.LogoID = 7
 	return u.profileRepository.Save(profile)
 }
 
@@ -48,15 +50,15 @@ func (u *profileService) Update(profile *models.Profile) (*models.Profile, error
 }
 
 func (u *profileService) UpdateUserLogo(user *models.User, logoFormFile *multipart.FileHeader) (*models.User, error) {
-	logoFile := models.FileDTO{
-		Name: user.Name + "-(Logo)",
-		Dst:  "uploads/logos/",
+	logoFile := &models.FileDTO{
+		Name: user.Name + "-Logo",
+		Dst:  fmt.Sprintf("uploads/logos/%d/", user.ID),
 		Src:  logoFormFile,
 	}
 
-	u.filesRepository.CreateFileName(&logoFile)
+	u.filesRepository.CreateFileName(logoFile)
 
-	userLogo, err := u.filesRepository.Upload(&logoFile)
+	userLogo, err := u.filesRepository.Upload(logoFile)
 
 	if err != nil {
 		return user, err

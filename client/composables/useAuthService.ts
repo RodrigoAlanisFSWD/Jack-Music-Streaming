@@ -7,6 +7,7 @@ export const useAuthService = () => {
     const authStore = useAuthStore()
 
     const access_token = useCookie('jack_access_token')
+    const refresh_token = useCookie('jack_refresh_token')
 
     const signUp = async (userData: Object) => {
         try {
@@ -34,11 +35,7 @@ export const useAuthService = () => {
 
     const getProfile = async () => {
         try {
-            const { data } = await api.get<User>("/auth/profile", {
-                headers: {
-                    "Authorization": `Bearer ${access_token.value}`
-                }
-            })
+            const { data } = await api.get<User>("/auth/profile")
 
             console.log(data)
 
@@ -57,10 +54,6 @@ export const useAuthService = () => {
                 role: {
                     id: roleId
                 }
-            }, {
-                headers: {
-                    "Authorization": `Bearer ${access_token.value}`
-                }
             })
 
             await getProfile()
@@ -74,11 +67,30 @@ export const useAuthService = () => {
     const refresh = async () => {
         try {
             await api.post("/auth/refresh", {}, {
-                withCredentials: true
+                withCredentials: true,
+                headers: {
+                    Authorization: 'Bearer ' + refresh_token
+                }
             })
         } catch (error) {
             authStore.authError()
         }
+    }
+
+    const uploadUserLogo = async (logo: File) => {
+        try {
+            const formData = new FormData()
+
+            formData.append("logo", logo)
+
+            await api.put("/auth/logo", formData)
+
+            const { data } = await api.get<User>("/auth/profile")
+
+            authStore.authenticateUser(data)
+        } catch (error) {
+            authStore.authError()
+          }
     }
 
     return {
@@ -87,6 +99,7 @@ export const useAuthService = () => {
         getProfile,
         updateRole,
         authStore,
-        refresh
+        refresh,
+        uploadUserLogo
     }
 }

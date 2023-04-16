@@ -82,7 +82,7 @@ func (j *jwtRepository) UpdateRefreshToken(new *models.RefreshToken, old string)
 		return &exists[0], err
 	}
 
-	// Deliting Old Token
+	// Deleting Old Token
 	j.DB.Where("user_id = ?", old).Delete(&exists)
 
 	// Registering The New Token

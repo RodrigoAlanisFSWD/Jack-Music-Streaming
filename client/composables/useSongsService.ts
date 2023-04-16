@@ -34,11 +34,7 @@ export const useSongsService = () => {
 
     const createSong = async (song: any) => {
         try {
-            const { data } = await api.post<Song>("/songs/", song, {
-                headers: {
-                    "Authorization": "Bearer " + access_token.value
-                }
-            })
+            const { data } = await api.post<Song>("/songs/", song)
 
             return data
         } catch (error) {
@@ -49,11 +45,7 @@ export const useSongsService = () => {
 
     const updateSong = async (song: any) => {
         try {
-            const { data } = await api.put<Song>("/songs/update", song, {
-                headers: {
-                    "Authorization": "Bearer " + access_token.value
-                }
-            })
+            const { data } = await api.put<Song>("/songs/update", song)
 
             return data
         } catch (error) {
@@ -64,11 +56,7 @@ export const useSongsService = () => {
 
     const uploadSongMedia = async (songID: number, formData: FormData) => {
         try {
-            const { data } = await api.post("/songs/uploadMedia/" + songID, formData, {
-                headers: {
-                    "Authorization": "Bearer " + access_token.value
-                }
-            })
+            const { data } = await api.post("/songs/uploadMedia/" + songID, formData)
 
             return data
         } catch (error) {
@@ -78,11 +66,7 @@ export const useSongsService = () => {
 
     const deleteSong = async (songID: number) => {
         try {
-            const { data } = await api.delete("/songs/" + songID, {
-                headers: {
-                    "Authorization": "Bearer " + access_token.value
-                }
-            })
+            const { data } = await api.delete("/songs/" + songID)
 
             songsStore.deleteSong(data)
 

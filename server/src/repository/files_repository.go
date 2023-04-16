@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -64,6 +65,7 @@ func (f filesRepository) Upload(file *models.FileDTO) (*models.File, error) {
 }
 
 func (filesRepository) CreateFileName(file *models.FileDTO) {
+	fmt.Println("asd")
 	ext := filepath.Ext(file.Src.Filename)
 
 	file.Name = file.Name + ext

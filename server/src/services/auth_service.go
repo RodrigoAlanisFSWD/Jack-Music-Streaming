@@ -184,9 +184,7 @@ func (a *authService) UpdateRefreshToken(new string, old string, user *models.Us
 }
 
 func (a *authService) CreateProfile(user *models.User) error {
-	profile, err := a.profileService.Create(&models.Profile{
-		UserID: user.ID,
-	})
+	profile, err := a.profileService.Create(&models.Profile{})
 
 	if err != nil {
 		return err
