@@ -30,5 +30,5 @@ func InitializeRotuers() {
 	authService = services.NewAuthService(jwtRepository, userService, profileService)
 	songService = services.NewSongService(songRepository, filesRepository)
 	playlistRepository = repository.NewPlaylistRepository(database.DB)
-	playlistService = services.NewPlaylistService(playlistRepository, songService)
+	playlistService = services.NewPlaylistService(playlistRepository, songService, filesRepository)
 }

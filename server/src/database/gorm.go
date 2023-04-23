@@ -27,6 +27,7 @@ func InitDB() error {
 		&models.Song{},
 		&models.File{},
 		&models.RefreshToken{},
+		&models.Playlist{},
 	}
 
 	var (

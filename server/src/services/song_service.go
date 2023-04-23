@@ -114,6 +114,9 @@ func (u *songService) GetSongsByAuthor(authorID interface{}) ([]models.Song, err
 func (u *songService) Delete(song *models.Song) error {
 	err := u.songRepository.Delete(song)
 
+	u.filesRepository.Delete(&song.Media)
+	u.filesRepository.Delete(&song.Logo)
+
 	return err
 }
 

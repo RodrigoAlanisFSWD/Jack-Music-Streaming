@@ -3,7 +3,7 @@
         <template v-if="status === AuthStatus.AUTHENTICATED">
             <app-nav-link>Home</app-nav-link>
             <app-nav-link to="/songs">Songs</app-nav-link>
-            <app-nav-link>Artists</app-nav-link>
+            <app-nav-link to="/playlists">Playlists</app-nav-link>
         </template>
 
         <template v-else-if="status !== AuthStatus.AUTH_INITIAL">

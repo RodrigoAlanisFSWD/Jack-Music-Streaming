@@ -19,6 +19,7 @@ type PlaylistController interface {
 	GetUserPlaylists(c echo.Context) error
 	GetPlaylist(c echo.Context) error
 	AddSong(c echo.Context) error
+	UpdatePlaylistLogo(c echo.Context) error
 }
 
 func NewPlaylistController(p models.PlaylistService, a models.AuthService) PlaylistController {
@@ -125,6 +126,39 @@ func (p *playlistController) AddSong(c echo.Context) error {
 	}
 
 	updatedPlaylist, err := p.playlistService.AddSong(playlist, songID)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, updatedPlaylist)
+}
+
+func (p *playlistController) UpdatePlaylistLogo(c echo.Context) error {
+	playlistID := c.Param("playlist")
+	user, err := p.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return errors.UnauthorizedError()
+	}
+
+	playlist, err := p.playlistService.GetPlaylist(playlistID)
+
+	if err != nil {
+		return errors.NotFoundError()
+	}
+
+	if playlist.AuthorID != user.ID {
+		return errors.UnauthorizedError()
+	}
+
+	logoFormFile, err := c.FormFile("songMedia")
+
+	if err != nil {
+		return err
+	}
+
+	updatedPlaylist, err := p.playlistService.UploadPlaylistLogo(playlist, logoFormFile)
 
 	if err != nil {
 		return err

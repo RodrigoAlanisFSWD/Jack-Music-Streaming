@@ -1,5 +1,7 @@
 package models
 
+import "mime/multipart"
+
 type Playlist struct {
 	Model
 	Name     string `json:"name"`
@@ -7,6 +9,8 @@ type Playlist struct {
 	Author   User   `json:"author"`
 	Type     string `json:"type"`
 	Songs    []Song `json:"songs" gorm:"many2many:playlist_songs;"`
+	LogoID   uint   `json:"logo_id"`
+	Logo     File   `json:"logo"`
 }
 
 type PlaylistRepository interface {
@@ -23,4 +27,5 @@ type PlaylistService interface {
 	GetUserPlaylists(id interface{}) (*[]Playlist, error)
 	Update(playlist *Playlist) (*Playlist, error)
 	AddSong(playlist *Playlist, songID interface{}) (*Playlist, error)
+	UploadPlaylistLogo(playlist *Playlist, logoFormFile *multipart.FileHeader) (*Playlist, error)
 }

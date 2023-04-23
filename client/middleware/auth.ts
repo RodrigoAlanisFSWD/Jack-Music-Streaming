@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const { authStore, getProfile } = useAuthService()
 
     if (access_token.value && refresh_token.value) {
-        if (authStore.status === AuthStatus.AUTHENTICATED) {
+        if (authStore.status === AuthStatus.AUTHENTICATED && authStore.user) {
             return
         }
 

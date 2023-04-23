@@ -18,4 +18,5 @@ func PlaylistRouter(api *echo.Group) {
 	playlist.GET("/:id", playlistController.GetPlaylist)
 	playlist.GET("/author/:author", playlistController.GetUserPlaylists)
 	playlist.PUT("/addSong/:playlist/:song", playlistController.AddSong)
+	playlist.POST("/logo/:playlist", playlistController.UpdatePlaylistLogo)
 }
