@@ -1,16 +1,18 @@
 <script lang="ts" setup>
+import { Ref } from 'vue'
+import { Playlist } from '~~/models/playlist'
+
 definePageMeta({
-    layout: "player"
+    layout: "player",
+    middleware: "auth"
 })
 
-const { getSongs } = useSongsService()
+const { getPlaylists } = usePlaylistsService()
 
-const { setSong } = usePlayer()
-
-const songs: Ref<Song[]> = ref([])
+const playlists: Ref<Playlist[]> = ref([])
 
 const fetchData = async (page: number) => {
-    songs.value = await getSongs(page)
+    playlists.value = await getPlaylists(page)
 }
 
 onMounted(async () => {
@@ -22,18 +24,18 @@ onMounted(async () => {
 <div class="w-full h-[calc(100vh-180px)]">
         <app-pagination @change-page="fetchData">
             <div class="w-full h-full flex flex-col">
-                <div class="grid grid-cols-4 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
+                <div class="grid grid-cols-3 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
                     <span class="justify-self-start">
                         Title
                     </span>
                     <span class="mr-9">
                         Date added
                     </span>
-                    <span class="justify-self-end mr-4">
+                    <span class="justify-self-end mr-6">
                         <i class="uil uil-clock"></i>
                     </span>
                 </div>
-                <app-song v-for="song in songs" :key="song.id" :song="song"></app-song>
+                <app-playlist v-for="playlist in playlists" :key="playlist.id" :playlist="playlist"></app-playlist>
             </div>
         </app-pagination>
     </div>

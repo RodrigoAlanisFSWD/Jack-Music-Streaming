@@ -19,6 +19,7 @@ type PlaylistRepository interface {
 	FindMany(query string, args ...interface{}) (*[]Playlist, error)
 	Update(playlist *Playlist) (*Playlist, error)
 	AddSong(playlist *Playlist, song *Song) (*Playlist, error)
+	GetPage(page int) ([]Playlist, error)
 }
 
 type PlaylistService interface {
@@ -28,4 +29,5 @@ type PlaylistService interface {
 	Update(playlist *Playlist) (*Playlist, error)
 	AddSong(playlist *Playlist, songID interface{}) (*Playlist, error)
 	UploadPlaylistLogo(playlist *Playlist, logoFormFile *multipart.FileHeader) (*Playlist, error)
+	GetAll(page int) ([]Playlist, error)
 }

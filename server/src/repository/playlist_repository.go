@@ -68,3 +68,16 @@ func (p *playlistRepository) AddSong(playlist *models.Playlist, song *models.Son
 
 	return p.Update(playlist)
 }
+
+func (p *playlistRepository) GetPage(page int) ([]models.Playlist, error) {
+	var playlists []models.Playlist
+
+	err := p.DB.Model(&playlists).Limit(15).Offset((page - 1) * 10).Preload("Author").Find(&playlists).Error
+
+	if err != nil {
+		fmt.Println(err)
+		return playlists, err
+	}
+
+	return playlists, nil
+}

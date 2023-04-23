@@ -44,6 +44,10 @@ func (p *playlistService) GetUserPlaylists(id interface{}) (*[]models.Playlist, 
 	return p.playlistRepository.FindMany("author_id = ?", id)
 }
 
+func (p *playlistService) GetAll(page int) ([]models.Playlist, error) {
+	return p.playlistRepository.GetPage(page)
+}
+
 func (p *playlistService) Update(playlist *models.Playlist) (*models.Playlist, error) {
 	return p.playlistRepository.Update(playlist)
 }

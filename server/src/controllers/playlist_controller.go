@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/Jack-Music-Streaming/server/src/errors"
 	"github.com/Jack-Music-Streaming/server/src/models"
@@ -20,6 +21,7 @@ type PlaylistController interface {
 	GetPlaylist(c echo.Context) error
 	AddSong(c echo.Context) error
 	UpdatePlaylistLogo(c echo.Context) error
+	GetAll(c echo.Context) error
 }
 
 func NewPlaylistController(p models.PlaylistService, a models.AuthService) PlaylistController {
@@ -36,6 +38,15 @@ func (p *playlistController) Create(c echo.Context) error {
 		fmt.Println(err)
 		return err
 	}
+
+	user, err := p.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return err
+	}
+
+	playlist.AuthorID = user.ID
+	playlist.LogoID = 2
 
 	createdPlaylist, err := p.playlistService.Create(playlist)
 
@@ -165,4 +176,22 @@ func (p *playlistController) UpdatePlaylistLogo(c echo.Context) error {
 	}
 
 	return c.JSON(200, updatedPlaylist)
+}
+
+func (p *playlistController) GetAll(c echo.Context) error {
+	page := c.Param("page")
+
+	pageInt, err := strconv.Atoi(page)
+
+	if err != nil {
+		return err
+	}
+
+	playlists, err := p.playlistService.GetAll(pageInt)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, playlists)
 }
