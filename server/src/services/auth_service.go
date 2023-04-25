@@ -180,7 +180,7 @@ func (a *authService) UpdateRefreshToken(new string, old string, user *models.Us
 		UserID: user.ID,
 	}
 
-	return a.jwtRepository.UpdateRefreshToken(&newToken, old)
+	return a.jwtRepository.UpdateRefreshToken(&newToken, old, user)
 }
 
 func (a *authService) CreateProfile(user *models.User) error {

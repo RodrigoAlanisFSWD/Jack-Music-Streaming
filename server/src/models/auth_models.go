@@ -28,7 +28,7 @@ type JWTRepository interface {
 	CreateAccessToken(user *User) (string, error)
 	CreateRefreshToken(user *User) (string, error)
 	RegisterRefreshToken(token *RefreshToken) (*RefreshToken, error)
-	UpdateRefreshToken(new *RefreshToken, old string) (*RefreshToken, error)
+	UpdateRefreshToken(new *RefreshToken, old string, user *User) (*RefreshToken, error)
 	VerifyRefreshToken(token string, user *User) (*RefreshToken, error)
 }
 

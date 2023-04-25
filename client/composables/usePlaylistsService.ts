@@ -25,7 +25,7 @@ export const usePlaylistsService = () => {
     }
 
     const getPlaylist = async (id: any) => {
-        const { data } = await api.get("/playlist/getOne/" + id)
+        const { data } = await api.get("/playlist/" + id)
 
         return data
     }

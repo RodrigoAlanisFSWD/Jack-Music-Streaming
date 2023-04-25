@@ -70,11 +70,11 @@ func (j *jwtRepository) RegisterRefreshToken(token *models.RefreshToken) (*model
 	return token, err
 }
 
-func (j *jwtRepository) UpdateRefreshToken(new *models.RefreshToken, old string) (*models.RefreshToken, error) {
+func (j *jwtRepository) UpdateRefreshToken(new *models.RefreshToken, old string, user *models.User) (*models.RefreshToken, error) {
 	var exists []models.RefreshToken
 
 	// Getting Existing Token
-	err := j.DB.Where("user_id = ?", old).Find(&exists).Error
+	err := j.DB.Where("user_id = ?", user.ID).Find(&exists).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return j.RegisterRefreshToken(new)
@@ -83,7 +83,7 @@ func (j *jwtRepository) UpdateRefreshToken(new *models.RefreshToken, old string)
 	}
 
 	// Deleting Old Token
-	j.DB.Where("user_id = ?", old).Delete(&exists)
+	j.DB.Where("user_id = ?", user.ID).Delete(&exists)
 
 	// Registering The New Token
 	return j.RegisterRefreshToken(new)

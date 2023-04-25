@@ -4,15 +4,17 @@ import { Playlist } from '~~/models/playlist';
 defineProps<{
     playlist: Playlist
 }>()
+
+const router = useRouter()
 </script>
 
 <template>
     <div class="w-full p-3 text-white grid grid-cols-3 justify-items-center items-center px-5">
         <div class="flex justify-self-start">
             <img :src="playlist ? 'http://localhost:8080/api/file/' + playlist?.logo_id : ''"
-                class="w-[50px] h-[50px] bg-white mr-5 cursor-pointer" />
+                class="w-[50px] h-[50px] bg-white mr-5 cursor-pointer" @click="router.push('/playlists/detail/' + playlist.id)" />
             <div>
-                <h2 class="hover:text-primary cursor-pointer">
+                <h2 @click="router.push('/playlists/detail/' + playlist.id)" class="hover:text-primary cursor-pointer">
                     {{ playlist?.name }}
                 </h2>
                 <h3 class="text-sm text-[#dcdcdc] hover:text-primary cursor-pointer">

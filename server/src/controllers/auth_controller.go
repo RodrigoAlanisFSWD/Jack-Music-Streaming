@@ -58,11 +58,7 @@ func (a *authController) SignIn(c echo.Context) error {
 
 	a.authService.SetTokens(c, tokens)
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"name":  validUser.Name,
-		"email": validUser.Email,
-		"role":  validUser.Role,
-	})
+	return c.JSON(http.StatusOK, validUser)
 }
 
 func (a *authController) SignUp(c echo.Context) error {
@@ -102,10 +98,7 @@ func (a *authController) SignUp(c echo.Context) error {
 		return errors.ServerError()
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
-		"name":  user.Name,
-		"email": user.Email,
-	})
+	return c.JSON(http.StatusOK, user)
 }
 
 func (a *authController) GetProfile(c echo.Context) error {

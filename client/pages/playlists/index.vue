@@ -7,12 +7,13 @@ definePageMeta({
     middleware: "auth"
 })
 
-const { getPlaylists } = usePlaylistsService()
+const { getPlaylistsByAuthor } = usePlaylistsService()
+const user = useUser()
 
 const playlists: Ref<Playlist[]> = ref([])
 
 const fetchData = async (page: number) => {
-    playlists.value = await getPlaylists(page)
+    playlists.value = await getPlaylistsByAuthor(user.value?.id as number)
 }
 
 onMounted(async () => {
