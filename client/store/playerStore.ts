@@ -9,6 +9,7 @@ export interface PlayerState {
     barWidth: string;
     playing: boolean;
     loading: boolean;
+    playlist: Song[];
 }
 
 export const usePlayerStore = defineStore("PlayerStore", {
@@ -22,6 +23,7 @@ export const usePlayerStore = defineStore("PlayerStore", {
         playing: false,
         loading: true,
         song: null,
+        playlist: [],
     }),
     actions: {
         setSongMedia(media: Howl) {
@@ -52,6 +54,9 @@ export const usePlayerStore = defineStore("PlayerStore", {
         },
         setSong(song: Song) {
             this.song = song;
+        },
+        setPlaylist(playlist: Song[]) {
+            this.playlist = playlist
         }
     }
 })

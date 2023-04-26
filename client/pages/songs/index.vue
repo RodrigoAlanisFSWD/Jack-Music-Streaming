@@ -8,12 +8,14 @@ definePageMeta({
 
 const { getSongs } = useSongsService()
 
-const { setSong } = usePlayer()
+const { setSong, setPlaylist } = usePlayer()
 
 const songs: Ref<Song[]> = ref([])
 
 const fetchData = async (page: number) => {
-    songs.value = await getSongs(page)
+    const res = await getSongs(page)
+    setPlaylist(res)
+    songs.value = res
 }
 
 onMounted(async () => {

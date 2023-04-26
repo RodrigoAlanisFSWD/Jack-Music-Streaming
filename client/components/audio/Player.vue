@@ -3,7 +3,7 @@ import { Howl } from 'howler';
 import { Ref } from 'vue';
 import { Song } from '~~/models/song';
 
-const { state: { song, duration, currentTime, barWidth, playing }, play, pause, seek, mainBar, setSong } = usePlayer()
+const { state: { song, duration, currentTime, barWidth, playing, playlist }, play, pause, seek, mainBar, setSong, setPlaylist } = usePlayer()
 const { state: { songs } } = useSongsService()
 
 const bar: Ref<HTMLDivElement | null> = ref(null)
@@ -31,26 +31,26 @@ onMounted(() => {
 })
 
 const handleNextSong = () => {
-    const index = songs.value.findIndex((s: Song) => s.id === song.value?.id)
+    const index = playlist.value.findIndex((s: Song) => s.id === song.value?.id)
 
     if (index < 0) {
-        setSong(songs.value[0])
-    } else if (songs.value.length - 1 === index) {
+        setSong(playlist.value[0])
+    } else if (playlist.value.length - 1 === index) {
         return
     } else {
-        setSong(songs.value[index + 1])
+        setSong(playlist.value[index + 1])
     }
 }
 
 const handlePrevSong = () => {
-    const index = songs.value.findIndex((s: Song) => s.id === song.value?.id)
+    const index = playlist.value.findIndex((s: Song) => s.id === song.value?.id)
 
     if (index < 0) {
         return
     } else if (index === 0) {
         return
     } else {
-        setSong(songs.value[index - 1])
+        setSong(playlist.value[index - 1])
     }
 }
 </script> 

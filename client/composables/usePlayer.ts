@@ -83,6 +83,10 @@ export const usePlayer = () => {
         songMedia.value.pause()
     }
 
+    const setPlaylist = (songs: Song[]) => {
+        playerStore.setPlaylist(songs)
+    }
+
     return {
         state,
         playerStore,
@@ -90,6 +94,7 @@ export const usePlayer = () => {
         pause,
         seek,
         mainBar,
-        setSong
+        setSong,
+        setPlaylist
     }
 }
