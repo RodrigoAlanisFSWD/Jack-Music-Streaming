@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-[1fr_700px] w-screen h-[calc(100vh-70px)]">
+    <div class="grid grid-cols-[1fr_700px] w-full h-full">
         <div class="background w-full bg-white">
 
         </div>

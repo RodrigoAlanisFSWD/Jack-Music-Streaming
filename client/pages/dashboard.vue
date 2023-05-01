@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-[calc(100vh-180px)] grid grid-cols-[400px_1fr]">
+    <div class="w-full h-full grid grid-cols-[400px_1fr]">
         <div class="flex flex-col items-center p-8 text-white">
             <img v-if="user?.profile" :src="user?.profile ? 'http://localhost:8080/api/file/' + user?.profile.logo_id : ''" class="w-[200px] h-[200px] rounded-full bg-white" />
             <input ref="fileInput" class="hidden" @change="$emit('change')"

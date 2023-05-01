@@ -15,17 +15,20 @@
             </div>
 
             <div class="text-xl text-white flex w-[150px] justify-around items-center ml-2">
-                <NuxtLink :to="role?.name !== 'ARTIST' ? '/profile' : '/dashboard'">
+                <NuxtLink to="/profile">
                     <i class="uil uil-user"></i>
+                </NuxtLink>
+                <NuxtLink v-if="role?.name === 'ARTIST'" to="/dashboard">
+                    <i class="uil uil-create-dashboard"></i>
                 </NuxtLink>
                 <i class="uil uil-envelope"></i>
                 <i class="uil uil-setting"></i>
             </div>
         </header>
 
-        <app-search class="w-[400px]"></app-search>
+        <!-- <app-search class="w-[400px]"></app-search> -->
 
-        <app-navigation class="h-full"></app-navigation>
+        <app-navigation class="h-full col-start-3"></app-navigation>
     </div>
 </template>
 

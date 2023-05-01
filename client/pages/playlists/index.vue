@@ -3,7 +3,7 @@ import { Ref } from 'vue'
 import { Playlist } from '~~/models/playlist'
 
 definePageMeta({
-    layout: "player",
+    layout: "main",
     middleware: "auth"
 })
 
@@ -22,10 +22,11 @@ onMounted(async () => {
 </script>
 
 <template>
-<div class="w-full h-[calc(100vh-180px)]">
+    <div class="w-full h-full">
         <app-pagination @change-page="fetchData">
             <div class="w-full h-full flex flex-col">
-                <div class="grid grid-cols-3 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
+                <div
+                    class="grid grid-cols-3 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
                     <span class="justify-self-start">
                         Title
                     </span>

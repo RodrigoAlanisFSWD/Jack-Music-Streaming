@@ -56,11 +56,11 @@ const handlePrevSong = () => {
 </script> 
 
 <template>
-    <div class="w-full h-auto bg-secondary text-white flex justify-center items-center border-t border-[#343434]">
-        <div class="flex absolute left-5 bottom-5">
+    <div class="w-full bg-secondary text-white flex justify-center items-center border-t border-[#343434] h-[75px]">
+        <div class="flex absolute left-5 bottom-0">
             <img v-if="song" :src="song ? 'http://localhost:8080/api/file/' + song?.logo_id : ''"
                 class="w-[75px] h-[75px] bg-white mr-5" />
-            <div>
+            <div class="pt-2">
                 <h2>
                     {{ song?.name }}
                 </h2>
@@ -70,7 +70,7 @@ const handlePrevSong = () => {
             </div>
         </div>
         <div class="flex flex-col items-center">
-            <div class="mb-3 flex items-center mt-5">
+            <div class="mb-1 flex items-center mt-4">
                 <i class="uil uil-step-backward text-[#dcdc] cursor-pointer" @click="handlePrevSong"></i>
                 <div class="mx-5 cursor-pointer">
                     <i v-if="!playing" class="uil uil-play text-2xl" @click="play()"></i>

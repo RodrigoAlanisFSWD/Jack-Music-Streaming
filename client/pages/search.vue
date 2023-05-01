@@ -3,7 +3,7 @@ import { Ref } from 'vue';
 import { Song } from '../../models/song'
 
 definePageMeta({
-    layout: "player"
+    layout: "main"
 })
 
 const { getSongs } = useSongsService()
@@ -21,13 +21,29 @@ const fetchData = async (page: number) => {
 onMounted(async () => {
     await fetchData(1)
 })
+
+const user = useUser()
 </script>
 
 <template>
-    <div class="w-full h-[calc(100vh-180px)]">
+    <div class="w-full h-full">
         <app-pagination @change-page="fetchData">
+            <div class="flex justify-between h-[75px] items-center px-5">
+                <app-search class="w-[400px] h-[45px]"></app-search>
+                <div class="flex text-white items-center bg-black p-2 rounded-full w-[200px] justify-between">
+                    <div class="flex items-center">
+                        <img v-if="user?.profile" :src="user?.profile ? 'http://localhost:8080/api/file/' + user?.profile.logo_id : ''" class="w-[30px] h-[30px] bg-white rounded-full" />
+                        <h3 class="ml-5">
+                            {{ user?.name }}
+                        </h3>
+                    </div>
+
+                    <i class="uil uil-angle-down text-2xl"></i>
+                </div>
+            </div>
             <div class="w-full h-full flex flex-col">
-                <div class="grid grid-cols-4 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
+                <div
+                    class="grid grid-cols-4 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
                     <span class="justify-self-start">
                         Title
                     </span>

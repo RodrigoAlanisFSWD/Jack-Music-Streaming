@@ -3,7 +3,7 @@ import { Ref } from 'vue'
 import { Playlist } from '~~/models/playlist'
 
 definePageMeta({
-    layout: "player",
+    layout: "main",
     middleware: "auth"
 })
 
@@ -30,7 +30,7 @@ const handlePlay = () => {
 
 <template>
     <div
-        class="w-full h-[calc(100vh-180px)] bg-[linear-gradient(90deg,#B18CFF_0%,#515ada_100%)] grid grid-rows-[300px_1fr]">
+        class="w-full h-full bg-[linear-gradient(90deg,#B18CFF_0%,#515ada_100%)] grid grid-rows-[300px_1fr]">
         <div class="p-12 flex text-white">
             <img :src="playlist ? 'http://localhost:8080/api/file/' + playlist?.logo_id : ''"
                 class="w-[200px] h-[200px] bg-white mr-5 cursor-pointer shadow-2xl" />

@@ -2,7 +2,7 @@
     <ul class="text-white flex items-center justify-end h-full">
         <template v-if="status === AuthStatus.AUTHENTICATED">
             <app-nav-link>Home</app-nav-link>
-            <app-nav-link to="/songs">Songs</app-nav-link>
+            <app-nav-link to="/search">Search</app-nav-link>
             <app-nav-link to="/playlists">Playlists</app-nav-link>
         </template>
 
