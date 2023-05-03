@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full flex justify-center items-center">
-        <div class="w-1/4 h-2/4 border border-white rounded-md flex flex-col justify-center items-center text-white">
+        <div class="w-2/5 h-3/5 border border-white rounded-md flex flex-col justify-center items-center text-white">
             <h2 class="text-xl">
                 {{ user?.name }}
             </h2>
@@ -16,7 +16,8 @@
 
 <script lang="ts" setup>
     definePageMeta({
-        middleware: 'auth'
+        middleware: 'auth',
+        layout: 'main'
     })
 
     const authStore = useAuthStore()

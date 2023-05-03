@@ -7,13 +7,15 @@
         </ul>
         <div class="mt-12">
             <div class="border-b border-light pb-5">
-                <div class="flex items-center hover:text-white transition-all duration-200 cursor-pointer">
-                    <i
-                        class="uil uil-plus text-xl bg-gray-300 text-black h-[25px] w-[25px] flex justify-center items-center rounded-sm"></i>
-                    <h3 class="text-sm ml-5">
-                        Create Playlist
-                    </h3>
-                </div>
+                <NuxtLink to="/playlists/create">
+                    <div class="flex items-center hover:text-white transition-all duration-200 cursor-pointer">
+                        <i
+                            class="uil uil-plus text-xl bg-gray-300 text-black h-[25px] w-[25px] flex justify-center items-center rounded-sm"></i>
+                        <h3 class="text-sm ml-5">
+                            Create Playlist
+                        </h3>
+                    </div>
+                </NuxtLink>
             </div>
             <ul class="flex flex-col pt-2">
                 <li class="py-2" v-for="playlist in playlists">

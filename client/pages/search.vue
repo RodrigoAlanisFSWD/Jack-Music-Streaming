@@ -33,9 +33,11 @@ const user = useUser()
                 <div class="flex text-white items-center bg-black p-2 rounded-full w-[200px] justify-between">
                     <div class="flex items-center">
                         <img v-if="user?.profile" :src="user?.profile ? 'http://localhost:8080/api/file/' + user?.profile.logo_id : ''" class="w-[30px] h-[30px] bg-white rounded-full" />
-                        <h3 class="ml-5">
-                            {{ user?.name }}
-                        </h3>
+                        <NuxtLink to="/profile">
+                            <h3 class="ml-5">
+                                {{ user?.name }}
+                            </h3>
+                        </NuxtLink>
                     </div>
 
                     <i class="uil uil-angle-down text-2xl"></i>
