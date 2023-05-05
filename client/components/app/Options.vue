@@ -13,8 +13,11 @@ const handleClickOutside = () => {
     <div v-click-outside="handleClickOutside">
         <i class="uil uil-ellipsis-v m-5 text-xl" @click="show = !show"></i>
 
-        <div v-if="show" class="absolute w-[175px] min-h-[50px] bg-[#222] rounded-md z-30 right-5 mt-2 overflow-hidden">
-            <slot></slot>
-        </div>
+        <Transition enter-from-class="opacity-0" enter-active-class="transition duration-300" leave-to-class="opacity-0"
+            leave-active-class="transition duration-300">
+            <div v-if="show" class="absolute w-[175px] min-h-[50px] bg-[#222] rounded-md z-30 right-5 mt-2 overflow-hidden">
+                <slot></slot>
+            </div>
+        </Transition>
     </div>
 </template>

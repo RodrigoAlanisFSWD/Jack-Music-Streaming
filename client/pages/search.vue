@@ -26,6 +26,7 @@ onMounted(async () => {
 const user = useUser()
 
 const showPlaylistModal = ref(false)
+const selectedSong = ref(0)
 </script>
 
 <template>
@@ -35,7 +36,9 @@ const showPlaylistModal = ref(false)
                 <app-search class="w-[400px] h-[45px]"></app-search>
                 <div class="flex text-white items-center bg-black p-2 rounded-full w-[200px] justify-between">
                     <div class="flex items-center">
-                        <img v-if="user?.profile" :src="user?.profile ? 'http://localhost:8080/api/file/' + user?.profile.logo_id : ''" class="w-[30px] h-[30px] bg-white rounded-full" />
+                        <img v-if="user?.profile"
+                            :src="user?.profile ? 'http://localhost:8080/api/file/' + user?.profile.logo_id : ''"
+                            class="w-[30px] h-[30px] bg-white rounded-full" />
                         <NuxtLink to="/profile">
                             <h3 class="ml-5">
                                 {{ user?.name }}
@@ -62,9 +65,12 @@ const showPlaylistModal = ref(false)
                         <i class="uil uil-clock"></i>
                     </span>
                 </div>
-                <app-song @show-playlist-modal="showPlaylistModal = true" v-for="song in songs" :key="song.id" :song="song"></app-song>
+                <app-song @show-playlist-modal="(id: number) => {
+                    selectedSong = id
+                    showPlaylistModal = true
+                }" v-for="song in songs" :key="song.id" :song="song"></app-song>
             </div>
         </app-pagination>
-        <app-select-playlist-modal @hide="showPlaylistModal = false" :show="showPlaylistModal"></app-select-playlist-modal>
+        <app-select-playlist-modal :selected-song="selectedSong" @hide="showPlaylistModal = false" :show="showPlaylistModal"></app-select-playlist-modal>
     </div>
 </template>

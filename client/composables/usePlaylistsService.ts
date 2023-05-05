@@ -77,6 +77,14 @@ export const usePlaylistsService = () => {
         }
     }
 
+    const addSong = async (songID: number, playlistID: number) => {
+        try {
+            await api.put(`/playlist/addSong/${playlistID}/${songID}`)
+        } catch (error) {
+            playlistsStore.setError("Error At Deleting. Try Again Later")
+        }
+    }
+
     return {
         getPlaylists,
         createPlaylist,
@@ -86,6 +94,7 @@ export const usePlaylistsService = () => {
         getPlaylistsByAuthor,
         getPlaylist,
         updatePlaylist,
-        deletePlaylist
+        deletePlaylist,
+        addSong
     }
 }

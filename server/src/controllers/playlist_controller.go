@@ -123,6 +123,7 @@ func (p *playlistController) AddSong(c echo.Context) error {
 	playlist, err := p.playlistService.GetPlaylist(playlistID)
 
 	if err != nil {
+		fmt.Println(err)
 		return errors.NotFoundError()
 	}
 
@@ -154,6 +155,8 @@ func (p *playlistController) UpdatePlaylistLogo(c echo.Context) error {
 	}
 
 	playlist, err := p.playlistService.GetPlaylist(playlistID)
+
+	fmt.Println(playlist)
 
 	if err != nil {
 		return errors.NotFoundError()

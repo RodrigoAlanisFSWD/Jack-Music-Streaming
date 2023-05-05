@@ -37,7 +37,7 @@ const emit = defineEmits(['showPlaylistModal'])
             </span>
         </div>
         <app-options>
-            <app-option @click="emit('showPlaylistModal')" icon="uil uil-plus-circle">
+            <app-option @click="emit('showPlaylistModal', song.id)" icon="uil uil-plus-circle">
                     Add To Playlist
             </app-option>
         </app-options>

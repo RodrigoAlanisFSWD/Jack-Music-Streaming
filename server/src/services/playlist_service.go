@@ -59,6 +59,12 @@ func (p *playlistService) AddSong(playlist *models.Playlist, songID interface{})
 		return playlist, err
 	}
 
+	for _, s := range playlist.Songs {
+		if song.ID == s.ID {
+			return playlist, err
+		}
+	}
+
 	return p.playlistRepository.AddSong(playlist, song)
 }
 

@@ -43,7 +43,7 @@ func (p *playlistRepository) FindOne(query string, args ...interface{}) (*models
 func (p *playlistRepository) FindMany(query string, args ...interface{}) (*[]models.Playlist, error) {
 	var playlists []models.Playlist
 
-	err := p.DB.Model(&playlists).Preload("Author").Where(query, args).Find(&playlists).Error
+	err := p.DB.Model(&playlists).Preload("Author").Preload("Songs").Where(query, args).Find(&playlists).Error
 
 	if err != nil {
 		return &playlists, err
