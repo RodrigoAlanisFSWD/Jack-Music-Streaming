@@ -1,3 +1,4 @@
+import { Playlist } from "~~/models/playlist"
 import { Song } from "~~/models/song"
 
 export const usePlaylistsService = () => {
@@ -30,9 +31,9 @@ export const usePlaylistsService = () => {
         return data
     }
 
-    const createPlaylist = async (song: any) => {
+    const createPlaylist = async (playlist: any) => {
         try {
-            const { data } = await api.post<Song>("/playlist/", song)
+            const { data } = await api.post<Playlist>("/playlist/", playlist)
 
             return data
         } catch (error) {
@@ -41,9 +42,9 @@ export const usePlaylistsService = () => {
 
     }
 
-    const updatePlaylist = async (song: any) => {
+    const updatePlaylist = async (playlist: any) => {
         try {
-            const { data } = await api.put<Song>("/playlist/update", song)
+            const { data } = await api.put<Playlist>("/playlist/update", playlist)
 
             return data
         } catch (error) {
@@ -62,9 +63,9 @@ export const usePlaylistsService = () => {
         }
     }
 
-    const deletePlaylist = async (songID: number) => {
+    const deletePlaylist = async (playlistID: number) => {
         try {
-            const { data } = await api.delete("/playlist/" + songID)
+            const { data } = await api.delete("/playlist/" + playlistID)
 
             playlistsStore.deletePlaylist(data)
 

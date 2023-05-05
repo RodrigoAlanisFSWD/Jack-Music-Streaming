@@ -1,5 +1,5 @@
 <template>
-    <div class="col-span-2 w-full h-full p-8 text-white text-opacity-60">
+    <div class="col-span-2 w-full h-full p-8 text-white text-opacity-60 z-50">
         <ul class="flex flex-col h-[150px] justify-around">
             <app-side-nav-item text="Home" to="/" />
             <app-side-nav-item text="Search" icon="uil uil-search" />
@@ -41,7 +41,10 @@ const user = useUser()
 const playlists: Ref<Playlist[]> = ref([])
 
 const fetchData = async (page: number) => {
-    playlists.value = await getPlaylistsByAuthor(user.value?.id as number)
+    console.log(user.value)
+    if (user.value) {
+        playlists.value = await getPlaylistsByAuthor(user.value?.id as number)
+    }
 }
 
 onMounted(async () => {

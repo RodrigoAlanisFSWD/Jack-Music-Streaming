@@ -91,6 +91,7 @@ func (p *playlistService) UploadPlaylistLogo(playlist *models.Playlist, logoForm
 	err = database.DB.Where("id != 1 AND id != 2").Delete(oldLogo).Error
 
 	if err != nil {
+		fmt.Println(err)
 		return playlist, err
 	}
 

@@ -1,4 +1,4 @@
 export interface SelectItem {
-    key: number;
+    key: number | string;
     name: string;
 }

@@ -1,21 +1,22 @@
 <script lang="ts" setup>
 import { SelectItem } from '../../models/select'
 
-const { onSelect } = defineProps<{
+defineProps<{
     placeholder: string,
     label: string,
     error: object,
     items: Array<SelectItem>,
     selectedItem: SelectItem | null,
-    onSelect: (item: SelectItem) => void
 }>()
 
 const show = ref(false)
 
+const emit = defineEmits(['select'])
+
 const handleSelect = (item: SelectItem) => {
     show.value = false;
 
-    onSelect(item)
+    emit('select', item)
 }
 </script>
 

@@ -31,7 +31,7 @@ func (p *playlistRepository) Save(playlist *models.Playlist) (*models.Playlist, 
 func (p *playlistRepository) FindOne(query string, args ...interface{}) (*models.Playlist, error) {
 	var playlist models.Playlist
 
-	err := p.DB.Model(&playlist).Where(query, args).Preload("Author").Preload("Songs").Preload("Songs.Author").First(&playlist).Error
+	err := p.DB.Model(&playlist).Where(query, args).Preload("Author").Preload("Songs").Preload("Songs.Author").Preload("Logo").First(&playlist).Error
 
 	if err != nil {
 		return &playlist, err

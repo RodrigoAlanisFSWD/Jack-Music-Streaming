@@ -19,6 +19,12 @@ export const usePlaylistsStore = defineStore("PlaylistsStore", {
         },
         deletePlaylist(playlist: Playlist) {
             this.playlists = this.playlists.filter((p: Playlist) => p.id !== playlist.id)
+        },
+        addPlaylist(playlist: Playlist) {
+            this.playlists = [
+                ...this.playlists,
+                playlist
+            ]
         }
     }
 })

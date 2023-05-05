@@ -3,7 +3,8 @@ import { Ref } from 'vue';
 import { Song } from '../../models/song'
 
 definePageMeta({
-    layout: "main"
+    layout: "main",
+    middleware: "auth"
 })
 
 const { getSongs } = useSongsService()
@@ -23,6 +24,8 @@ onMounted(async () => {
 })
 
 const user = useUser()
+
+const showPlaylistModal = ref(false)
 </script>
 
 <template>
@@ -45,7 +48,7 @@ const user = useUser()
             </div>
             <div class="w-full h-full flex flex-col">
                 <div
-                    class="grid grid-cols-4 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2">
+                    class="grid grid-cols-4 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2 pr-[80px]">
                     <span class="justify-self-start">
                         Title
                     </span>
@@ -59,8 +62,9 @@ const user = useUser()
                         <i class="uil uil-clock"></i>
                     </span>
                 </div>
-                <app-song v-for="song in songs" :key="song.id" :song="song"></app-song>
+                <app-song @show-playlist-modal="showPlaylistModal = true" v-for="song in songs" :key="song.id" :song="song"></app-song>
             </div>
         </app-pagination>
+        <app-select-playlist-modal @hide="showPlaylistModal = false" :show="showPlaylistModal"></app-select-playlist-modal>
     </div>
 </template>

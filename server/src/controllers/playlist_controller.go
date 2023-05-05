@@ -163,7 +163,7 @@ func (p *playlistController) UpdatePlaylistLogo(c echo.Context) error {
 		return errors.UnauthorizedError()
 	}
 
-	logoFormFile, err := c.FormFile("songMedia")
+	logoFormFile, err := c.FormFile("logo")
 
 	if err != nil {
 		return err
