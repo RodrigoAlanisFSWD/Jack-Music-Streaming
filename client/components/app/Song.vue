@@ -36,10 +36,8 @@ const emit = defineEmits(['showPlaylistModal'])
                 {{ song?.duration }}
             </span>
         </div>
-        <app-options>
-            <app-option @click="emit('showPlaylistModal', song.id)" icon="uil uil-plus-circle">
-                    Add To Playlist
-            </app-option>
-        </app-options>
+        <slot name="options">
+
+        </slot>
     </div>
 </template>

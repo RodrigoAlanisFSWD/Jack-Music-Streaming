@@ -81,6 +81,14 @@ export const usePlaylistsService = () => {
         try {
             await api.put(`/playlist/addSong/${playlistID}/${songID}`)
         } catch (error) {
+            playlistsStore.setError("Error At Adding. Try Again Later")
+        }
+    }
+
+    const removeSong = async (songID: number, playlistID: number) => {
+        try {
+            await api.delete(`/playlist/removeSong/${playlistID}/${songID}`)
+        } catch (error) {
             playlistsStore.setError("Error At Deleting. Try Again Later")
         }
     }
@@ -95,6 +103,7 @@ export const usePlaylistsService = () => {
         getPlaylist,
         updatePlaylist,
         deletePlaylist,
-        addSong
+        addSong,
+        removeSong
     }
 }

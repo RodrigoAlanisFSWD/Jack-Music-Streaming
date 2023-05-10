@@ -9,7 +9,7 @@ const { show, selectedSong } = defineProps<{
     selectedSong: number
 }>()
 
-const { getPlaylistsByAuthor, addSong } = usePlaylistsService()
+const { getPlaylistsByAuthor, addSong, removeSong } = usePlaylistsService()
 const user = useUser()
 const router = useRouter()
 
@@ -38,14 +38,20 @@ const handleClickOutside = () => {
 const handleSelectPlaylist = async (playlist: Playlist, song: any) => {
     await addSong(song, playlist.id)
 
-    router.push("/playlists/detail/" + playlist.id)
+    const index = playlists.value.findIndex((p: Playlist) => p.id === playlist.id)
+
+    playlists.value[index].songs.push({
+        id: song
+    } as any)
 }
 
-const getPlaylists = computed(() => {
-    return playlists.value.filter((playlist: Playlist) => {
-        return !playlist.songs.find((song: Song) => song.id == selectedSong)
-    })
-})
+const handleRemoveFromPlaylist = async (playlist: Playlist, song: any) => {
+    await removeSong(song, playlist.id)
+
+    const index = playlists.value.findIndex((p: Playlist) => p.id === playlist.id)
+
+    playlists.value[index].songs = playlists.value[index].songs.filter((s: Song) => s.id != song)
+}
 </script>
 
 <template>
@@ -68,14 +74,11 @@ const getPlaylists = computed(() => {
                         <div class="p-5 pt-0">
                             <app-search class="w-full"></app-search>
                         </div>
-                        <div v-for="playlist in getPlaylists" :key="playlist.id">
-                            <app-playlist :info="false" :playlist="playlist" 
-                                 v-if="!playlist.songs.find((song: Song) => song.id == selectedSong)">
+                        <div>
+                            <app-playlist v-for="playlist in playlists" :key="playlist.id" :info="false"
+                                :playlist="playlist">
                                 <template #action>
-                                    <app-button @click="handleSelectPlaylist(playlist, selectedSong)"
-                                        class="w-[44px] h-[45px]">
-                                        <i class="uil uil-plus"></i>
-                                    </app-button>
+                                    <app-check @click="!!playlist.songs.find((song: Song) => song.id === selectedSong) ? handleRemoveFromPlaylist(playlist, selectedSong) : handleSelectPlaylist(playlist, selectedSong)" :active="!!playlist.songs.find((song: Song) => song.id === selectedSong)"></app-check>
                                 </template>
                             </app-playlist>
                         </div>

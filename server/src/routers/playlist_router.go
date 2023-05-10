@@ -20,4 +20,5 @@ func PlaylistRouter(api *echo.Group) {
 	playlist.PUT("/addSong/:playlist/:song", playlistController.AddSong)
 	playlist.POST("/logo/:playlist", playlistController.UpdatePlaylistLogo)
 	playlist.GET("/all/:page", playlistController.GetAll)
+	playlist.DELETE("/removeSong/:playlist/:song", playlistController.RemoveSong)
 }

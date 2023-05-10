@@ -103,3 +103,13 @@ func (p *playlistService) UploadPlaylistLogo(playlist *models.Playlist, logoForm
 
 	return updatedPlaylist, err
 }
+
+func (p *playlistService) RemoveSong(playlist *models.Playlist, songID interface{}) (*models.Playlist, error) {
+	song, err := p.songService.GetSongByID(songID)
+
+	if err != nil {
+		return playlist, err
+	}
+
+	return p.playlistRepository.RemoveSong(playlist, song)
+}

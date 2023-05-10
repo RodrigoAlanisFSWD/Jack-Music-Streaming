@@ -8,7 +8,7 @@ type Playlist struct {
 	AuthorID uint   `json:"author_id"`
 	Author   User   `json:"author"`
 	Type     string `json:"type"`
-	Songs    []Song `json:"songs" gorm:"many2many:playlist_songs;"`
+	Songs    []Song `json:"songs" gorm:"many2many:playlist_songs;constraint:OnDelete:SET NULL;"`
 	LogoID   uint   `json:"logo_id"`
 	Logo     File   `json:"logo"`
 }
@@ -19,6 +19,7 @@ type PlaylistRepository interface {
 	FindMany(query string, args ...interface{}) (*[]Playlist, error)
 	Update(playlist *Playlist) (*Playlist, error)
 	AddSong(playlist *Playlist, song *Song) (*Playlist, error)
+	RemoveSong(playlist *Playlist, song *Song) (*Playlist, error)
 	GetPage(page int) ([]Playlist, error)
 }
 
@@ -30,4 +31,5 @@ type PlaylistService interface {
 	AddSong(playlist *Playlist, songID interface{}) (*Playlist, error)
 	UploadPlaylistLogo(playlist *Playlist, logoFormFile *multipart.FileHeader) (*Playlist, error)
 	GetAll(page int) ([]Playlist, error)
+	RemoveSong(playlist *Playlist, songID interface{}) (*Playlist, error)
 }

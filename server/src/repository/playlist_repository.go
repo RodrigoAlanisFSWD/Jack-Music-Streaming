@@ -69,6 +69,36 @@ func (p *playlistRepository) AddSong(playlist *models.Playlist, song *models.Son
 	return p.Update(playlist)
 }
 
+func (p *playlistRepository) RemoveSong(playlist *models.Playlist, song *models.Song) (*models.Playlist, error) {
+	err := p.DB.Session(&gorm.Session{FullSaveAssociations: true}).Model(playlist).Association("Songs").Delete(song)
+
+	if err != nil {
+		fmt.Println(err)
+		return playlist, err
+	}
+
+	// updated, err := p.Update(playlist)
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return playlist, err
+	// }
+
+	// var filteredArray []models.Song
+
+	// for _, s := range playlist.Songs {
+	// 	if s.ID != song.ID {
+	// 		filteredArray = append(filteredArray, s)
+	// 	}
+	// }
+
+	// fmt.Println(len(filteredArray))
+
+	// updated.Songs = filteredArray
+
+	return p.Update(playlist)
+}
+
 func (p *playlistRepository) GetPage(page int) ([]models.Playlist, error) {
 	var playlists []models.Playlist
 
