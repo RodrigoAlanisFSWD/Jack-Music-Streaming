@@ -12,7 +12,7 @@ const router = useRouter()
 <template>
     <div class="w-full p-3 text-white px-5" :class="{
         'grid grid-cols-3 justify-items-center items-center': info,
-        'flex justify-between': !info
+        'flex justify-between items-center': !info
     }">
         <div class="flex justify-self-start">
             <img :src="playlist ? 'http://localhost:8080/api/file/' + playlist?.logo_id : ''"
