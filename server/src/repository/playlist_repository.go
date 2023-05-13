@@ -64,7 +64,7 @@ func (p *playlistRepository) Update(playlist *models.Playlist) (*models.Playlist
 }
 
 func (p *playlistRepository) AddSong(playlist *models.Playlist, song *models.Song) (*models.Playlist, error) {
-	playlist.Songs = append(playlist.Songs, *song)
+	playlist.Songs = append(playlist.Songs, song)
 
 	return p.Update(playlist)
 }

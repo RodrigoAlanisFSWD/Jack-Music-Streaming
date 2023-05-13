@@ -15,6 +15,7 @@ export const usePlayer = () => {
 
     // Set Song Store Method
     const setSong = (song: Song) => {
+        playerStore.setLoading(true)
         if (playing.value) {
             songMedia.value.stop()
         }
@@ -37,6 +38,7 @@ export const usePlayer = () => {
                 playerStore.setDuration(formatTime(newSongMedia.duration()))
                 newSongMedia.play()
                 playerStore.setStatus(true)
+                playerStore.setLoading(false)
             },
             onend: function () {
                 playerStore.setStatus(false)

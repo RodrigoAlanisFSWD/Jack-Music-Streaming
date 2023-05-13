@@ -63,10 +63,13 @@ const router = useRouter()
 
 const { getSongsByAuthor, state: { songs } } = useSongsService()
 const { uploadUserLogo } = useAuthService()
+const { setPlaylist } = usePlayer()
 
 onMounted(async () => {
     if (user.value) {
-        await getSongsByAuthor(user.value?.id as number)
+        const songs = await getSongsByAuthor(user.value?.id as number)
+
+        setPlaylist(songs)
     }
 })
 

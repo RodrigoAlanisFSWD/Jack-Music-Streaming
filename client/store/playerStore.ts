@@ -21,7 +21,7 @@ export const usePlayerStore = defineStore("PlayerStore", {
         currentTime: "0:00",
         barWidth: "0%",
         playing: false,
-        loading: true,
+        loading: false,
         song: null,
         playlist: [],
     }),
@@ -36,7 +36,6 @@ export const usePlayerStore = defineStore("PlayerStore", {
             this.duration = "0:00"
             this.currentTime = "0:00"
             this.barWidth = "0%"
-            this.loading = true
             this.song = null
         },
         setDuration(duration: string) {
@@ -48,15 +47,17 @@ export const usePlayerStore = defineStore("PlayerStore", {
         setBarWidth(barWidth: string) {
             this.barWidth = barWidth
         },
-        setStatus(playing: boolean, loading: boolean = false) {
+        setStatus(playing: boolean) {
             this.playing = playing;
-            this.loading = loading;
         },
         setSong(song: Song) {
             this.song = song;
         },
         setPlaylist(playlist: Song[]) {
             this.playlist = playlist
+        },
+        setLoading(loading: boolean) {
+            this.loading = loading
         }
     }
 })

@@ -21,7 +21,7 @@ const submit = async ({ name, duration, media, logo }: any) => {
     if (song) {
         await uploadSongMedia(song.id, formData)
 
-        router.push("/songs")
+        router.push("/dashboard")
     }
 }
 </script>

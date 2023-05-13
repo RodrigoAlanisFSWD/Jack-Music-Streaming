@@ -4,13 +4,13 @@ import "mime/multipart"
 
 type Playlist struct {
 	Model
-	Name     string `json:"name"`
-	AuthorID uint   `json:"author_id"`
-	Author   User   `json:"author"`
-	Type     string `json:"type"`
-	Songs    []Song `json:"songs" gorm:"many2many:playlist_songs;constraint:OnDelete:SET NULL;"`
-	LogoID   uint   `json:"logo_id"`
-	Logo     File   `json:"logo"`
+	Name     string  `json:"name"`
+	AuthorID uint    `json:"author_id"`
+	Author   User    `json:"author"`
+	Type     string  `json:"type"`
+	Songs    []*Song `json:"songs" gorm:"many2many:playlist_songs;constraint:OnDelete:CASCADE;"`
+	LogoID   uint    `json:"logo_id"`
+	Logo     File    `json:"logo"`
 }
 
 type PlaylistRepository interface {

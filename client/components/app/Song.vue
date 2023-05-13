@@ -17,7 +17,7 @@ const emit = defineEmits(['showPlaylistModal'])
                 <img :src="song ? 'http://localhost:8080/api/file/' + song?.logo_id : ''"
                     class="w-[50px] h-[50px] bg-white mr-5 cursor-pointer" @click="setSong(song)" />
                 <div>
-                    <h2 class="hover:text-primary cursor-pointer"
+                    <h2 class="hover:text-primary cursor-pointer w-[175px] overflow-hidden text-ellipsis whitespace-nowrap"
                         :class="{ 'text-primary': state.song.value?.id === song.id }" @click="setSong(song)">
                         {{ song?.name }}
                     </h2>

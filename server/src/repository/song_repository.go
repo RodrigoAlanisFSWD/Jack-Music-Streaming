@@ -66,6 +66,7 @@ func (u *songRepository) FindOne(query string, args ...interface{}) (*models.Son
 }
 
 func (u *songRepository) Delete(song *models.Song) error {
+	u.DB.Model(song).Session(&gorm.Session{FullSaveAssociations: true}).Association("Playlists").Clear()
 	u.DB.Where("id = ?", song.ID).Select("Media").Select("Logo").Delete(song)
 	return nil
 }

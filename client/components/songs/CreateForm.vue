@@ -158,7 +158,7 @@ const { state: { error }, songsStore } = useSongsService()
                 </p>
                 <div class="flex my-5 w-full justify-between">
                     <div class="flex">
-                        <img v-if="song" :src="songLogoURL ? songLogoURL : ''" class="w-[75px] h-[75px] bg-white mr-5" />
+                        <img v-if="song" :src="songLogoURL ? songLogoURL : 'http://localhost:8080/api/file/2'" class="w-[75px] h-[75px] bg-white mr-5" />
                         <div>
                             <h2>
                                 {{ song?.name ? song.name : 'Song Name' }}

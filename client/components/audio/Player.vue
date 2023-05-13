@@ -3,7 +3,7 @@ import { Howl } from 'howler';
 import { Ref } from 'vue';
 import { Song } from '~~/models/song';
 
-const { state: { song, duration, currentTime, barWidth, playing, playlist }, play, pause, seek, mainBar, setSong, setPlaylist } = usePlayer()
+const { state: { song, duration, currentTime, barWidth, playing, playlist, loading }, play, pause, seek, mainBar, setSong, playerStore } = usePlayer()
 const { state: { songs } } = useSongsService()
 
 const bar: Ref<HTMLDivElement | null> = ref(null)
@@ -71,12 +71,18 @@ const handlePrevSong = () => {
         </div>
         <div class="flex flex-col items-center">
             <div class="mb-1 flex items-center mt-4">
-                <i class="uil uil-step-backward text-[#dcdc] cursor-pointer" @click="handlePrevSong"></i>
+                <button :disabled="loading" @click="handlePrevSong">
+                    <i class="uil uil-step-backward text-[#dcdc] transition-all duration-200"
+                        :class="{ 'opacity-25': loading }"></i>
+                </button>
                 <div class="mx-5 cursor-pointer">
                     <i v-if="!playing" class="uil uil-play text-2xl" @click="play()"></i>
                     <i v-else class="uil uil-pause text-2xl" @click="pause()"></i>
                 </div>
-                <i class="uil uil-skip-forward text-[#dcdc] cursor-pointer" @click="handleNextSong"></i>
+                <button :disabled="loading" @click="handleNextSong">
+                    <i class="uil uil-skip-forward text-[#dcdc] transition-all duration-200"
+                        :class="{ 'opacity-25': loading }"></i>
+                </button>
             </div>
 
             <div class="flex items-center">

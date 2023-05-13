@@ -4,14 +4,15 @@ import "mime/multipart"
 
 type Song struct {
 	Model
-	Name     string `json:"name" gorm:"unique"`
-	Duration string `json:"duration"`
-	AuthorID uint   `json:"author_id"`
-	Author   User   `json:"author"`
-	MediaID  uint   `json:"media_id"`
-	Media    File   `json:"media"`
-	LogoID   uint   `json:"logo_id"`
-	Logo     File   `json:"logo"`
+	Name      string      `json:"name" gorm:"unique"`
+	Duration  string      `json:"duration"`
+	AuthorID  uint        `json:"author_id"`
+	Author    User        `json:"author"`
+	MediaID   uint        `json:"media_id"`
+	Media     File        `json:"media"`
+	LogoID    uint        `json:"logo_id"`
+	Logo      File        `json:"logo"`
+	Playlists []*Playlist `json:"playlists" gorm:"many2many:playlist_songs;constraint:OnDelete:CASCADE;"`
 }
 
 type SongRepository interface {
