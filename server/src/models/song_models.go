@@ -22,6 +22,7 @@ type SongRepository interface {
 	GetPage(page int) ([]Song, error)
 	Delete(song *Song) error
 	Update(song *Song) (*Song, error)
+	SearchSongs(query string) ([]Song, error)
 }
 
 type SongService interface {
@@ -32,4 +33,5 @@ type SongService interface {
 	GetSongsByAuthor(authorID interface{}) ([]Song, error)
 	Delete(song *Song) error
 	Update(song *Song) (*Song, error)
+	SearchSongs(query string) ([]Song, error)
 }

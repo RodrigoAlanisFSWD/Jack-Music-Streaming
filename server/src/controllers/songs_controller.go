@@ -24,6 +24,7 @@ type SongsController interface {
 	GetUserSongs(c echo.Context) error
 	GetSongByID(c echo.Context) error
 	DeleteSong(c echo.Context) error
+	SearchSongs(c echo.Context) error
 }
 
 func NewSongsController(s models.SongService, a models.AuthService) SongsController {
@@ -209,4 +210,16 @@ func (s songsController) DeleteSong(c echo.Context) error {
 	}
 
 	return c.JSON(200, song)
+}
+
+func (s songsController) SearchSongs(c echo.Context) error {
+	query := c.Param("query")
+
+	songs, err := s.songService.SearchSongs(query)
+
+	if err != nil {
+		return errors.NotFoundError()
+	}
+
+	return c.JSON(200, songs)
 }

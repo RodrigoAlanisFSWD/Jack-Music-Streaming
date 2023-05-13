@@ -123,3 +123,7 @@ func (u *songService) Delete(song *models.Song) error {
 func (u *songService) Update(song *models.Song) (*models.Song, error) {
 	return u.songRepository.Update(song)
 }
+
+func (u *songService) SearchSongs(query string) ([]models.Song, error) {
+	return u.songRepository.SearchSongs("%" + query + "%")
+}

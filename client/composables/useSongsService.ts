@@ -81,6 +81,18 @@ export const useSongsService = () => {
         }
     }
 
+    const searchSongs = async (query: string) => {
+        try {
+            const { data } = await api.get("/songs/search/" + query)
+
+            songsStore.setSongs(data)
+
+            return data
+        } catch (error) {
+            songsStore.setError("Error At Deleting. Try Again Later")
+        }
+    }
+
     return {
         getSongs,
         createSong,
@@ -90,6 +102,7 @@ export const useSongsService = () => {
         getSongsByAuthor,
         getSong,
         updateSong,
-        deleteSong
+        deleteSong,
+        searchSongs
     }
 }

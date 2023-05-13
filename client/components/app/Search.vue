@@ -6,11 +6,19 @@
         <i class="uil uil-search text-xl mr-2 transition-all duration-200" :class="{
             'text-primary': focus
         }"></i>
-        <input @focus="focus = true" @blur="focus = false" type="text" placeholder="What are you looking for?"
+        <input @keyup.enter="emit('search')" :value="modelValue" @input="emit('update:modelValue', $event.target?.value)" @focus="focus = true" @blur="focus = false" type="text" placeholder="What are you looking for?"
             class="bg-transparent text-sm placeholder:text-white placeholder:opacity-50 outline-none w-full" />
     </div>
 </template>
 
 <script lang="ts" setup>
+// const modelValue = defineModel<string>()
+
+defineProps<{
+    modelValue: string
+}>()
+
 const focus = ref(false)
+
+const emit = defineEmits(['search', 'update:modelValue'])
 </script>

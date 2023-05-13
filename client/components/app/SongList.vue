@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Song } from '~~/models/song';
 
-defineProps<{
+const { songs = [], playlist = false } = defineProps<{
     songs: Song[],
     playlist: boolean
 }>()
