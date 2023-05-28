@@ -102,7 +102,7 @@ func (u *songService) GetSongByID(id interface{}) (*models.Song, error) {
 }
 
 func (u *songService) GetSongsByAuthor(authorID interface{}) ([]models.Song, error) {
-	songs, err := u.songRepository.FindAll("author_id = ?", authorID)
+	songs, err := u.songRepository.FindAll("author_id = ? AND album_id IS NULL", authorID)
 
 	if err != nil {
 		return songs, err

@@ -24,54 +24,19 @@
                 </span>
             </div>
         </div>
-        <div class="flex flex-col items-start">
-            <div
-                class="grid grid-cols-5 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2 w-full">
-                <span class="justify-self-start">
-                    Title
-                </span>
-                <span class="mr-11">
-                    Album
-                </span>
-                <span class="mr-9">
-                    Date added
-                </span>
-                <span class="mr-1">
-                    <i class="uil uil-clock"></i>
-                </span>
-                <span>
-                    Actions
-                </span>
-            </div>
-            <app-song-dashboard v-for="song in songs" :key="song.id" :song="song"></app-song-dashboard>
-            <app-button @click="router.push('/songs/create')" class="mt-8 w-[250px]">Upload Song</app-button>
-        </div>
+        <NuxtPage />
     </div>
 </template>
 
 <script lang="ts" setup>
-import { Ref } from 'vue';
-
 definePageMeta({
     middleware: 'auth',
-    layout: "player"
+    layout: "default"
 })
 
 const user = useUser()
 
-const router = useRouter()
-
-const { getSongsByAuthor, state: { songs } } = useSongsService()
 const { uploadUserLogo } = useAuthService()
-const { setPlaylist } = usePlayer()
-
-onMounted(async () => {
-    if (user.value) {
-        const songs = await getSongsByAuthor(user.value?.id as number)
-
-        setPlaylist(songs)
-    }
-})
 
 const fileInput: Ref<HTMLInputElement | null> = ref(null)
 

@@ -14,15 +14,15 @@
                 </NuxtLink>
             </div>
 
-            <div class="text-xl text-white flex w-[150px] justify-around items-center ml-2">
+            <div class="text-xl text-white flex w-[150px] justify-start items-center ml-2 gap-x-4">
                 <NuxtLink to="/profile">
                     <i class="uil uil-user"></i>
                 </NuxtLink>
                 <NuxtLink v-if="role?.name === 'ARTIST'" to="/dashboard">
                     <i class="uil uil-create-dashboard"></i>
                 </NuxtLink>
-                <i class="uil uil-envelope"></i>
-                <i class="uil uil-setting"></i>
+                <!-- <i class="uil uil-envelope"></i>
+                <i class="uil uil-setting"></i> -->
             </div>
         </header>
 

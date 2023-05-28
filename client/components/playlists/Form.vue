@@ -56,7 +56,7 @@ const user = useUser()
     <div class="text-white w-[400px] flex flex-col items-center">
         <div class="flex my-5 w-full justify-between">
             <div class="flex">
-                <img v-if="playlistData" :src="playlistLogoURL ? playlistLogoURL : ''"
+                <img v-if="playlistData" :src="playlistLogoURL ? playlistLogoURL : 'http://localhost:8080/api/file/2'"
                     class="w-[75px] h-[75px] bg-white mr-5 rounded-full" />
                 <div>
                     <h2>

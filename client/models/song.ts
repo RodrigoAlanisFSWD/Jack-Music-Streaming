@@ -1,4 +1,5 @@
 import { Model } from ".";
+import { Album } from "./album";
 import { User } from "./auth";
 
 export interface Song extends Model {
@@ -10,6 +11,8 @@ export interface Song extends Model {
     media_id: number;
     logo: Media;
     logo_id: number;
+    album_id: number;
+    album: Album;
 }
 
 export interface Media extends Model {

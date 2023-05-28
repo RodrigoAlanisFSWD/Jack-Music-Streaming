@@ -27,7 +27,7 @@ const { deleteSong } = useSongsService()
             </div>
         </div>
         <span>
-            Album Name
+            {{ song?.album_id ? song?.album.name : 'No Album' }}
         </span>
         <span>
             October 5, 2022

@@ -27,7 +27,7 @@ const emit = defineEmits(['showPlaylistModal'])
                 </div>
             </div>
             <span>
-                Album Name
+                {{ song?.album_id ? song?.album.name : 'None' }}
             </span>
             <span>
                 October 5, 2022

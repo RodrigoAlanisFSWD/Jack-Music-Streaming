@@ -20,7 +20,7 @@ func NewSongRepository(db *gorm.DB) models.SongRepository {
 func (u *songRepository) GetPage(page int) ([]models.Song, error) {
 	var songs []models.Song
 
-	err := u.DB.Model(&songs).Limit(15).Offset((page - 1) * 10).Preload("Author").Find(&songs).Error
+	err := u.DB.Model(&songs).Limit(15).Offset((page - 1) * 10).Preload("Author").Preload("Album").Find(&songs).Error
 
 	if err != nil {
 		fmt.Println(err)
@@ -44,7 +44,7 @@ func (u *songRepository) Save(song *models.Song) (*models.Song, error) {
 func (u *songRepository) FindAll(query string, args ...interface{}) ([]models.Song, error) {
 	var songs []models.Song
 
-	err := u.DB.Model(&songs).Where(query, args).Preload("Author").Find(&songs).Error
+	err := u.DB.Model(&songs).Where(query, args).Preload("Author").Preload("Album").Find(&songs).Error
 
 	if err != nil {
 		return songs, err
@@ -56,7 +56,7 @@ func (u *songRepository) FindAll(query string, args ...interface{}) ([]models.So
 func (u *songRepository) FindOne(query string, args ...interface{}) (*models.Song, error) {
 	var song models.Song
 
-	err := u.DB.Model(&song).Where(query, args).Preload("Media").Preload("Logo").First(&song).Error
+	err := u.DB.Model(&song).Where(query, args).Preload("Media").Preload("Logo").Preload("Album").First(&song).Error
 
 	if err != nil {
 		return &song, err
@@ -85,7 +85,7 @@ func (u *songRepository) Update(song *models.Song) (*models.Song, error) {
 func (u *songRepository) SearchSongs(query string) ([]models.Song, error) {
 	var songs []models.Song
 
-	err := u.DB.Model(&songs).Preload("Author").Where("songs.name LIKE ?", query).Find(&songs).Error
+	err := u.DB.Model(&songs).Preload("Author").Preload("Album").Where("songs.name LIKE ?", query).Find(&songs).Error
 
 	return songs, err
 }

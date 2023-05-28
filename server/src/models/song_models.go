@@ -13,6 +13,8 @@ type Song struct {
 	LogoID    uint        `json:"logo_id"`
 	Logo      File        `json:"logo"`
 	Playlists []*Playlist `json:"playlists" gorm:"many2many:playlist_songs;constraint:OnDelete:CASCADE;"`
+	AlbumID   uint        `json:"album_id"`
+	Album     Album       `json:"album"`
 }
 
 type SongRepository interface {
