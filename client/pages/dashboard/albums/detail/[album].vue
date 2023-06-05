@@ -23,6 +23,8 @@ const handleRemove = async (songID: number) => {
         album.value.songs = album.value.songs.filter((song: Song) => song.id != songID)
     }
 }
+
+const showModal = ref(false)
 </script>
 
 <template>
@@ -41,7 +43,7 @@ const handleRemove = async (songID: number) => {
                         </h2>
 
                         <div class="flex justify-center items-center w-[50px] h-[50px] bg-secondary rounded-full ml-5 mt-2">
-                            <i class="uil uil-plus text-2xl text-primary"></i>
+                            <i @click="showModal = true" class="uil uil-plus text-2xl text-primary"></i>
                         </div>
                     </div>
 
@@ -54,5 +56,10 @@ const handleRemove = async (songID: number) => {
         </div>
         <app-album-song-list @remove="handleRemove" class="bg-[#111] bg-opacity-75" v-if="album" :songs="album?.songs">
         </app-album-song-list>
+        <app-add-song-to-album @add-song="(song: Song) => { 
+            album?.songs.push(song)
+            showModal = false
+            }" :album="album" @hide="showModal = false"
+            :show="showModal"></app-add-song-to-album>
     </div>
 </template>
