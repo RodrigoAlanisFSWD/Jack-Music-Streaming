@@ -1,0 +1,54 @@
+<script lang="ts" setup>
+import { Song } from '~~/models/song';
+
+const { songs = [] } = defineProps<{
+    songs: Song[],
+}>()
+
+const emit = defineEmits(['remove'])
+
+const showPlaylistModal = ref(false)
+const selectedSong = ref(0)
+</script>
+
+<template>
+    <div class="w-full h-full">
+        <div class="w-full h-full flex flex-col">
+            <div
+                class="grid grid-cols-4 justify-items-center items-center px-5 text-[#dcdcdc] border-b border-[#343434] py-2 pr-[80px]">
+                <span class="justify-self-start">
+                    Title
+                </span>
+                <span class="mr-11">
+                    Album
+                </span>
+                <span class="mr-9">
+                    Date added
+                </span>
+                <span class="justify-self-end mr-4">
+                    <i class="uil uil-clock"></i>
+                </span>
+            </div>
+            <app-song v-for="song in songs" :key="song.id" :song="song">
+                <template #options>
+                    <app-options>
+                        <app-option @click="() => {
+                            selectedSong = song.id
+                            showPlaylistModal = true
+                        }" icon="uil uil-plus-circle">
+                            Add To Playlist
+                        </app-option>
+                        <app-option @click="emit('remove', song.id)" icon="uil uil-minus-circle">
+                            Remove From Album
+                        </app-option>
+                        <slot name="options">
+
+                        </slot>
+                    </app-options>
+                </template>
+            </app-song>
+        </div>
+        <app-select-playlist-modal :selected-song="selectedSong" @hide="showPlaylistModal = false"
+            :show="showPlaylistModal"></app-select-playlist-modal>
+    </div>
+</template>

@@ -19,7 +19,7 @@ const router = useRouter()
             <img :src="album ? 'http://localhost:8080/api/file/' + album?.logo_id : ''"
                 class="w-[50px] h-[50px] bg-white mr-5 cursor-pointer" @click="router.push('/albums/detail/' + album.id)" />
             <div>
-                <h2 @click="router.push('/albums/detail/' + album.id)" class="hover:text-primary cursor-pointer">
+                <h2 @click="router.push('/dashboard/albums/detail/' + album.id)" class="hover:text-primary cursor-pointer">
                     {{ album?.name }}
                 </h2>
                 <h3 class="text-sm text-[#dcdcdc] hover:text-primary cursor-pointer">

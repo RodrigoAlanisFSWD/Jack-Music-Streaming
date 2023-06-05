@@ -20,8 +20,26 @@ export const useAlbumsService = () => {
         }
     }
 
+    const addSong = async (songID: number, albumID: number) => {
+        try {
+            await api.put(`/albums/addSong/${albumID}/${songID}`)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const removeSong = async (songID: number, albumID: number) => {
+        try {
+            await api.delete(`/albums/removeSong/${albumID}/${songID}`)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return {
         getAlbum,
-        getAlbums
+        getAlbums,
+        addSong,
+        removeSong
     }
 }

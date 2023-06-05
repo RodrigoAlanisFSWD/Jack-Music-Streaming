@@ -19,6 +19,8 @@ type AlbumsController interface {
 	GetUserAlbums(c echo.Context) error
 	GetAlbum(c echo.Context) error
 	UpdateAlbumLogo(c echo.Context) error
+	AddSong(c echo.Context) error
+	RemoveSong(c echo.Context) error
 }
 
 func NewAlbumsController(p models.AlbumService, a models.AuthService) AlbumsController {
@@ -138,6 +140,66 @@ func (p *albumsController) UpdateAlbumLogo(c echo.Context) error {
 	}
 
 	updatedAlbum, err := p.albumService.UploadAlbumLogo(album, logoFormFile)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, updatedAlbum)
+}
+
+func (p *albumsController) AddSong(c echo.Context) error {
+	albumID := c.Param("album")
+	songID := c.Param("song")
+
+	album, err := p.albumService.GetAlbum(albumID)
+
+	if err != nil {
+		fmt.Println(err)
+		return errors.NotFoundError()
+	}
+
+	user, err := p.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return err
+	}
+
+	if album.AuthorID != user.ID {
+		return errors.UnauthorizedError()
+	}
+
+	updatedAlbum, err := p.albumService.AddSong(album, songID)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, updatedAlbum)
+}
+
+func (p *albumsController) RemoveSong(c echo.Context) error {
+	albumID := c.Param("album")
+	songID := c.Param("song")
+
+	album, err := p.albumService.GetAlbum(albumID)
+
+	if err != nil {
+		fmt.Println(err)
+		return errors.NotFoundError()
+	}
+
+	user, err := p.authService.GetUserFromToken(c)
+
+	if err != nil {
+		return err
+	}
+
+	if album.AuthorID != user.ID {
+		return errors.UnauthorizedError()
+	}
+
+	updatedAlbum, err := p.albumService.RemoveSong(album, songID)
 
 	if err != nil {
 		return err

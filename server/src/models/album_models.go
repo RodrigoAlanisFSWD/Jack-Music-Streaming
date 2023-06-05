@@ -17,6 +17,8 @@ type AlbumRepository interface {
 	FindOne(query string, args ...interface{}) (*Album, error)
 	FindMany(query string, args ...interface{}) ([]Album, error)
 	Update(album *Album) (*Album, error)
+	AddSong(album *Album, song *Song) (*Album, error)
+	RemoveSong(album *Album, song *Song) (*Album, error)
 }
 
 type AlbumService interface {
@@ -25,4 +27,6 @@ type AlbumService interface {
 	GetUserAlbums(id interface{}) ([]Album, error)
 	Update(album *Album) (*Album, error)
 	UploadAlbumLogo(album *Album, logoFormFile *multipart.FileHeader) (*Album, error)
+	AddSong(album *Album, songID interface{}) (*Album, error)
+	RemoveSong(album *Album, songID interface{}) (*Album, error)
 }

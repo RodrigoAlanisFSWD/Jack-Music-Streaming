@@ -83,3 +83,29 @@ func (a *albumService) UploadAlbumLogo(album *models.Album, logoFormFile *multip
 
 	return updatedAlbum, err
 }
+
+func (a *albumService) AddSong(album *models.Album, songID interface{}) (*models.Album, error) {
+	song, err := a.songService.GetSongByID(songID)
+
+	if err != nil {
+		return album, err
+	}
+
+	for _, s := range album.Songs {
+		if song.ID == s.ID {
+			return album, err
+		}
+	}
+
+	return a.albumRepository.AddSong(album, song)
+}
+
+func (p *albumService) RemoveSong(album *models.Album, songID interface{}) (*models.Album, error) {
+	song, err := p.songService.GetSongByID(songID)
+
+	if err != nil {
+		return album, err
+	}
+
+	return p.albumRepository.RemoveSong(album, song)
+}
