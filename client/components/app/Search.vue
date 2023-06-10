@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center bg-transparent text-white border w-full rounded-[5px] p-1 px-2 transition-all duration-200" :class="{
+    <div class="flex items-center bg-transparent text-white border rounded-[5px] p-1 px-2 transition-all duration-200" :class="{
         'border-primary': focus,
         'border-white': !focus
     }">

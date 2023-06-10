@@ -54,8 +54,8 @@ const showModal = ref(false)
             </div>
 
         </div>
-        <app-album-song-list @remove="handleRemove" class="bg-[#111] bg-opacity-75" v-if="album" :songs="album?.songs">
-        </app-album-song-list>
+        <albums-song-list :dashboard="true" @remove="handleRemove" class="bg-[#111] bg-opacity-75" v-if="album" :songs="album?.songs">
+        </albums-song-list>
         <app-add-song-to-album @add-song="(song: Song) => { 
             album?.songs.push(song)
             showModal = false

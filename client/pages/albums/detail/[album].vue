@@ -20,16 +20,6 @@ onMounted(async () => {
 
     album.value = res
 })
-
-const handleRemove = async (songID: number) => {
-    if (album.value) {
-        await removeSong(songID, album.value?.id)
-
-        album.value.songs = album.value.songs.filter((song: Song) => song.id != songID)
-    }
-}
-
-const showModal = ref(false)
 </script>
 
 <template>
@@ -46,10 +36,6 @@ const showModal = ref(false)
                         <h2 class="text-7xl font-bold">
                             {{ album?.name }}
                         </h2>
-
-                        <div class="flex justify-center items-center w-[50px] h-[50px] bg-secondary rounded-full ml-5 mt-2">
-                            <i @click="showModal = true" class="uil uil-plus text-2xl text-primary"></i>
-                        </div>
                     </div>
 
                 </div>
@@ -59,12 +45,7 @@ const showModal = ref(false)
             </div>
 
         </div>
-        <app-album-song-list @remove="handleRemove" class="bg-[#111] bg-opacity-75" v-if="album" :songs="album?.songs">
-        </app-album-song-list>
-        <app-add-song-to-album @add-song="(song: Song) => { 
-            album?.songs.push(song)
-            showModal = false
-            }" :album="album" @hide="showModal = false"
-            :show="showModal"></app-add-song-to-album>
+        <albums-song-list class="bg-[#111] bg-opacity-75" v-if="album" :songs="album?.songs">
+        </albums-song-list>
     </div>
 </template>

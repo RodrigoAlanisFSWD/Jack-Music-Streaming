@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { Song } from '~~/models/song';
 
-const { songs = [] } = defineProps<{
+const { songs = [], dashboard = false } = defineProps<{
     songs: Song[],
+    dashboard?: Boolean
 }>()
 
 const emit = defineEmits(['remove'])
@@ -38,7 +39,7 @@ const selectedSong = ref(0)
                         }" icon="uil uil-plus-circle">
                             Add To Playlist
                         </app-option>
-                        <app-option @click="emit('remove', song.id)" icon="uil uil-minus-circle">
+                        <app-option v-if="dashboard" @click="emit('remove', song.id)" icon="uil uil-minus-circle">
                             Remove From Album
                         </app-option>
                         <slot name="options">
