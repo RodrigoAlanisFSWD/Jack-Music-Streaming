@@ -8,6 +8,8 @@ defineProps<{
 const { setSong, state } = usePlayer()
 
 const emit = defineEmits(['showPlaylistModal'])
+
+const router = useRouter()
 </script>
 
 <template>
@@ -26,9 +28,12 @@ const emit = defineEmits(['showPlaylistModal'])
                     </h3>
                 </div>
             </div>
-            <span>
-                {{ song?.album_id ? song?.album.name : 'None' }}
-            </span>
+            <p>
+                <span @click="router.push('/albums/detail/' + song.album_id)" class="hover:text-primary cursor-pointer transition-all duration-200" v-if="song?.album_id && song?.album">
+                    {{ song?.album.name }}
+                </span>
+                {{ song?.album_id ? '' : 'None' }}
+            </p>
             <span>
                 October 5, 2022
             </span>

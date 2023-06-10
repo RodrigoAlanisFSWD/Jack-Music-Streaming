@@ -16,6 +16,8 @@ func AlbumRouter(api *echo.Group) {
 
 	albums.Use(middlewares.JWTMiddleware())
 
+	albums.POST("/", albumController.Create)
+	albums.POST("/logo/:album", albumController.UpdateAlbumLogo)
 	albums.PUT("/addSong/:album/:song", albumController.AddSong)
 	albums.DELETE("/removeSong/:album/:song", albumController.RemoveSong)
 

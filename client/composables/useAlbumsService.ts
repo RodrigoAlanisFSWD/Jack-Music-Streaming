@@ -1,3 +1,5 @@
+import { Album } from "~/models/album"
+
 export const useAlbumsService = () => {
 
     const getAlbums = async (authorId: number) => {
@@ -36,10 +38,33 @@ export const useAlbumsService = () => {
         }
     }
 
+    const uploadAlbumLogo = async (albumID: number, formData: FormData) => {
+        try {
+            const { data } = await api.post("/albums/logo/" + albumID, formData)
+
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const createAlbum = async (album: any) => {
+        try {
+            const { data } = await api.post<Album>("/albums/", album)
+
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     return {
         getAlbum,
         getAlbums,
         addSong,
-        removeSong
+        removeSong,
+        createAlbum,
+        uploadAlbumLogo
     }
 }

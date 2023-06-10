@@ -73,7 +73,7 @@ const user = useUser()
         <app-select @select="(item) => selectedType = item" :selected-item="selectedType" :items="types"
             placeholder="Select Playlist Type" label="Type" class="mb-3"></app-select>
         <form-file :value="playlistLogo" :placeholder="playlistLogo ? playlistLogo.name : 'png | jpeg | jpg'"
-            label="Song Logo" :error="playlistLogoError" @file="handleLogoChange" class="w-full"></form-file>
+            label="Playlist Logo" :error="playlistLogoError" @file="handleLogoChange" class="w-full"></form-file>
         <app-button @click="emit('submit', {
             name: playlistData.name,
             type: selectedType?.key,

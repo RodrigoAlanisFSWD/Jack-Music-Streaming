@@ -10,7 +10,10 @@
                 </h3>
                 <i class="uil uil-angle-down text-2xl"></i>
             </div>
-            <app-button @click="router.push('/songs/create')" class="mt-8 w-[250px]">Upload Song</app-button>
+            <div class="flex gap-x-5">
+                <app-button @click="router.push('/songs/create')" class="mt-8 w-[250px]">Upload Song</app-button>
+                <app-button @click="router.push('/dashboard/albums/create')" class="mt-8 w-[250px]" type="secondary">Create Album</app-button>
+            </div>
         </div>
 </template>
 
