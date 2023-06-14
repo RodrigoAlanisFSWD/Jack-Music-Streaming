@@ -31,7 +31,7 @@ func (u *profileRepository) Save(profile *models.Profile) (*models.Profile, erro
 func (u *profileRepository) FindOne(query string, args ...interface{}) (*models.Profile, error) {
 	var profile models.Profile
 
-	err := u.DB.Model(&profile).Where(query, args).Preload("Songs").First(&profile).Error
+	err := u.DB.Model(&profile).Where(query, args).Preload("Songs").Preload("Playlists").Preload("Albums").First(&profile).Error
 
 	if err != nil {
 		return &profile, err

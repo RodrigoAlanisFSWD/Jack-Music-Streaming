@@ -1,4 +1,6 @@
 import { Model } from "./";
+import { Album } from "./album";
+import { Playlist } from "./playlist";
 import { Media, Song } from './song'
 
 export interface User extends Model {
@@ -13,6 +15,8 @@ export interface User extends Model {
 export interface Profile extends Model {
     user_id: number;
     songs: Song[];
+    playlists: Playlist[];
+    albums: Album[];
     logo: Media;
     logo_id: number;
 }

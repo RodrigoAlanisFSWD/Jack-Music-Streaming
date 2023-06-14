@@ -6,9 +6,11 @@ type Profile struct {
 	Model
 	Songs     []Song     `gorm:"foreignKey:AuthorID;references:UserID"`
 	Playlists []Playlist `gorm:"foreignKey:AuthorID;references:UserID"`
+	Albums    []Album    `gorm:"foreignKey:AuthorID;references:UserID"`
 	UserID    uint       `json:"user_id"`
 	LogoID    uint       `json:"logo_id"`
 	Logo      File       `json:"logo" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Library   Library    `gorm:"foreignKey:UserID;references:UserID"`
 }
 
 type ProfileRepository interface {

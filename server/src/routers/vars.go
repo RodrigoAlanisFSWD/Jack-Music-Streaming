@@ -20,6 +20,8 @@ var playlistRepository models.PlaylistRepository
 var playlistService models.PlaylistService
 var albumRepository models.AlbumRepository
 var albumService models.AlbumService
+var libraryRepository models.LibraryRepository
+var libraryService models.LibraryService
 
 func InitializeRotuers() {
 	userRepository = repository.NewUserRepository(database.DB)
@@ -35,4 +37,6 @@ func InitializeRotuers() {
 	playlistService = services.NewPlaylistService(playlistRepository, songService, filesRepository)
 	albumRepository = repository.NewAlbumRepository(database.DB)
 	albumService = services.NewAlbumService(albumRepository, songService, filesRepository)
+	libraryRepository = repository.NewLibraryRepository(database.DB)
+	libraryService = services.NewLibraryRepository(libraryRepository, songService, albumService, playlistService)
 }

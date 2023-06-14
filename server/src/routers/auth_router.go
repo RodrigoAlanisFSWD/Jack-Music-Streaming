@@ -19,6 +19,7 @@ func AuthRouter(api *echo.Group) {
 	auth.GET("/profile", authController.GetProfile)
 	auth.PUT("/update", authController.UpdateUser)
 	auth.PUT("/logo", authController.UpdateUserLogo)
+	auth.GET("/profile/full", authController.GetFullProfile)
 
 	auth.Use(middlewares.RefreshMiddleware())
 

@@ -45,4 +45,5 @@ type AuthService interface {
 	RegisterRefreshToken(token string, user *User) (*RefreshToken, error)
 	UpdateRefreshToken(new string, old string, user *User) (*RefreshToken, error)
 	CreateProfile(user *User) error
+	GetProfile(c echo.Context) (*Profile, error)
 }

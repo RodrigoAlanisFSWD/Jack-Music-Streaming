@@ -18,6 +18,7 @@ type AuthController interface {
 	SignIn(c echo.Context) error
 	SignUp(c echo.Context) error
 	GetProfile(c echo.Context) error
+	GetFullProfile(c echo.Context) error
 	UpdateUser(c echo.Context) error
 	RefreshTokens(c echo.Context) error
 	UpdateUserLogo(c echo.Context) error
@@ -109,6 +110,16 @@ func (a *authController) GetProfile(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, user)
+}
+
+func (a *authController) GetFullProfile(c echo.Context) error {
+	profile, err := a.authService.GetProfile(c)
+
+	if err != nil {
+		return errors.UnauthorizedError()
+	}
+
+	return c.JSON(http.StatusOK, profile)
 }
 
 func (a *authController) UpdateUser(c echo.Context) error {

@@ -200,3 +200,13 @@ func (a *authService) CreateProfile(user *models.User) error {
 
 	return nil
 }
+
+func (a *authService) GetProfile(c echo.Context) (*models.Profile, error) {
+	user, err := a.GetUserFromToken(c)
+
+	if err != nil {
+		return &models.Profile{}, err
+	}
+
+	return a.profileService.GetUserProfile(user.ID)
+}
