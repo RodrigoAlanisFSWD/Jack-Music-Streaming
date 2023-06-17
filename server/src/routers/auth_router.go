@@ -7,7 +7,7 @@ import (
 )
 
 func AuthRouter(api *echo.Group) {
-	authController := controllers.NewAuthController(userService, authService, profileService)
+	authController := controllers.NewAuthController(userService, authService, profileService, libraryService)
 
 	auth := api.Group("/auth")
 

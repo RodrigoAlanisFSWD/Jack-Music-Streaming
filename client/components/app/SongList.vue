@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Library } from '~/models/library';
 import { Song } from '~~/models/song';
 
 const { songs = [], playlist = false } = defineProps<{
@@ -10,6 +11,21 @@ const emit = defineEmits(['remove'])
 
 const showPlaylistModal = ref(false)
 const selectedSong = ref(0)
+
+const library: Ref<Library | null> = ref(null)
+
+const { getLibrary, addSong } = useLibraryService()
+
+onMounted(async () => {
+    library.value = await getLibrary()
+})
+
+const router = useRouter()
+
+const handleAddSong = async (song: Song) => {
+    await addSong(song.id)
+    router.push("/library")      
+}
 </script>
 
 <template>
@@ -42,6 +58,10 @@ const selectedSong = ref(0)
                         <app-option v-if="playlist" @click="emit('remove', song.id)" icon="uil uil-minus-circle">
                             Remove From Playlist
                         </app-option>
+                        <app-option v-if="!library?.songs.find((s: Song) => s.id === song.id)" @click="handleAddSong(song)" icon="uil uil-plus-circle">
+                            Add To Library
+                        </app-option>
+                        
                         <slot name="options">
 
                         </slot>

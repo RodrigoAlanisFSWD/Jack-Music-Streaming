@@ -5,7 +5,7 @@ type Library struct {
 	Songs     []Song     `gorm:"many2many:library_songs;" json:"songs"`
 	Playlists []Playlist `gorm:"many2many:library_playlists;" json:"playlists"`
 	Albums    []Album    `gorm:"many2many:library_albums;" json:"albums"`
-	UserID    uint
+	UserID    uint       `json:"user_id"`
 }
 
 type LibraryRepository interface {

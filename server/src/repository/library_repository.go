@@ -16,7 +16,7 @@ func NewLibraryRepository(db *gorm.DB) models.LibraryRepository {
 }
 
 func (l *libraryRepository) Save(library *models.Library) (*models.Library, error) {
-	err := l.DB.Create(library).Error
+	err := l.DB.Save(library).Error
 
 	return library, err
 }
@@ -24,7 +24,7 @@ func (l *libraryRepository) Save(library *models.Library) (*models.Library, erro
 func (l *libraryRepository) FindOne(query string, args ...interface{}) (*models.Library, error) {
 	var library models.Library
 
-	err := l.DB.Model(&library).Where(query, args).Preload("Songs").Preload("Playlists").Preload("Albums").First(&library).Error
+	err := l.DB.Model(&library).Where(query, args).Preload("Songs").Preload("Songs.Author").Preload("Playlists").Preload("Albums").First(&library).Error
 
 	return &library, err
 }

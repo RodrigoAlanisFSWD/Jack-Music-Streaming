@@ -12,6 +12,7 @@ type authController struct {
 	userService    models.UserService
 	authService    models.AuthService
 	profileService models.ProfileService
+	libraryService models.LibraryService
 }
 
 type AuthController interface {
@@ -24,11 +25,12 @@ type AuthController interface {
 	UpdateUserLogo(c echo.Context) error
 }
 
-func NewAuthController(s models.UserService, auth models.AuthService, p models.ProfileService) AuthController {
+func NewAuthController(s models.UserService, auth models.AuthService, p models.ProfileService, l models.LibraryService) AuthController {
 	return &authController{
 		userService:    s,
 		authService:    auth,
 		profileService: p,
+		libraryService: l,
 	}
 }
 
@@ -94,6 +96,14 @@ func (a *authController) SignUp(c echo.Context) error {
 	a.authService.SetTokens(c, tokens)
 
 	err = a.authService.CreateProfile(user)
+
+	if err != nil {
+		return errors.ServerError()
+	}
+
+	_, err = a.libraryService.Create(&models.Library{
+		UserID: user.ID,
+	})
 
 	if err != nil {
 		return errors.ServerError()

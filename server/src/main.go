@@ -66,6 +66,7 @@ func main() {
 	routers.SongsRouter(api)
 	routers.PlaylistRouter(api)
 	routers.AlbumRouter(api)
+	routers.LibraryRouter(api)
 
 	// Initializing The Server
 	e.Logger.Fatal(e.Start(":8080"))

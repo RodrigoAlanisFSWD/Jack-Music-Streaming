@@ -3,7 +3,7 @@
         <ul class="flex flex-col h-[150px] justify-around">
             <app-side-nav-item text="Home" to="/" />
             <app-side-nav-item text="Search" icon="uil uil-search" />
-            <app-side-nav-item text="Your Library" to="/" icon="uil uil-books" />
+            <app-side-nav-item text="Your Library" to="/library" icon="uil uil-books" />
         </ul>
         <div class="mt-12">
             <div class="border-b border-light pb-5">
