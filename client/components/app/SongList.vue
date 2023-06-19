@@ -12,13 +12,7 @@ const emit = defineEmits(['remove'])
 const showPlaylistModal = ref(false)
 const selectedSong = ref(0)
 
-const library: Ref<Library | null> = ref(null)
-
-const { getLibrary, addSong } = useLibraryService()
-
-onMounted(async () => {
-    library.value = await getLibrary()
-})
+const { state, addSong } = useLibraryService()
 
 const router = useRouter()
 
@@ -58,7 +52,7 @@ const handleAddSong = async (song: Song) => {
                         <app-option v-if="playlist" @click="emit('remove', song.id)" icon="uil uil-minus-circle">
                             Remove From Playlist
                         </app-option>
-                        <app-option v-if="!library?.songs.find((s: Song) => s.id === song.id)" @click="handleAddSong(song)" icon="uil uil-plus-circle">
+                        <app-option v-if="!state.songs.value.find((s: Song) => s.id === song.id)" @click="handleAddSong(song)" icon="uil uil-plus-circle">
                             Add To Library
                         </app-option>
                         

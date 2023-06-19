@@ -12,14 +12,24 @@ definePageMeta({
 const album: Ref<Album | null> = ref(null)
 
 const route = useRoute()
+const router = useRouter()
 
 const { getAlbum, removeSong } = useAlbumsService()
+const { addAlbum, state: { albums } } = useLibraryService()
 
 onMounted(async () => {
     const res = await getAlbum(route.params.album as any)
 
     album.value = res
 })
+
+const handleAddAlbum = async () => {
+    if (!album.value) return
+
+    await addAlbum(album.value.id)
+
+    router.push("/library")
+}
 </script>
 
 <template>
@@ -36,6 +46,11 @@ onMounted(async () => {
                         <h2 class="text-7xl font-bold">
                             {{ album?.name }}
                         </h2>
+                        <div @click="handleAddAlbum"
+                            :class="{ 'bg-secondary border-secondary text-primary': albums.find((p: Album) => p.id === album?.id) }"
+                            class="rounded-full border-2 border-white w-[50px] h-[50px] flex justify-center items-center ml-5 mt-2">
+                            <i class="uil uil-bookmark text-3xl"></i>
+                        </div>
                     </div>
 
                 </div>

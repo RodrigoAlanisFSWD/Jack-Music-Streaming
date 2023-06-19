@@ -28,3 +28,7 @@ export const usePlaylistsStore = defineStore("PlaylistsStore", {
         }
     }
 })
+
+if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(usePlaylistsStore, import.meta.hot))
+}

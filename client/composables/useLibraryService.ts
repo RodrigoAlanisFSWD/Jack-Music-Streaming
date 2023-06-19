@@ -3,15 +3,21 @@ import api from "./api"
 
 export const useLibraryService = () => {
 
-    const getLibrary = async (): Promise<Library> => {
+    const libraryStore = useLibraryStore()
+
+    const state = storeToRefs(libraryStore)
+
+    const getLibrary = async () => {
         const { data } = await api.get("/library/")
 
-        return data
+        libraryStore.setLibrary(data)
     }
 
     const addSong = async (song: number) => {
         try {
-            await api.post("/library/addSong/" + song)
+            const { data } = await api.post("/library/addSong/" + song)
+
+            libraryStore.setLibrary(data)
         } catch (error) {
             console.log(error)
         }
@@ -19,7 +25,9 @@ export const useLibraryService = () => {
 
     const addPlaylist = async (playlist: number) => {
         try {
-            await api.post("/library/addPlaylist/" + playlist)
+            const { data } = await api.post("/library/addPlaylist/" + playlist)
+
+            libraryStore.setLibrary(data)
         } catch (error) {
             console.log(error)
         }
@@ -27,7 +35,9 @@ export const useLibraryService = () => {
 
     const addAlbum = async (album: number) => {
         try {
-            await api.post("/library/addAlbum/" + album)
+            const { data } = await api.post("/library/addAlbum/" + album)
+
+            libraryStore.setLibrary(data)
         } catch (error) {
             console.log(error)
         }
@@ -39,6 +49,8 @@ export const useLibraryService = () => {
         getLibrary,
         addAlbum,
         addSong,
-        addPlaylist
+        addPlaylist,
+        libraryStore,
+        state
     }
 }

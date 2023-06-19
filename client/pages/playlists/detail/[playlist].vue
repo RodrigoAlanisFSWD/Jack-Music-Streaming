@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { remove } from '@vue/shared'
 import { Ref } from 'vue'
 import { Playlist } from '~~/models/playlist'
 import { Song } from '~~/models/song'
@@ -12,10 +11,12 @@ definePageMeta({
 const playlist: Ref<Playlist | null> = ref(null)
 
 const route = useRoute()
+const router = useRouter()
 
 const { getPlaylist, removeSong } = usePlaylistsService()
 const { setPlaylist, setSong } = usePlayer()
-
+const { addPlaylist, state: { playlists } } = useLibraryService()
+ 
 onMounted(async () => {
     const res = await getPlaylist(route.params.playlist)
 
@@ -36,6 +37,14 @@ const handleRemove = async (songID: number) => {
         playlist.value.songs = playlist.value.songs.filter((song: Song) => song.id != songID)
     }
 }
+
+const handleAddPlaylist = async () => {
+    if (!playlist.value) return
+
+    await addPlaylist(playlist.value.id)
+    
+    router.push("/library")      
+}
 </script>
 
 <template>
@@ -54,6 +63,9 @@ const handleRemove = async (songID: number) => {
                         </h2>
                         <div class="flex justify-center items-center w-[50px] h-[50px] bg-secondary rounded-full ml-5 mt-2">
                             <i class="uil uil-play text-2xl text-primary" @click="handlePlay"></i>
+                        </div>
+                        <div @click="handleAddPlaylist" :class="{'bg-secondary border-secondary text-primary': playlists.find((p: Playlist) => p.id === playlist?.id)}" class="rounded-full border-2 border-white w-[50px] h-[50px] flex justify-center items-center ml-5 mt-2">
+                            <i class="uil uil-bookmark text-3xl"></i>
                         </div>
                     </div>
 

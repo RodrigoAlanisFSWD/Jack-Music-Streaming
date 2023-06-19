@@ -22,3 +22,7 @@ export const useSongsStore = defineStore("SongStore", {
         }
     }
 })
+
+if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useSongsStore, import.meta.hot))
+}
