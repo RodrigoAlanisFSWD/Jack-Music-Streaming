@@ -3,7 +3,9 @@ package services
 import (
 	"sync"
 
+	"github.com/Jack-Music-Streaming/server/src/database"
 	"github.com/Jack-Music-Streaming/server/src/models"
+	"gorm.io/gorm"
 )
 
 type libraryService struct {
@@ -100,4 +102,52 @@ func (l *libraryService) AddAlbum(albumID interface{}, library *models.Library) 
 	library.Albums = append(library.Albums, *album)
 
 	return l.libraryRepository.Save(library)
+}
+
+func (l *libraryService) RemoveSong(songID interface{}, library *models.Library) (*models.Library, error) {
+	song, err := l.songService.GetSongByID(songID)
+
+	if err != nil {
+		return library, err
+	}
+
+	err = database.DB.Session(&gorm.Session{FullSaveAssociations: true}).Model(library).Association("Songs").Delete(song)
+
+	if err != nil {
+		return library, err
+	}
+
+	return library, err
+}
+
+func (l *libraryService) RemovePlaylist(playlistID interface{}, library *models.Library) (*models.Library, error) {
+	playlist, err := l.playlistService.GetPlaylist(playlistID)
+
+	if err != nil {
+		return library, err
+	}
+
+	err = database.DB.Session(&gorm.Session{FullSaveAssociations: true}).Model(library).Association("Playlists").Delete(playlist)
+
+	if err != nil {
+		return library, err
+	}
+
+	return library, err
+}
+
+func (l *libraryService) RemoveAlbum(albumID interface{}, library *models.Library) (*models.Library, error) {
+	album, err := l.albumService.GetAlbum(albumID)
+
+	if err != nil {
+		return library, err
+	}
+
+	err = database.DB.Session(&gorm.Session{FullSaveAssociations: true}).Model(library).Association("Albums").Delete(album)
+
+	if err != nil {
+		return library, err
+	}
+
+	return library, err
 }

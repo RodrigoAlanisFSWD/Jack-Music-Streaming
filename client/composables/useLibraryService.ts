@@ -43,6 +43,36 @@ export const useLibraryService = () => {
         }
     }
 
+    const removeSong = async (song: number) => {
+        try {
+            const { data } = await api.post("/library/removeSong/" + song)
+
+            libraryStore.setLibrary(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const removePlaylist = async (playlist: number) => {
+        try {
+            const { data } = await api.post("/library/removePlaylist/" + playlist)
+
+            libraryStore.setLibrary(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const removeAlbum = async (album: number) => {
+        try {
+            const { data } = await api.post("/library/removeAlbum/" + album)
+
+            libraryStore.setLibrary(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     
 
     return {
@@ -51,6 +81,9 @@ export const useLibraryService = () => {
         addSong,
         addPlaylist,
         libraryStore,
+        removeAlbum,
+        removePlaylist,
+        removeSong,
         state
     }
 }

@@ -15,7 +15,7 @@ const router = useRouter()
 
 const { getPlaylist, removeSong } = usePlaylistsService()
 const { setPlaylist, setSong } = usePlayer()
-const { addPlaylist, state: { playlists } } = useLibraryService()
+const { addPlaylist, state: { playlists }, removePlaylist } = useLibraryService()
  
 onMounted(async () => {
     const res = await getPlaylist(route.params.playlist)
@@ -45,6 +45,22 @@ const handleAddPlaylist = async () => {
     
     router.push("/library")      
 }
+
+const handleRemovePlaylist = async () => {
+    if (!playlist.value) return
+
+    await removePlaylist(playlist.value.id)    
+}
+
+const handleAction = async () => {
+    if (!playlist.value) return
+
+    if (playlists.value.find((p: Playlist) => p.id === playlist.value?.id)) {
+        handleRemovePlaylist()
+    } else {
+        handleAddPlaylist()
+    }
+}
 </script>
 
 <template>
@@ -64,7 +80,7 @@ const handleAddPlaylist = async () => {
                         <div class="flex justify-center items-center w-[50px] h-[50px] bg-secondary rounded-full ml-5 mt-2">
                             <i class="uil uil-play text-2xl text-primary" @click="handlePlay"></i>
                         </div>
-                        <div @click="handleAddPlaylist" :class="{'bg-secondary border-secondary text-primary': playlists.find((p: Playlist) => p.id === playlist?.id)}" class="rounded-full border-2 border-white w-[50px] h-[50px] flex justify-center items-center ml-5 mt-2">
+                        <div @click="handleAction" :class="{'bg-secondary border-secondary text-primary': playlists.find((p: Playlist) => p.id === playlist?.id)}" class="rounded-full border-2 border-white w-[50px] h-[50px] flex justify-center items-center ml-5 mt-2">
                             <i class="uil uil-bookmark text-3xl"></i>
                         </div>
                     </div>

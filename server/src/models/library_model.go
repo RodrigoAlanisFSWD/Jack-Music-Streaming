@@ -21,4 +21,7 @@ type LibraryService interface {
 	AddSong(songID interface{}, library *Library) (*Library, error)
 	AddPlaylist(playlistID interface{}, library *Library) (*Library, error)
 	AddAlbum(albumID interface{}, library *Library) (*Library, error)
+	RemoveSong(songID interface{}, library *Library) (*Library, error)
+	RemovePlaylist(playlistID interface{}, library *Library) (*Library, error)
+	RemoveAlbum(albumID interface{}, library *Library) (*Library, error)
 }

@@ -17,4 +17,7 @@ func LibraryRouter(api *echo.Group) {
 	library.POST("/addSong/:song", libraryController.AddSong)
 	library.POST("/addPlaylist/:playlist", libraryController.AddPlaylist)
 	library.POST("/addAlbum/:album", libraryController.AddAlbum)
+	library.POST("/removeSong/:song", libraryController.RemoveSong)
+	library.POST("/removePlaylist/:playlist", libraryController.RemovePlaylist)
+	library.POST("/removeAlbum/:album", libraryController.RemoveAlbum)
 }

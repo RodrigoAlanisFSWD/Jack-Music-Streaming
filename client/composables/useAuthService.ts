@@ -5,6 +5,7 @@ import api from "./api"
 export const useAuthService = () => {
 
     const authStore = useAuthStore()
+    const { getLibrary } = useLibraryService()
 
     const access_token = useCookie('jack_access_token')
     const refresh_token = useCookie('jack_refresh_token')
@@ -28,6 +29,8 @@ export const useAuthService = () => {
             })
 
             authStore.authenticateUser(data)
+
+            await getLibrary()
         } catch (error) {
             authStore.authError()
         }

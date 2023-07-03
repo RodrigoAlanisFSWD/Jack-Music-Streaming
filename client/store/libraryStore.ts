@@ -20,9 +20,9 @@ export const useLibraryStore = defineStore('LibraryStore', {
     actions: {
         setLibrary(library: Library) {
             console.log(library)
-            this.songs = library.songs;
-            this.playlists = library.playlists;
-            this.albums = library.albums
+            this.songs = library.songs ? library.songs : [];
+            this.playlists = library.playlists ? library.playlists : [];
+            this.albums = library.albums ? library.albums : []
             this.loaded = true
         },
     }
